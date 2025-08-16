@@ -1,113 +1,503 @@
-import Image from 'next/image'
+"use client";
 
-export default function Home() {
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  ExternalLink,
+  Code,
+  Server,
+  Database,
+  Globe,
+  Phone,
+  Download,
+  MapPin,
+} from "lucide-react";
+import CodeRainBackground from "@/components/code-rain-background";
+import Terminal from "@/components/terminal";
+import FloatingElements from "@/components/floating-elements";
+import { downloadProfessionalCV } from "@/components/cv-generator";
+
+export default function Portfolio() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    setIsVisible(true);
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const skills = [
+    {
+      name: "Node.js/Express",
+      icon: Server,
+      description: "Server-side JavaScript runtime",
+    },
+    {
+      name: "Python/Django",
+      icon: Code,
+      description: "High-level programming language",
+    },
+    {
+      name: "PHP/Laravel",
+      icon: Code,
+      description: "Web development framework",
+    },
+    {
+      name: "Database Design",
+      icon: Database,
+      description: "Relational & NoSQL databases",
+    },
+    {
+      name: "API Development",
+      icon: Globe,
+      description: "RESTful & GraphQL APIs",
+    },
+    {
+      name: "Microservices",
+      icon: Server,
+      description: "Distributed system architecture",
+    },
+  ];
+  const projects = [
+    {
+      title: "InstantOTP",
+      description:
+        "High-performance OTP service handling thousands of SMS/email verifications daily. Built with Node.js microservices architecture, Redis caching, and PostgreSQL for scalability.",
+      tech: ["Node.js", "Express.js", "Redis", "PostgreSQL", "SMS APIs"],
+      link: "https://www.instantotp.com/",
+      category: "Authentication Service",
+      image:
+        "https://api.microlink.io/?url=https://www.instantotp.com/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "Etegram Platform",
+      description:
+        "E-commerce platform backend supporting 10,000+ daily users. Implemented secure payment processing, inventory management, and real-time order tracking with microservices architecture.",
+      tech: ["NestJS", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
+      link: "https://www.etegram.com/",
+      category: "E-commerce",
+      image:
+        "https://api.microlink.io/?url=https://www.etegram.com/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "MonieCheap",
+      description:
+        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Python Django.",
+      tech: ["Python", "Django", "Celery", "PostgreSQL", "Security"],
+      link: "https://moniecheap.com/",
+      category: "Fintech",
+      image:
+        "https://api.microlink.io/?url=https://moniecheap.com/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "BrixVPN",
+      description:
+        "VPN service backend with server management, user authentication, bandwidth monitoring, and secure connection protocols. Handles global server infrastructure and user sessions.",
+      tech: [
+        "Node.js",
+        "Network Security",
+        "MongoDB",
+        "Server Management",
+        "Encryption",
+      ],
+      link: "https://www.brixvpn.com/",
+      category: "Network Security",
+      image:
+        "https://api.microlink.io/?url=https://www.brixvpn.com/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "TunnelDeck",
+      description:
+        "Advanced tunneling service backend with custom protocol implementation, traffic routing, and performance optimization. Built for high-throughput network applications.",
+      tech: [
+        "Python",
+        "Flask",
+        "Network Protocols",
+        "Performance Tuning",
+        "Load Balancing",
+      ],
+      link: "https://tunneldeck.com/",
+      category: "Network Infrastructure",
+      image:
+        "https://api.microlink.io/?url=https://tunneldeck.com/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "ProtonMedicare",
+      description:
+        "Healthcare management system backend with HIPAA-compliant data handling, appointment scheduling, patient records management, and secure communication channels.",
+      tech: ["PHP", "Laravel", "MySQL", "HIPAA Compliance", "Security"],
+      link: "https://protonmedicare.com/",
+      category: "Healthcare",
+      image:
+        "https://api.microlink.io/?url=https://protonmedicare.com/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+  ];
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
+      {/* Code Rain Background */}
+      <CodeRainBackground />
+
+      {/* Floating Elements */}
+      <FloatingElements />
+
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-purple-600/5 to-teal-600/5" />
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-blue-400/20 rounded-full animate-pulse-glow"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 2}s`,
+              animationDuration: `${2 + Math.random() * 2}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Modern Header */}
+      <header className="fixed top-0 w-full bg-slate-900/90 backdrop-blur-lg z-50 border-b border-slate-700/50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <nav className="flex justify-between items-center">
+            <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
+              moses.dev
+            </div>
+            <ul className="hidden md:flex gap-8">
+              {["About", "Skills", "Projects", "Contact"].map((item) => (
+                <li key={item}>
+                  <a
+                    href={`#${item.toLowerCase()}`}
+                    className="text-slate-300 hover:text-blue-400 transition-all duration-300 font-medium relative group"
+                  >
+                    {item}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-      </div>
+      </header>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      {/* Hero Section */}
+      <section
+        id="about"
+        className="relative min-h-screen flex items-center justify-center px-6 pt-20"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div
+              className={`${
+                isVisible ? "animate-fade-in" : "opacity-0"
+              } space-y-8`}
+            >
+              <div className="space-y-4">
+                <div className="text-blue-400 font-semibold tracking-wide uppercase text-sm">
+                  Backend Developer & System Architect
+                </div>
+                <h1 className="text-6xl md:text-7xl font-bold text-white leading-tight">
+                  Moses
+                  <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-teal-400 bg-clip-text text-transparent">
+                    Edem
+                  </span>
+                </h1>
+                <p className="text-xl text-slate-400 leading-relaxed max-w-2xl">
+                  Crafting robust, scalable backend systems and APIs that power
+                  modern applications. Expert in Node.js, Python, PHP, and
+                  microservices architecture with 2+ years of professional
+                  experience delivering high-performance solutions.
+                </p>
+              </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
+              <div className="flex items-center gap-4 text-slate-400">
+                <MapPin className="w-4 h-4 text-blue-400" />
+                <span>Port Harcourt, Nigeria</span>
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                <span>Available for projects</span>
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
+                  asChild
+                >
+                  <a href="#projects">
+                    View My Work
+                    <ExternalLink className="ml-2 w-4 h-4" />
+                  </a>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={downloadProfessionalCV}
+                  className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white px-8 py-3 rounded-full transition-all duration-300"
+                >
+                  Download CV
+                  <Download className="ml-2 w-4 h-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white px-8 py-3 rounded-full transition-all duration-300"
+                  asChild
+                >
+                  <a href="#contact">
+                    Get In Touch
+                    <Mail className="ml-2 w-4 h-4" />
+                  </a>
+                </Button>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                {[
+                  {
+                    icon: Github,
+                    href: "https://github.com/mosesedem",
+                    label: "GitHub",
+                  },
+                  {
+                    icon: Linkedin,
+                    href: "https://linkedin.com/in/mosesedem",
+                    label: "LinkedIn",
+                  },
+                  {
+                    icon: Mail,
+                    href: "mailto:mosesedem81@gmail.com",
+                    label: "Email",
+                  },
+                  { icon: Phone, href: "tel:+2349030465501", label: "Phone" },
+                ].map(({ icon: Icon, href, label }) => (
+                  <Button
+                    key={label}
+                    variant="ghost"
+                    size="icon"
+                    className="text-slate-400 hover:text-blue-400 hover:bg-slate-800/50 rounded-full transition-all duration-300 hover:scale-110"
+                    asChild
+                  >
+                    <a
+                      href={href}
+                      target={href.startsWith("http") ? "_blank" : undefined}
+                      rel="noopener noreferrer"
+                    >
+                      <Icon className="w-5 h-5" />
+                    </a>
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:pl-8">
+              <Terminal />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section id="skills" className="py-32 px-6 bg-slate-900/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Backend Expertise
+            </h2>
+            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+              Specialized in building robust, scalable backend systems using
+              modern technologies and best practices.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {skills.map((skill, index) => {
+              const Icon = skill.icon;
+              return (
+                <Card
+                  key={skill.name}
+                  className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50 hover:border-blue-500/50 transition-all duration-500 hover:transform hover:scale-105 group"
+                >
+                  <CardHeader className="text-center pb-4">
+                    <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center mb-4 group-hover:from-blue-500/30 group-hover:to-purple-500/30 transition-all duration-300">
+                      <Icon className="w-8 h-8 text-blue-400 group-hover:text-blue-300 transition-colors duration-300" />
+                    </div>
+                    <CardTitle className="text-xl text-white group-hover:text-blue-300 transition-colors duration-300">
+                      {skill.name}
+                    </CardTitle>
+                    <CardDescription className="text-slate-400 text-sm">
+                      {skill.description}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Featured Projects
+            </h2>
+            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+              A showcase of recent backend systems and APIs I've built, serving
+              thousands of users daily.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project, index) => (
+              <Card
+                key={project.title}
+                className="group bg-slate-800/30 backdrop-blur-sm border-slate-700/50 hover:border-blue-500/50 transition-all duration-500 overflow-hidden hover:transform hover:scale-[1.02]"
+              >
+                <div
+                  className="relative h-48 overflow-hidden rounded-t-lg"
+                  style={{
+                    backgroundImage: `url(${project.image})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent" />
+
+                  <Badge className="absolute top-4 left-4 bg-slate-900/90 text-blue-400 border-blue-500/50 backdrop-blur-sm">
+                    {project.category}
+                  </Badge>
+
+                  <Button
+                    size="sm"
+                    className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-blue-600/90 hover:bg-blue-700 backdrop-blur-sm"
+                    asChild
+                  >
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  </Button>
+
+                  <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="text-white font-semibold text-sm backdrop-blur-sm bg-slate-900/70 px-2 py-1 rounded">
+                      Live Project
+                    </div>
+                  </div>
+                </div>
+
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-xl text-white group-hover:text-blue-300 transition-colors duration-300">
+                    {project.title}
+                  </CardTitle>
+                  <CardDescription className="text-slate-400 leading-relaxed text-sm">
+                    {project.description}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech) => (
+                      <Badge
+                        key={tech}
+                        variant="secondary"
+                        className="text-xs bg-slate-700/50 text-slate-300 border-slate-600/50 hover:bg-blue-600/20 hover:text-blue-300 hover:border-blue-500/50 transition-all duration-300"
+                      >
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-32 px-6 bg-slate-900/50">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Let's Build Something Amazing
           </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
+          <p className="text-xl text-slate-400 mb-12 leading-relaxed max-w-3xl mx-auto">
+            Looking for a backend developer who can architect scalable solutions
+            and deliver robust APIs? I'm always excited to work on challenging
+            projects that push the boundaries of what's possible.
           </p>
-        </a>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+          <div className="flex flex-wrap gap-6 justify-center mb-12">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
+              asChild
+            >
+              <a href="mailto:mosesedem81@gmail.com">
+                <Mail className="mr-2 w-5 h-5" />
+                Email Me
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white px-8 py-3 rounded-full transition-all duration-300"
+              asChild
+            >
+              <a href="tel:+2349030465501">
+                <Phone className="mr-2 w-5 h-5" />
+                Call Me
+              </a>
+            </Button>
+          </div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
+          <div className="flex justify-center gap-8">
+            <a
+              href="https://linkedin.com/in/mosesedem"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-2"
+            >
+              <Linkedin className="w-5 h-5" />
+              LinkedIn
+            </a>
+            <a
+              href="https://github.com/mosesedem"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-2"
+            >
+              <Github className="w-5 h-5" />
+              GitHub
+            </a>
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
+      {/* Footer */}
+      <footer className="py-8 px-6 border-t border-slate-700/50">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-slate-400">
+            &copy; 2024 Moses Edem. Building the future, one API at a time.
           </p>
-        </a>
-      </div>
-    </main>
-  )
+        </div>
+      </footer>
+    </div>
+  );
 }

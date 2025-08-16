@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moses Edem - Backend Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #0066cc;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --accent: #ff6b35;
+            --text-light: #e0e0e0;
+            --text-dim: #a0a0a0;
+        }
+
+        body {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .code-rain {
+            position: absolute;
+            color: var(--primary);
+            font-size: 14px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            position: relative;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Terminal */
+        .terminal {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27ca3f; }
+
+        .terminal-content {
+            color: var(--primary);
+        }
+
+        .command {
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt::before {
+            content: "$ ";
+            color: var(--accent);
+        }
+
+        .typing {
+            animation: typing 3s steps(30, end) infinite;
+        }
+
+        @keyframes typing {
+            0%, 50% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        /* Skills Section */
+        .skills {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .skill-card h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 100px 0;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 102, 204, 0.1));
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 255, 136, 0.3);
+        }
+
+        .project-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .project-header h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-url {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-description {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--accent);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Floating elements */
+        .floating {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .floating-1 {
+            top: 20%;
+            left: 10%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-2 {
+            top: 60%;
+            right: 10%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .code-symbol {
+            font-size: 2rem;
+            color: rgba(0, 255, 136, 0.3);
+        }
+
+        /* Glitch effect */
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-1 2s infinite;
+            color: var(--accent);
+            z-index: -1;
+        }
+
+        .glitch::after {
+            animation: glitch-2 2s infinite;
+            color: var(--secondary);
+            z-index: -2;
+        }
+
+        @keyframes glitch-1 {
+            0%, 14%, 15%, 49%, 50%, 99%, 100% {
+                transform: translate(0);
+            }
+            15%, 49% {
+                transform: translate(-2px, 0);
+            }
+        }
+
+        @keyframes glitch-2 {
+            0%, 20%, 21%, 62%, 63%, 99%, 100% {
+                transform: translate(0);
+            }
+            21%, 62% {
+                transform: translate(2px, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">&lt;moses.dev /&gt;</a>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="glitch" data-text="Moses Edem">Moses Edem</h1>
+                    <div class="subtitle">Backend Developer & System Architect</div>
+                    <p>Specialized in building robust, scalable backend systems and APIs that power modern applications. Expert in Node.js, Python, PHP, and microservices architecture with 2+ years of professional experience delivering high-performance solutions.</p>
+                    <div class="cta-buttons">
+                        <a href="#projects" class="btn btn-primary">View My Work</a>
+                        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                    </div>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-dot dot-red"></div>
+                        <div class="terminal-dot dot-yellow"></div>
+                        <div class="terminal-dot dot-green"></div>
+                    </div>
+                    <div class="terminal-content">
+                        <div class="command"><span class="prompt">node server.js</span></div>
+                        <div class="command">🚀 Server running on port 3000</div>
+                        <div class="command">✅ Database connected</div>
+                        <div class="command">⚡ Redis cache initialized</div>
+                        <div class="command">🔐 JWT middleware active</div>
+                        <div class="command">📊 API endpoints ready</div>
+                        <div class="command typing"><span class="prompt">Ready to build amazing backends...</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating elements -->
+        <div class="floating floating-1">
+            <div class="code-symbol">{}</div>
+        </div>
+        <div class="floating floating-2">
+            <div class="code-symbol">&lt;/&gt;</div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
+        <div class="container">
+            <h2 class="section-title">Backend Expertise</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Server-Side Development</h3>
+                    <div class="tech-list">
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">Express.js</span>
+                        <span class="tech-tag">NestJS</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Django</span>
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">PHP</span>
+                        <span class="tech-tag">Laravel</span>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Database & Storage</h3>
+                    <div class="tech-list">
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">Redis</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">SQL Optimization</span>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>API Development</h3>
+                    <div class="tech-list">
+                        <span class="tech-tag">RESTful APIs</span>
+                        <span class="tech-tag">GraphQL</span>
+                        <span class="tech-tag">JWT Auth</span>
+                        <span class="tech-tag">OAuth</span>
+                        <span class="tech-tag">Rate Limiting</span>
+                        <span class="tech-tag">API Security</span>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Cloud & DevOps</h3>
+                    <div class="tech-list">
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">Google Cloud</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">Microservices</span>
+                        <span class="tech-tag">CI/CD</span>
+                        <span class="tech-tag">Load Balancing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <h2 class="section-title">Recent Projects (2023-2024)</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>InstantOTP</h3>
+                        <div class="project-url">instantotp.com</div>
+                    </div>
+                    <div class="project-content">
+                        <p class="project-description">High-performance OTP service handling thousands of SMS/email verifications daily. Built with Node.js microservices architecture, Redis caching, and PostgreSQL for scalability.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">Express.js</span>
+                            <span class="tech-tag">Redis</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">SMS APIs</span>
+                        </div>
+                        <a href="https://www.instantotp.com/" class="project-link" target="_blank">View Live →</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Etegram Platform</h3>
+                        <div class="project-url">etegram.com</div>
+                    </div>
+                    <div class="project-content">
+                        <p class="project-description">E-commerce platform backend supporting 10,000+ daily users. Implemented secure payment processing, inventory management, and real-time order tracking with microservices architecture.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">NestJS</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">Payment APIs</span>
+                            <span class="tech-tag">JWT Auth</span>
+                            <span class="tech-tag">Docker</span>
+                        </div>
+                        <a href="https://www.etegram.com/" class="project-link" target="_blank">View Live →</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>MonieCheap</h3>
+                        <div class="project-url">moniecheap.com</div>
+                    </div>
+                    <div class="project-content">
+                        <p class="project-description">Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Python Django.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">Celery</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">Security</span>
+                        </div>
+                        <a href="https://moniecheap.com/" class="project-link" target="_blank">View Live →</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>BrixVPN</h3>
+                        <div class="project-url">brixvpn.com</div>
+                    </div>
+                    <div class="project-content">
+                        <p class="project-description">VPN service backend with server management, user authentication, bandwidth monitoring, and secure connection protocols. Handles global server infrastructure and user sessions.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">Network Security</span>
+                            <span class="tech-tag">MongoDB</span>
+                            <span class="tech-tag">Server Management</span>
+                            <span class="tech-tag">Encryption</span>
+                        </div>
+                        <a href="https://www.brixvpn.com/" class="project-link" target="_blank">View Live →</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>TunnelDeck</h3>
+                        <div class="project-url">tunneldeck.com</div>
+                    </div>
+                    <div class="project-content">
+                        <p class="project-description">Advanced tunneling service backend with custom protocol implementation, traffic routing, and performance optimization. Built for high-throughput network applications.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">Network Protocols</span>
+                            <span class="tech-tag">Performance Tuning</span>
+                            <span class="tech-tag">Load Balancing</span>
+                        </div>
+                        <a href="https://tunneldeck.com/" class="project-link" target="_blank">View Live →</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>ProtonMedicare</h3>
+                        <div class="project-url">protonmedicare.com</div>
+                    </div>
+                    <div class="project-content">
+                        <p class="project-description">Healthcare management system backend with HIPAA-compliant data handling, appointment scheduling, patient records management, and secure communication channels.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">PHP</span>
+                            <span class="tech-tag">Laravel</span>
+                            <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">HIPAA Compliance</span>
+                            <span class="tech-tag">Security</span>
+                        </div>
+                        <a href="https://protonmedicare.com/" class="project-link" target="_blank">View Live →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <h2 class="section-title">Let's Build Something Amazing</h2>
+                <p>Looking for a backend developer who can architect scalable solutions and deliver robust APIs? I'm always excited to work on challenging projects that push the boundaries of what's possible.</p>
+                <div class="contact-links">
+                    <a href="mailto:mosesedem81@gmail.com" class="contact-link">📧 Email</a>
+                    <a href="tel:+2349030465501" class="contact-link">📱 Call</a>
+                    <a href="https://linkedin.com/in/mosesedem" class="contact-link" target="_blank">💼 LinkedIn</a>
+                    <a href="https://github.com/mosesedem" class="contact-link" target="_blank">💻 GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Create animated background
+        function createCodeRain() {
+            const bg = document.getElementById('bgAnimation');
+            const codes = ['0', '1', '{', '}', '<', '>', '/', '*', '+', '-', '=', ';', '(', ')', '[', ']'];
+            
+            setInterval(() => {
+                const codeElement = document.createElement('div');
+                codeElement.className = 'code-rain';
+                codeElement.textContent = codes[Math.floor(Math.random() * codes.length)];
+                codeElement.style.left = Math.random() * 100 + '%';
+                codeElement.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                bg.appendChild(codeElement);
+                
+                setTimeout(() => {
+                    codeElement.remove();
+                }, 5000);
+            }, 200);
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initialize animations
+        createCodeRain();
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 10, 10, 0.98)';
+            } else {
+                header.style.background = 'rgba(10, 10, 10, 0.95)';
+            }
+        });
+
+        // Terminal typing effect
+        let terminalIndex = 0;
+        const terminalCommands = [
+            'Initializing backend services...',
+            'Loading middleware configurations...',
+            'Connecting to databases...',
+            'Starting API endpoints...',
+            'All systems operational 🚀'
+        ];
+
+        function typeTerminalCommand() {
+            const typingElement = document.querySelector('.typing .prompt');
+            if (typingElement && terminalIndex < terminalCommands.length) {
+                typingElement.textContent = terminalCommands[terminalIndex];
+                terminalIndex = (terminalIndex + 1) % terminalCommands.length;
+            }
+        }
+
+        setInterval(typeTerminalCommand, 3000);
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.skill-card, .project-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(50px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
