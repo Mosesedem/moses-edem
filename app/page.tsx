@@ -31,6 +31,7 @@ import { downloadProfessionalCV } from "@/components/cv-generator";
 export default function Portfolio() {
   const [isVisible, setIsVisible] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [showAllProjects, setShowAllProjects] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -84,6 +85,16 @@ export default function Portfolio() {
     },
     {
       title: "Etegram Platform",
+      description:
+        "E-commerce platform backend supporting 10,000+ daily users. Implemented secure payment processing, inventory management, and real-time order tracking with microservices architecture.",
+      tech: ["NestJS", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
+      link: "https://www.etegram.com/",
+      category: "E-commerce",
+      image:
+        "https://api.microlink.io/?url=https://www.etegram.com/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "Etegram2",
       description:
         "E-commerce platform backend supporting 10,000+ daily users. Implemented secure payment processing, inventory management, and real-time order tracking with microservices architecture.",
       tech: ["NestJS", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
@@ -147,7 +158,7 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
+    <div className="min-h-screen bg-black relative">
       {/* Code Rain Background */}
       <CodeRainBackground />
 
@@ -156,11 +167,11 @@ export default function Portfolio() {
 
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-purple-600/5 to-teal-600/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-green-600/5 via-lime-600/5 to-teal-600/5" />
         {[...Array(30)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-blue-400/20 rounded-full animate-pulse-glow"
+            className="absolute w-1 h-1 bg-green-400/20 rounded-full animate-pulse-glow"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -172,21 +183,21 @@ export default function Portfolio() {
       </div>
 
       {/* Modern Header */}
-      <header className="fixed top-0 w-full bg-slate-900/90 backdrop-blur-lg z-50 border-b border-slate-700/50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <header className="fixed top-0 w-full bg-black/90 backdrop-blur-lg z-50 border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
           <nav className="flex justify-between items-center">
-            <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
-              moses.dev
+            <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-lime-400 bg-clip-text text-transparent">
+              Moses Edem
             </div>
             <ul className="hidden md:flex gap-8">
               {["About", "Skills", "Projects", "Contact"].map((item) => (
                 <li key={item}>
                   <a
                     href={`#${item.toLowerCase()}`}
-                    className="text-slate-300 hover:text-blue-400 transition-all duration-300 font-medium relative group"
+                    className="text-gray-300 hover:text-green-400 transition-all duration-300 font-medium relative group"
                   >
                     {item}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full" />
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-400 transition-all duration-300 group-hover:w-full" />
                   </a>
                 </li>
               ))}
@@ -198,7 +209,7 @@ export default function Portfolio() {
       {/* Hero Section */}
       <section
         id="about"
-        className="relative min-h-screen flex items-center justify-center px-6 pt-20"
+        className="relative min-h-screen flex items-center justify-center px-4 md:px-6 pt-20"
       >
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -208,16 +219,16 @@ export default function Portfolio() {
               } space-y-8`}
             >
               <div className="space-y-4">
-                <div className="text-blue-400 font-semibold tracking-wide uppercase text-sm">
+                <div className="text-green-400 font-semibold tracking-wide uppercase text-sm">
                   Backend Developer & System Architect
                 </div>
-                <h1 className="text-6xl md:text-7xl font-bold text-white leading-tight">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
                   Moses
-                  <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-teal-400 bg-clip-text text-transparent">
+                  <span className="block bg-gradient-to-r from-green-400 via-lime-400 to-orange-400 bg-clip-text text-transparent">
                     Edem
                   </span>
                 </h1>
-                <p className="text-xl text-slate-400 leading-relaxed max-w-2xl">
+                <p className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl">
                   Crafting robust, scalable backend systems and APIs that power
                   modern applications. Expert in Node.js, Python, PHP, and
                   microservices architecture with 2+ years of professional
@@ -225,17 +236,21 @@ export default function Portfolio() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-4 text-slate-400">
-                <MapPin className="w-4 h-4 text-blue-400" />
-                <span>Port Harcourt, Nigeria</span>
-                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                <span>Available for projects</span>
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-4 text-gray-400">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-green-400" />
+                  <span>Port Harcourt, Nigeria</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>Available for projects</span>
+                </div>
               </div>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
+                  className="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-3 rounded-md transition-all duration-300 hover:scale-105"
                   asChild
                 >
                   <a href="#projects">
@@ -247,7 +262,7 @@ export default function Portfolio() {
                   variant="outline"
                   size="lg"
                   onClick={downloadProfessionalCV}
-                  className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white px-8 py-3 rounded-full transition-all duration-300"
+                  className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-white px-6 py-3 rounded-md transition-all duration-300"
                 >
                   Download CV
                   <Download className="ml-2 w-4 h-4" />
@@ -255,7 +270,7 @@ export default function Portfolio() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white px-8 py-3 rounded-full transition-all duration-300"
+                  className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-white px-6 py-3 rounded-md transition-all duration-300"
                   asChild
                 >
                   <a href="#contact">
@@ -288,7 +303,7 @@ export default function Portfolio() {
                     key={label}
                     variant="ghost"
                     size="icon"
-                    className="text-slate-400 hover:text-blue-400 hover:bg-slate-800/50 rounded-full transition-all duration-300 hover:scale-110"
+                    className="text-gray-400 hover:text-green-400 hover:bg-gray-800/50 rounded-full transition-all duration-300 hover:scale-110"
                     asChild
                   >
                     <a
@@ -311,34 +326,34 @@ export default function Portfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-32 px-6 bg-slate-900/50">
+      <section id="skills" className="py-20 md:py-32 px-4 md:px-6 bg-black/50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
               Backend Expertise
             </h2>
-            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
               Specialized in building robust, scalable backend systems using
               modern technologies and best practices.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {skills.map((skill, index) => {
               const Icon = skill.icon;
               return (
                 <Card
                   key={skill.name}
-                  className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50 hover:border-blue-500/50 transition-all duration-500 hover:transform hover:scale-105 group"
+                  className="bg-gray-900/50 backdrop-blur-sm border-gray-800 hover:border-green-500/50 transition-all duration-500 hover:transform hover:scale-105 group"
                 >
                   <CardHeader className="text-center pb-4">
-                    <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center mb-4 group-hover:from-blue-500/30 group-hover:to-purple-500/30 transition-all duration-300">
-                      <Icon className="w-8 h-8 text-blue-400 group-hover:text-blue-300 transition-colors duration-300" />
+                    <div className="w-16 h-16 mx-auto bg-gradient-to-br from-green-500/20 to-lime-500/20 rounded-2xl flex items-center justify-center mb-4 group-hover:from-green-500/30 group-hover:to-lime-500/30 transition-all duration-300">
+                      <Icon className="w-8 h-8 text-green-400 group-hover:text-green-300 transition-colors duration-300" />
                     </div>
-                    <CardTitle className="text-xl text-white group-hover:text-blue-300 transition-colors duration-300">
+                    <CardTitle className="text-xl text-white group-hover:text-green-300 transition-colors duration-300">
                       {skill.name}
                     </CardTitle>
-                    <CardDescription className="text-slate-400 text-sm">
+                    <CardDescription className="text-gray-400 text-sm">
                       {skill.description}
                     </CardDescription>
                   </CardHeader>
@@ -350,23 +365,23 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-32 px-6">
+      {/* <section id="projects" className="py-20 md:py-32 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
               Featured Projects
             </h2>
-            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
               A showcase of recent backend systems and APIs I've built, serving
               thousands of users daily.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {projects.slice(0, 6).map((project, index) => (
               <Card
                 key={project.title}
-                className="group bg-slate-800/30 backdrop-blur-sm border-slate-700/50 hover:border-blue-500/50 transition-all duration-500 overflow-hidden hover:transform hover:scale-[1.02]"
+                className="group bg-gray-900/30 backdrop-blur-sm border-gray-800 hover:border-green-500/50 transition-all duration-500 overflow-hidden hover:transform hover:scale-[1.02]"
               >
                 <div
                   className="relative h-48 overflow-hidden rounded-t-lg"
@@ -376,15 +391,15 @@ export default function Portfolio() {
                     backgroundPosition: "center",
                   }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
-                  <Badge className="absolute top-4 left-4 bg-slate-900/90 text-blue-400 border-blue-500/50 backdrop-blur-sm">
+                  <Badge className="absolute top-4 left-4 bg-black/90 text-green-400 border-green-500/50 backdrop-blur-sm">
                     {project.category}
                   </Badge>
 
                   <Button
                     size="sm"
-                    className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-blue-600/90 hover:bg-blue-700 backdrop-blur-sm"
+                    className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-orange-600/90 hover:bg-orange-700 backdrop-blur-sm"
                     asChild
                   >
                     <a
@@ -397,17 +412,17 @@ export default function Portfolio() {
                   </Button>
 
                   <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <div className="text-white font-semibold text-sm backdrop-blur-sm bg-slate-900/70 px-2 py-1 rounded">
+                    <div className="text-white font-semibold text-sm backdrop-blur-sm bg-black/70 px-2 py-1 rounded">
                       Live Project
                     </div>
                   </div>
                 </div>
 
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-xl text-white group-hover:text-blue-300 transition-colors duration-300">
+                  <CardTitle className="text-xl text-white group-hover:text-green-300 transition-colors duration-300">
                     {project.title}
                   </CardTitle>
-                  <CardDescription className="text-slate-400 leading-relaxed text-sm">
+                  <CardDescription className="text-gray-400 leading-relaxed text-sm">
                     {project.description}
                   </CardDescription>
                 </CardHeader>
@@ -418,7 +433,7 @@ export default function Portfolio() {
                       <Badge
                         key={tech}
                         variant="secondary"
-                        className="text-xs bg-slate-700/50 text-slate-300 border-slate-600/50 hover:bg-blue-600/20 hover:text-blue-300 hover:border-blue-500/50 transition-all duration-300"
+                        className="text-xs bg-gray-800/50 text-gray-300 border-gray-700/50 hover:bg-green-600/20 hover:text-green-300 hover:border-green-500/50 transition-all duration-300"
                       >
                         {tech}
                       </Badge>
@@ -429,24 +444,183 @@ export default function Portfolio() {
             ))}
           </div>
         </div>
+      </section> */}
+
+      <section id="projects" className="py-20 md:py-32 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+              Featured Projects
+            </h2>
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+              A showcase of recent backend systems and APIs I've built, serving
+              thousands of users daily.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {showAllProjects
+              ? // If showAllProjects is true, map all projects
+                projects.map((project) => (
+                  <Card
+                    key={project.title}
+                    className="group bg-gray-900/30 backdrop-blur-sm border-gray-800 hover:border-green-500/50 transition-all duration-500 overflow-hidden hover:transform hover:scale-[1.02]"
+                  >
+                    <div
+                      className="relative h-48 overflow-hidden rounded-t-lg"
+                      style={{
+                        backgroundImage: `url(${project.image})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                      }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+
+                      <Badge className="absolute top-4 left-4 bg-black/90 text-green-400 border-green-500/50 backdrop-blur-sm">
+                        {project.category}
+                      </Badge>
+
+                      <Button
+                        size="sm"
+                        className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-orange-600/90 hover:bg-orange-700 backdrop-blur-sm"
+                        asChild
+                      >
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      </Button>
+
+                      <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <div className="text-white font-semibold text-sm backdrop-blur-sm bg-black/70 px-2 py-1 rounded">
+                          Live Project
+                        </div>
+                      </div>
+                    </div>
+
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-xl text-white group-hover:text-green-300 transition-colors duration-300">
+                        {project.title}
+                      </CardTitle>
+                      <CardDescription className="text-gray-400 leading-relaxed text-sm">
+                        {project.description}
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {project.tech.map((tech) => (
+                          <Badge
+                            key={tech}
+                            variant="secondary"
+                            className="text-xs bg-gray-800/50 text-gray-300 border-gray-700/50 hover:bg-green-600/20 hover:text-green-300 hover:border-green-500/50 transition-all duration-300"
+                          >
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              : // Otherwise, map only the first 6 projects
+                projects.slice(0, 6).map((project) => (
+                  <Card
+                    key={project.title}
+                    className="group bg-gray-900/30 backdrop-blur-sm border-gray-800 hover:border-green-500/50 transition-all duration-500 overflow-hidden hover:transform hover:scale-[1.02]"
+                  >
+                    <div
+                      className="relative h-48 overflow-hidden rounded-t-lg"
+                      style={{
+                        backgroundImage: `url(${project.image})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                      }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+
+                      <Badge className="absolute top-4 left-4 bg-black/90 text-green-400 border-green-500/50 backdrop-blur-sm">
+                        {project.category}
+                      </Badge>
+
+                      <Button
+                        size="sm"
+                        className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-orange-600/90 hover:bg-orange-700 backdrop-blur-sm"
+                        asChild
+                      >
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      </Button>
+
+                      <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <div className="text-white font-semibold text-sm backdrop-blur-sm bg-black/70 px-2 py-1 rounded">
+                          Live Project
+                        </div>
+                      </div>
+                    </div>
+
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-xl text-white group-hover:text-green-300 transition-colors duration-300">
+                        {project.title}
+                      </CardTitle>
+                      <CardDescription className="text-gray-400 leading-relaxed text-sm">
+                        {project.description}
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {project.tech.map((tech) => (
+                          <Badge
+                            key={tech}
+                            variant="secondary"
+                            className="text-xs bg-gray-800/50 text-gray-300 border-gray-700/50 hover:bg-green-600/20 hover:text-green-300 hover:border-green-500/50 transition-all duration-300"
+                          >
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+          </div>
+          {projects.length > 6 && !showAllProjects && (
+            <div className="flex justify-center mt-8 md:mt-12">
+              <Button
+                onClick={() => setShowAllProjects(true)} // Toggles the state
+                variant="outline"
+                className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-black px-6 py-3 rounded-md transition-all duration-300"
+              >
+                View All Projects
+              </Button>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-32 px-6 bg-slate-900/50">
+      <section id="contact" className="py-20 md:py-32 px-4 md:px-6 bg-black/50">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
             Let's Build Something Amazing
           </h2>
-          <p className="text-xl text-slate-400 mb-12 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg text-gray-400 mb-8 md:mb-12 leading-relaxed max-w-3xl mx-auto">
             Looking for a backend developer who can architect scalable solutions
             and deliver robust APIs? I'm always excited to work on challenging
             projects that push the boundaries of what's possible.
           </p>
 
-          <div className="flex flex-wrap gap-6 justify-center mb-12">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 justify-center mb-8 md:mb-12">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
+              className="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-3 rounded-md transition-all duration-300 hover:scale-105"
               asChild
             >
               <a href="mailto:mosesedem81@gmail.com">
@@ -457,7 +631,7 @@ export default function Portfolio() {
             <Button
               variant="outline"
               size="lg"
-              className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white px-8 py-3 rounded-full transition-all duration-300"
+              className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-black px-6 py-3 rounded-md transition-all duration-300"
               asChild
             >
               <a href="tel:+2349030465501">
@@ -467,12 +641,12 @@ export default function Portfolio() {
             </Button>
           </div>
 
-          <div className="flex justify-center gap-8">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
             <a
               href="https://linkedin.com/in/mosesedem"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-2"
+              className="text-gray-400 hover:text-green-400 transition-colors duration-300 flex items-center justify-center sm:justify-start gap-2"
             >
               <Linkedin className="w-5 h-5" />
               LinkedIn
@@ -481,7 +655,7 @@ export default function Portfolio() {
               href="https://github.com/mosesedem"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-2"
+              className="text-gray-400 hover:text-green-400 transition-colors duration-300 flex items-center justify-center sm:justify-start gap-2"
             >
               <Github className="w-5 h-5" />
               GitHub
@@ -491,11 +665,13 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-slate-700/50">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="text-slate-400">
-            &copy; 2024 Moses Edem. Building the future, one API at a time.
+      <footer className="py-8 px-4 md:px-6 border-t border-gray-800">
+        <div className="max-w-7xl mx-auto text-center justify-between">
+          <p className="text-gray-400">
+            &copy; {new Date().getFullYear()} Moses Edem. Building the future,
+            one API at a time.
           </p>
+          <p className="text-gray-600">This portfolio website was vibecoded</p>
         </div>
       </footer>
     </div>
