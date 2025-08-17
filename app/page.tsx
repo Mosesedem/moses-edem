@@ -26,6 +26,7 @@ import {
 import CodeRainBackground from "@/components/code-rain-background";
 import Terminal from "@/components/terminal";
 import FloatingElements from "@/components/floating-elements";
+import AIPlayground from "@/components/ai-playground";
 import { downloadProfessionalCV } from "@/components/cv-generator";
 
 export default function Portfolio() {
@@ -72,6 +73,7 @@ export default function Portfolio() {
       description: "Distributed system architecture",
     },
   ];
+
   const projects = [
     {
       title: "InstantOTP",
@@ -190,17 +192,19 @@ export default function Portfolio() {
               Moses Edem
             </div>
             <ul className="hidden md:flex gap-8">
-              {["About", "Skills", "Projects", "Contact"].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-gray-300 hover:text-green-400 transition-all duration-300 font-medium relative group"
-                  >
-                    {item}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-400 transition-all duration-300 group-hover:w-full" />
-                  </a>
-                </li>
-              ))}
+              {["About", "Skills", "Projects", "AI Chat", "Contact"].map(
+                (item) => (
+                  <li key={item}>
+                    <a
+                      href={`#${item.toLowerCase().replace(" ", "-")}`}
+                      className="text-gray-300 hover:text-green-400 transition-all duration-300 font-medium relative group"
+                    >
+                      {item}
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-400 transition-all duration-300 group-hover:w-full" />
+                    </a>
+                  </li>
+                )
+              )}
             </ul>
           </nav>
         </div>
@@ -223,7 +227,7 @@ export default function Portfolio() {
                   Backend Developer & System Architect
                 </div>
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-                  Moses
+                  Moses{" "}
                   <span className="block bg-gradient-to-r from-green-400 via-lime-400 to-orange-400 bg-clip-text text-transparent">
                     Edem
                   </span>
@@ -231,11 +235,10 @@ export default function Portfolio() {
                 <p className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl">
                   Crafting robust, scalable backend systems and APIs that power
                   modern applications. Expert in Node.js, Python, PHP, and
-                  microservices architecture with 2+ years of professional
+                  microservices architecture with 6+ years of professional
                   experience delivering high-performance solutions.
                 </p>
               </div>
-
               <div className="flex flex-col md:flex-row items-start md:items-center gap-4 text-gray-400">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-green-400" />
@@ -246,7 +249,6 @@ export default function Portfolio() {
                   <span>Available for projects</span>
                 </div>
               </div>
-
               <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                 <Button
                   size="lg"
@@ -262,7 +264,7 @@ export default function Portfolio() {
                   variant="outline"
                   size="lg"
                   onClick={downloadProfessionalCV}
-                  className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-white px-6 py-3 rounded-md transition-all duration-300"
+                  className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-white px-6 py-3 rounded-md transition-all duration-300 bg-transparent"
                 >
                   Download CV
                   <Download className="ml-2 w-4 h-4" />
@@ -270,7 +272,7 @@ export default function Portfolio() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-white px-6 py-3 rounded-md transition-all duration-300"
+                  className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-white px-6 py-3 rounded-md transition-all duration-300 bg-transparent"
                   asChild
                 >
                   <a href="#contact">
@@ -279,7 +281,6 @@ export default function Portfolio() {
                   </a>
                 </Button>
               </div>
-
               <div className="flex gap-4 pt-4">
                 {[
                   {
@@ -317,7 +318,6 @@ export default function Portfolio() {
                 ))}
               </div>
             </div>
-
             <div className="lg:pl-8">
               <Terminal />
             </div>
@@ -337,7 +337,6 @@ export default function Portfolio() {
               modern technologies and best practices.
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {skills.map((skill, index) => {
               const Icon = skill.icon;
@@ -365,87 +364,6 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      {/* <section id="projects" className="py-20 md:py-32 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-              Featured Projects
-            </h2>
-            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-              A showcase of recent backend systems and APIs I've built, serving
-              thousands of users daily.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {projects.slice(0, 6).map((project, index) => (
-              <Card
-                key={project.title}
-                className="group bg-gray-900/30 backdrop-blur-sm border-gray-800 hover:border-green-500/50 transition-all duration-500 overflow-hidden hover:transform hover:scale-[1.02]"
-              >
-                <div
-                  className="relative h-48 overflow-hidden rounded-t-lg"
-                  style={{
-                    backgroundImage: `url(${project.image})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
-                  <Badge className="absolute top-4 left-4 bg-black/90 text-green-400 border-green-500/50 backdrop-blur-sm">
-                    {project.category}
-                  </Badge>
-
-                  <Button
-                    size="sm"
-                    className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-orange-600/90 hover:bg-orange-700 backdrop-blur-sm"
-                    asChild
-                  >
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  </Button>
-
-                  <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <div className="text-white font-semibold text-sm backdrop-blur-sm bg-black/70 px-2 py-1 rounded">
-                      Live Project
-                    </div>
-                  </div>
-                </div>
-
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-xl text-white group-hover:text-green-300 transition-colors duration-300">
-                    {project.title}
-                  </CardTitle>
-                  <CardDescription className="text-gray-400 leading-relaxed text-sm">
-                    {project.description}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <Badge
-                        key={tech}
-                        variant="secondary"
-                        className="text-xs bg-gray-800/50 text-gray-300 border-gray-700/50 hover:bg-green-600/20 hover:text-green-300 hover:border-green-500/50 transition-all duration-300"
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
       <section id="projects" className="py-20 md:py-32 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
@@ -457,11 +375,9 @@ export default function Portfolio() {
               thousands of users daily.
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {showAllProjects
-              ? // If showAllProjects is true, map all projects
-                projects.map((project) => (
+              ? projects.map((project) => (
                   <Card
                     key={project.title}
                     className="group bg-gray-900/30 backdrop-blur-sm border-gray-800 hover:border-green-500/50 transition-all duration-500 overflow-hidden hover:transform hover:scale-[1.02]"
@@ -475,11 +391,9 @@ export default function Portfolio() {
                       }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
                       <Badge className="absolute top-4 left-4 bg-black/90 text-green-400 border-green-500/50 backdrop-blur-sm">
                         {project.category}
                       </Badge>
-
                       <Button
                         size="sm"
                         className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-orange-600/90 hover:bg-orange-700 backdrop-blur-sm"
@@ -493,14 +407,12 @@ export default function Portfolio() {
                           <ExternalLink className="w-4 h-4" />
                         </a>
                       </Button>
-
                       <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <div className="text-white font-semibold text-sm backdrop-blur-sm bg-black/70 px-2 py-1 rounded">
                           Live Project
                         </div>
                       </div>
                     </div>
-
                     <CardHeader className="pb-2">
                       <CardTitle className="text-xl text-white group-hover:text-green-300 transition-colors duration-300">
                         {project.title}
@@ -509,7 +421,6 @@ export default function Portfolio() {
                         {project.description}
                       </CardDescription>
                     </CardHeader>
-
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
                         {project.tech.map((tech) => (
@@ -525,8 +436,7 @@ export default function Portfolio() {
                     </CardContent>
                   </Card>
                 ))
-              : // Otherwise, map only the first 6 projects
-                projects.slice(0, 6).map((project) => (
+              : projects.slice(0, 6).map((project) => (
                   <Card
                     key={project.title}
                     className="group bg-gray-900/30 backdrop-blur-sm border-gray-800 hover:border-green-500/50 transition-all duration-500 overflow-hidden hover:transform hover:scale-[1.02]"
@@ -540,11 +450,9 @@ export default function Portfolio() {
                       }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
                       <Badge className="absolute top-4 left-4 bg-black/90 text-green-400 border-green-500/50 backdrop-blur-sm">
                         {project.category}
                       </Badge>
-
                       <Button
                         size="sm"
                         className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-orange-600/90 hover:bg-orange-700 backdrop-blur-sm"
@@ -558,14 +466,12 @@ export default function Portfolio() {
                           <ExternalLink className="w-4 h-4" />
                         </a>
                       </Button>
-
                       <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <div className="text-white font-semibold text-sm backdrop-blur-sm bg-black/70 px-2 py-1 rounded">
                           Live Project
                         </div>
                       </div>
                     </div>
-
                     <CardHeader className="pb-2">
                       <CardTitle className="text-xl text-white group-hover:text-green-300 transition-colors duration-300">
                         {project.title}
@@ -574,7 +480,6 @@ export default function Portfolio() {
                         {project.description}
                       </CardDescription>
                     </CardHeader>
-
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
                         {project.tech.map((tech) => (
@@ -594,7 +499,7 @@ export default function Portfolio() {
           {projects.length > 6 && !showAllProjects && (
             <div className="flex justify-center mt-8 md:mt-12">
               <Button
-                onClick={() => setShowAllProjects(true)} // Toggles the state
+                onClick={() => setShowAllProjects(true)}
                 variant="outline"
                 className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-black px-6 py-3 rounded-md transition-all duration-300"
               >
@@ -602,6 +507,23 @@ export default function Portfolio() {
               </Button>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* AI Playground Section */}
+      <section id="ai-chat" className="py-20 md:py-32 px-4 md:px-6 bg-black/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+              Chat with AI Moses
+            </h2>
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+              Experience an interactive AI-powered conversation with me! Ask
+              about my projects, technical expertise, or anything else. The AI
+              responds as if it were me, with voice and text capabilities.
+            </p>
+          </div>
+          <AIPlayground />
         </div>
       </section>
 
@@ -616,7 +538,6 @@ export default function Portfolio() {
             and deliver robust APIs? I'm always excited to work on challenging
             projects that push the boundaries of what's possible.
           </p>
-
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 justify-center mb-8 md:mb-12">
             <Button
               size="lg"
@@ -631,7 +552,7 @@ export default function Portfolio() {
             <Button
               variant="outline"
               size="lg"
-              className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-black px-6 py-3 rounded-md transition-all duration-300"
+              className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-black px-6 py-3 rounded-md transition-all duration-300 bg-transparent"
               asChild
             >
               <a href="tel:+2349030465501">
@@ -640,7 +561,6 @@ export default function Portfolio() {
               </a>
             </Button>
           </div>
-
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
             <a
               href="https://linkedin.com/in/mosesedem"
@@ -671,7 +591,6 @@ export default function Portfolio() {
             &copy; {new Date().getFullYear()} Moses Edem. Building the future,
             one API at a time.
           </p>
-          <p className="text-gray-600">This portfolio website was vibecoded</p>
         </div>
       </footer>
     </div>
