@@ -95,16 +95,7 @@ export default function Portfolio() {
       image:
         "https://api.microlink.io/?url=https://www.etegram.com/&screenshot=true&meta=false&embed=screenshot.url",
     },
-    {
-      title: "Etegram2",
-      description:
-        "E-commerce platform backend supporting 10,000+ daily users. Implemented secure payment processing, inventory management, and real-time order tracking with microservices architecture.",
-      tech: ["NestJS", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
-      link: "https://www.etegram.com/",
-      category: "E-commerce",
-      image:
-        "https://api.microlink.io/?url=https://www.etegram.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
+
     {
       title: "MonieCheap",
       description:
@@ -114,6 +105,36 @@ export default function Portfolio() {
       category: "Fintech",
       image:
         "https://api.microlink.io/?url=https://moniecheap.com/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "Hotel Secured",
+      description:
+        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Python Django.",
+      tech: ["Python", "Django", "Celery", "PostgreSQL", "Security"],
+      link: "https://hotelsecured.com/",
+      category: "Hospitality",
+      image:
+        "https://api.microlink.io/?url=https://hotelsecured.com/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "Union Of Tippers",
+      description:
+        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Python Django.",
+      tech: ["Python", "Django", "Celery", "PostgreSQL", "Security"],
+      link: "https://utqenaks.ng/",
+      category: "Government",
+      image:
+        "https://api.microlink.io/?url=https://utqenaks.ng/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "Menu Rave",
+      description:
+        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Python Django.",
+      tech: ["Python", "Django", "Celery", "PostgreSQL", "Security"],
+      link: "https://menurave.com/",
+      category: "Hospitality",
+      image:
+        "https://api.microlink.io/?url=https://menurave.com/&screenshot=true&meta=false&embed=screenshot.url",
     },
     {
       title: "BrixVPN",
