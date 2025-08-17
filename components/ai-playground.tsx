@@ -17,6 +17,8 @@ import {
   Bot,
   User,
   Loader2,
+  Trash2,
+  Menu,
 } from "lucide-react";
 
 interface Message {
@@ -41,10 +43,12 @@ export default function AIPlayground() {
   const [isRecording, setIsRecording] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [speechEnabled, setSpeechEnabled] = useState(true);
-
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const speechSynthesisRef = useRef<SpeechSynthesis | null>(null);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -52,6 +56,15 @@ export default function AIPlayground() {
       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Cleanup speech synthesis on unmount
+  useEffect(() => {
+    return () => {
+      if (speechSynthesisRef.current) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   const sendMessage = async (content: string) => {
     if (!content.trim()) return;
@@ -264,6 +277,14 @@ export default function AIPlayground() {
     }
   };
 
+  const stopSpeaking = () => {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    setIsSpeaking(false);
+    speechSynthesisRef.current = null;
+  };
+
   const clearChat = () => {
     setMessages([
       {
@@ -277,24 +298,80 @@ export default function AIPlayground() {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto bg-gray-900/50 backdrop-blur-sm border-gray-800">
-      <CardHeader className="border-b border-gray-800">
+    // <Card className="w-full max-w-4xl mx-auto bg-gray-900/50 backdrop-blur-sm border-gray-800">
+    //   <CardHeader className="border-b border-gray-800">
+    //     <div className="flex items-center justify-between">
+    //       <div className="flex items-center gap-3">
+    //         <div className="w-10 h-10 bg-gradient-to-br from-green-500/20 to-lime-500/20 rounded-full flex items-center justify-center">
+    //           <Bot className="w-5 h-5 text-green-400" />
+    //         </div>
+    //         <div>
+    //           <CardTitle className="text-white">AI Moses Playground</CardTitle>
+    //           <p className="text-sm text-gray-400">
+    //             AI Powered • Voice & Text Enabled
+    //           </p>
+    //         </div>
+    //       </div>
+    //       <div className="flex items-center gap-2">
+    //         <Badge
+    //           variant="secondary"
+    //           className="bg-green-600/20 text-green-400 border-green-500/50"
+    //         >
+    //           {isSpeaking
+    //             ? "Speaking..."
+    //             : isRecording
+    //             ? "Listening..."
+    //             : isLoading
+    //             ? "Thinking..."
+    //             : "Online"}
+    //         </Badge>
+    //         <Button
+    //           variant="ghost"
+    //           size="sm"
+    //           onClick={() => setSpeechEnabled(!speechEnabled)}
+    //           className="text-gray-400 hover:text-green-400"
+    //         >
+    //           {speechEnabled ? (
+    //             <Volume2 className="w-4 h-4" />
+    //           ) : (
+    //             <VolumeX className="w-4 h-4" />
+    //           )}
+    //         </Button>
+    //         <Button
+    //           variant="ghost"
+    //           size="sm"
+    //           onClick={clearChat}
+    //           className="text-gray-400 hover:text-red-400"
+    //         >
+    //           Clear
+    //         </Button>
+    //       </div>
+    //     </div>
+    //   </CardHeader>
+
+    <Card className="flex-1 flex flex-col mx-2 my-2 sm:mx-4 sm:my-4 lg:mx-auto lg:max-w-6xl bg-gray-900/50 backdrop-blur-sm border-gray-800">
+      {/* Header - Responsive */}
+      <CardHeader className="border-b border-gray-800 p-3 sm:p-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500/20 to-lime-500/20 rounded-full flex items-center justify-center">
-              <Bot className="w-5 h-5 text-green-400" />
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500/20 to-lime-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
             </div>
-            <div>
-              <CardTitle className="text-white">AI Moses Playground</CardTitle>
-              <p className="text-sm text-gray-400">
+            <div className="min-w-0">
+              <CardTitle className="text-white text-base sm:text-lg truncate">
+                AI Moses Playground
+              </CardTitle>
+              <p className="text-xs sm:text-sm text-gray-400 hidden sm:block">
                 AI Powered • Voice & Text Enabled
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+
+          {/* Desktop Controls */}
+          <div className="hidden sm:flex items-center gap-2">
             <Badge
               variant="secondary"
-              className="bg-green-600/20 text-green-400 border-green-500/50"
+              className="bg-green-600/20 text-green-400 border-green-500/50 text-xs"
             >
               {isSpeaking
                 ? "Speaking..."
@@ -307,10 +384,16 @@ export default function AIPlayground() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setSpeechEnabled(!speechEnabled)}
+              onClick={
+                isSpeaking
+                  ? stopSpeaking
+                  : () => setSpeechEnabled(!speechEnabled)
+              }
               className="text-gray-400 hover:text-green-400"
             >
-              {speechEnabled ? (
+              {isSpeaking ? (
+                <VolumeX className="w-4 h-4" />
+              ) : speechEnabled ? (
                 <Volume2 className="w-4 h-4" />
               ) : (
                 <VolumeX className="w-4 h-4" />
@@ -322,10 +405,70 @@ export default function AIPlayground() {
               onClick={clearChat}
               className="text-gray-400 hover:text-red-400"
             >
-              Clear
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex sm:hidden items-center gap-2">
+            <Badge
+              variant="secondary"
+              className="bg-green-600/20 text-green-400 border-green-500/50 text-xs"
+            >
+              {isSpeaking ? "🔊" : isRecording ? "🎤" : isLoading ? "💭" : "🟢"}
+            </Badge>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-gray-400 hover:text-green-400"
+            >
+              <Menu className="w-4 h-4" />
             </Button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="sm:hidden mt-3 pt-3 border-t border-gray-700 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={
+                  isSpeaking
+                    ? stopSpeaking
+                    : () => setSpeechEnabled(!speechEnabled)
+                }
+                className="text-gray-400 hover:text-green-400"
+              >
+                {isSpeaking ? (
+                  <VolumeX className="w-4 h-4" />
+                ) : speechEnabled ? (
+                  <Volume2 className="w-4 h-4" />
+                ) : (
+                  <VolumeX className="w-4 h-4" />
+                )}
+                <span className="ml-2 text-sm">
+                  {isSpeaking
+                    ? "Stop"
+                    : speechEnabled
+                    ? "Sound On"
+                    : "Sound Off"}
+                </span>
+              </Button>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearChat}
+              className="text-gray-400 hover:text-red-400"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span className="ml-2 text-sm">Clear</span>
+            </Button>
+          </div>
+        )}
       </CardHeader>
 
       <CardContent className="p-0">
