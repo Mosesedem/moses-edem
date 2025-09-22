@@ -61,8 +61,8 @@ export default function CodeRainBackground() {
 
     // Code characters
     const chars =
-      "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
-    // "Moses Edem, Backend Developer, System Architect, Port Harcourt, Nigeria, JavaScript, Node.js, Python, PHP, Express.js, NestJS, Django, Laravel, PostgreSQL, MySQL, MongoDB, Redis, API Development, Database Design, Microservices Architecture";
+      // "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+      "❤️";
     const charArray = chars.split("");
 
     const fontSize = 14;

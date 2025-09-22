@@ -67,11 +67,11 @@ export default function FloatingElements() {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0">
+    <div className="fixed inset-0 pointer-events-none z-50">
       {elements.map((element) => (
         <div
           key={element.id}
-          className="absolute bg-green-400 rounded-full"
+          className="absolute bg-white rounded-full"
           style={{
             left: `${element.x}px`,
             top: `${element.y}px`,

@@ -24,7 +24,7 @@ export const generateProfessionalCV = () => {
   doc.setFont("helvetica", "normal");
   doc.text("Email: mosesedem81@gmail.com", 14, 40);
   doc.text("Phone: +234 903 046 5501", 14, 46);
-  doc.text("Address: Port Harcourt, Rivers State, Nigeria", 14, 52);
+  doc.text("Address: Uyo, Akwa Ibom State, Nigeria", 14, 52);
   doc.text("LinkedIn: linkedin.com/in/mosesedem", 14, 58);
   doc.text("GitHub: github.com/mosesedem", 14, 64);
 
@@ -35,7 +35,7 @@ export const generateProfessionalCV = () => {
 
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
-  const profileText = `Dedicated backend developer and system architect with 2+ years of experience building scalable, high-performance web applications and APIs. Specialized in Node.js, Python, and PHP with expertise in microservices architecture, database design, and system optimization. Proven success in delivering robust solutions for fintech, healthcare, e-commerce, and network security domains. Adept at remaining responsive to changing business needs and implementing best practices to safeguard smooth system operations.`;
+  const profileText = `Dedicated backend developer and system architect with 4+ years of experience building scalable, high-performance web applications and APIs. Specialized in Node.js, and PHP with expertise in microservices architecture, database design, and system optimization. Proven success in delivering robust solutions for fintech, healthcare, e-commerce, and network security domains. Adept at remaining responsive to changing business needs and implementing best practices to safeguard smooth system operations.`;
   let finalY = 86;
   const maxWidth = 180;
   const profileLines = doc.splitTextToSize(profileText, maxWidth);
@@ -58,7 +58,7 @@ export const generateProfessionalCV = () => {
     body: [
       [
         "Backend Development",
-        "• Node.js, Express.js, NestJS - Server-side JavaScript development and API creation\n• Python, Django, Flask - High-level programming for web applications and data processing\n• PHP, Laravel - Web development and enterprise applications\n• Microservices Architecture - Distributed system design and implementation",
+        "• Node.js, Express.js, NestJS - Server-side JavaScript development and API creation High-level programming for web applications and data processing\n• PHP, Laravel - Web development and enterprise applications\n• Microservices Architecture - Distributed system design and implementation",
       ],
       [
         "Database Management",
@@ -74,7 +74,7 @@ export const generateProfessionalCV = () => {
       ],
       [
         "Security & Compliance",
-        "• Authentication systems - JWT, OAuth, session management\n• Encryption and data protection\n• HIPAA compliance for healthcare applications\n• Fraud detection and prevention systems\n• Security best practices and vulnerability assessment",
+        "• Authentication systems - JWT, OAuth, session management\n• Encryption and data protection\n• Healthcare system applications\n• PCIDSS Certified system applications for fintech and insurance industries\n• Fraud detection and prevention systems\n• Security best practices and vulnerability assessment",
       ],
     ],
     styles: { fontSize: 10, cellPadding: 3, overflow: "linebreak" },
@@ -95,7 +95,7 @@ export const generateProfessionalCV = () => {
 
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
-  doc.text("Backend Developer & System Architect (2022 - Present)", 14, finalY);
+  doc.text("Backend Developer & System Architect (2020 - Present)", 14, finalY);
   finalY += getCurrentLineHeight();
   doc.text("Freelance & Contract Work, Nigeria", 14, finalY);
   finalY += getCurrentLineHeight() + 4;
@@ -116,7 +116,7 @@ export const generateProfessionalCV = () => {
       ],
     },
     {
-      name: "Etegram Platform - E-commerce Backend (2023-2024)",
+      name: "Etegram Platform - Fintech Backend (2023-2024)",
       bullets: [
         "Built scalable backend supporting 10,000+ daily users",
         "Implemented secure payment processing and inventory management",
@@ -128,13 +128,13 @@ export const generateProfessionalCV = () => {
       name: "MonieCheap - Fintech Platform (2023)",
       bullets: [
         "Architected financial technology platform with secure transaction processing",
-        "Built comprehensive fraud detection systems using Python Django",
+        "Built comprehensive fraud detection systems using PHP and Laravel",
         "Implemented real-time notifications and transaction monitoring",
         "Designed secure API architecture for financial data handling",
       ],
     },
     {
-      name: "BrixVPN - VPN Service Backend (2023)",
+      name: "BrixVPN - VPN Service Backend (2024)",
       bullets: [
         "Created VPN service backend with global server infrastructure management",
         "Implemented user authentication and bandwidth monitoring systems",
@@ -152,12 +152,11 @@ export const generateProfessionalCV = () => {
       ],
     },
     {
-      name: "ProtonMedicare - Healthcare Management (2022)",
+      name: "Proton Medicare - Health Insurance Management (2022 till date)",
       bullets: [
-        "Implemented HIPAA-compliant healthcare management system",
-        "Built patient records management and appointment scheduling",
+        "Automated Health Insurance Enrollment portal",
         "Created secure communication channels for medical professionals",
-        "Developed integration with medical devices and third-party systems",
+        "Location Based hospital finder",
       ],
     },
   ];
@@ -218,7 +217,7 @@ export const generateProfessionalCV = () => {
   finalY += getCurrentLineHeight() + 2;
   doc.setFontSize(10);
   const achievements = [
-    "Successfully deployed 6+ production applications serving thousands of daily users",
+    "Successfully deployed over 20 production applications serving thousands of daily users",
     "Implemented secure payment processing systems handling significant transaction volumes",
     "Designed microservices architectures improving system scalability by 300%",
     "Achieved 99.9% uptime across all deployed services through robust system design",
@@ -342,7 +341,6 @@ export const generateProfessionalCV = () => {
   doc.setFontSize(10);
   const certifications = [
     "Advanced Node.js development patterns",
-    "Python for web development and data processing",
     "Database design and optimization techniques",
     "Cloud architecture and deployment strategies",
     "Security best practices and compliance standards",
@@ -372,7 +370,7 @@ export const generateProfessionalCV = () => {
   finalY += getCurrentLineHeight() + 2;
   doc.setFontSize(10);
   const backendTech = [
-    "2+ years professional experience in Node.js, Python, and PHP",
+    "5+ years professional experience in Node.js, and PHP",
     "Expert-level knowledge of Express.js, Django, Flask, and Laravel",
     "Advanced understanding of microservices architecture and API design",
     "Proficient in both SQL and NoSQL database management",
@@ -451,11 +449,13 @@ export const generateProfessionalCV = () => {
   doc.setFontSize(10);
   const portfolio = [
     "InstantOTP (www.instantotp.com) - OTP verification service",
-    "Etegram Platform (www.etegram.com) - E-commerce platform",
+    "Hospitalcard (www.hospitalcard.ng) - Healthcare management",
+    "Etegram Platform (www.etegram.com) - FIntech platform",
     "MonieCheap (moniecheap.com) - Fintech platform",
     "BrixVPN (www.brixvpn.com) - VPN service",
     "TunnelDeck (tunneldeck.com) - Network infrastructure",
     "ProtonMedicare (protonmedicare.com) - Healthcare management",
+    // "InstantOTP (www.instantotp.com) - OTP verification service",
   ];
   for (const item of portfolio) {
     if (finalY > pageHeight - 20) {
@@ -496,7 +496,7 @@ export const generateProfessionalCV = () => {
     doc.addPage();
     finalY = 20;
   }
-  const closingText = `Thank you for reviewing my CV. I am passionate about building robust, scalable backend systems that power modern applications and solve real-world problems. I look forward to discussing how my experience and skills can contribute to your organization's success.`;
+  const closingText = `Thank you for reviewing my CV. I am passionate about building robust, scalable backend systems that power modern applications and solve real-world problems. I look forward to discussing how my experience and skills can contribute to your organization's success. `;
   const closingLines = doc.splitTextToSize(closingText, maxWidth);
   doc.text(closingLines, 14, finalY);
   finalY += closingLines.length * getCurrentLineHeight() + 8;

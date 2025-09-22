@@ -47,11 +47,7 @@ export default function Portfolio() {
       icon: Server,
       description: "Server-side JavaScript runtime",
     },
-    {
-      name: "Python/Django",
-      icon: Code,
-      description: "High-level programming language",
-    },
+
     {
       name: "PHP/Laravel",
       icon: Code,
@@ -71,6 +67,11 @@ export default function Portfolio() {
       name: "Microservices",
       icon: Server,
       description: "Distributed system architecture",
+    },
+    {
+      name: "MongoDB",
+      icon: Server,
+      description: "NoSQL",
     },
   ];
 
@@ -99,8 +100,8 @@ export default function Portfolio() {
     {
       title: "MonieCheap",
       description:
-        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Python Django.",
-      tech: ["Python", "Django", "Celery", "PostgreSQL", "Security"],
+        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Node.js.",
+      tech: ["NestJS", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
       link: "https://moniecheap.com/",
       category: "Fintech",
       image:
@@ -109,8 +110,8 @@ export default function Portfolio() {
     {
       title: "Hotel Secured",
       description:
-        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Python Django.",
-      tech: ["Python", "Django", "Celery", "PostgreSQL", "Security"],
+        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Node.js.",
+      tech: ["NestJS", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
       link: "https://hotelsecured.com/",
       category: "Hospitality",
       image:
@@ -119,8 +120,8 @@ export default function Portfolio() {
     {
       title: "Union Of Tippers",
       description:
-        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Python Django.",
-      tech: ["Python", "Django", "Celery", "PostgreSQL", "Security"],
+        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Node.js.",
+      tech: ["NestJS", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
       link: "https://utqenaks.ng/",
       category: "Government",
       image:
@@ -129,8 +130,8 @@ export default function Portfolio() {
     {
       title: "Menu Rave",
       description:
-        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Python Django.",
-      tech: ["Python", "Django", "Celery", "PostgreSQL", "Security"],
+        "Financial technology platform backend with secure transaction processing, real-time notifications, and comprehensive fraud detection systems built with Node.js.",
+      tech: ["NestJS", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
       link: "https://menurave.com/",
       category: "Hospitality",
       image:
@@ -156,13 +157,7 @@ export default function Portfolio() {
       title: "TunnelDeck",
       description:
         "Advanced tunneling service backend with custom protocol implementation, traffic routing, and performance optimization. Built for high-throughput network applications.",
-      tech: [
-        "Python",
-        "Flask",
-        "Network Protocols",
-        "Performance Tuning",
-        "Load Balancing",
-      ],
+      tech: ["NestJS", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
       link: "https://tunneldeck.com/",
       category: "Network Infrastructure",
       image:
@@ -178,12 +173,31 @@ export default function Portfolio() {
       image:
         "https://api.microlink.io/?url=https://protonmedicare.com/&screenshot=true&meta=false&embed=screenshot.url",
     },
+    {
+      title: "Dakuri",
+      description:
+        "A concept crypro trading to application. (I built this to improve my AI prompting and vibe coding skills.)",
+      tech: ["Flutter", "Express.js", "Next.js", "Firebase"],
+      category: "Web3",
+      image:
+        "https://api.microlink.io/?url=https://dakuri.vercel.app/&screenshot=true&meta=false&embed=screenshot.url",
+    },
+    {
+      title: "Hospitalcard",
+      description:
+        "Healthcare management system backend with HIPAA-compliant data handling, appointment scheduling, patient records management, and secure communication channels.",
+      tech: ["PHP", "Laravel", "MySQL", "Security"],
+      link: "https://hospitalcard.ng/",
+      category: "Healthcare",
+      image:
+        "https://api.microlink.io/?url=https://hospitalcard.ng/&screenshot=true&meta=false&embed=screenshot.url",
+    },
   ];
 
   return (
     <div className="min-h-screen bg-black relative">
       {/* Code Rain Background */}
-      <CodeRainBackground />
+      {/* <CodeRainBackground /> */}
 
       {/* Floating Elements */}
       <FloatingElements />
@@ -209,7 +223,7 @@ export default function Portfolio() {
       <header className="fixed top-0 w-full bg-black/90 backdrop-blur-lg z-50 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
           <nav className="flex justify-between items-center">
-            <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-lime-400 bg-clip-text text-transparent">
+            <div className="text-2xl font-bold bg-green-400 bg-clip-text text-transparent">
               Moses Edem
             </div>
             <ul className="hidden md:flex gap-8">
@@ -249,15 +263,15 @@ export default function Portfolio() {
                 </div>
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
                   Moses{" "}
-                  <span className="block bg-gradient-to-r from-green-400 via-lime-400 to-orange-400 bg-clip-text text-transparent">
+                  <span className="block bg-green-400  bg-clip-text text-transparent">
                     Edem
                   </span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl">
                   Crafting robust, scalable backend systems and APIs that power
-                  modern applications. Expert in Node.js, Python, PHP, and
-                  microservices architecture with 6+ years of professional
-                  experience delivering high-performance solutions.
+                  modern applications. Expert in Node.js, PHP, and microservices
+                  architecture with 6+ years of professional experience
+                  delivering high-performance solutions.
                 </p>
               </div>
               <div className="flex flex-col md:flex-row items-start md:items-center gap-4 text-gray-400">
@@ -522,7 +536,7 @@ export default function Portfolio() {
               <Button
                 onClick={() => setShowAllProjects(true)}
                 variant="outline"
-                className="border-gray-600 text-orange-500 hover:bg-orange-600 hover:text-black px-6 py-3 rounded-md transition-all duration-300"
+                className="border-orange-600 hover:border-green-300 text-orange-600 bg-inherit px-6 py-3 rounded-md transition-all duration-300 hover:bg-inherit hover:text-green-300"
               >
                 View All Projects
               </Button>
