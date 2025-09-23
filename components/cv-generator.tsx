@@ -35,7 +35,7 @@ export const generateProfessionalCV = () => {
 
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
-  const profileText = `Dedicated backend developer and system architect with 4+ years of experience building scalable, high-performance web applications and APIs. Specialized in Node.js, and PHP with expertise in microservices architecture, database design, and system optimization. Proven success in delivering robust solutions for fintech, healthcare, e-commerce, and network security domains. Adept at remaining responsive to changing business needs and implementing best practices to safeguard smooth system operations.`;
+  const profileText = `Dedicated backend developer and system architect with 4+ years of experience building scalable, high-performance web applications and APIs. Specialized in Node.js, and PHP with expertise in microservices architecture, database design, and system optimization. Proven success in delivering robust solutions for fintech, healthcare, e-commerce, and network security domains. Adept at remaining responsive to changing business needs and implementing best practices to safeguard smooth system operations. Now, with AI as a tool, I can happily say I'm a 200X developer.`;
   let finalY = 86;
   const maxWidth = 180;
   const profileLines = doc.splitTextToSize(profileText, maxWidth);
