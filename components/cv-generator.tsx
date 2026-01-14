@@ -13,30 +13,35 @@ export const generateProfessionalCV = () => {
     doc.getLineHeight() / doc.internal.scaleFactor;
 
   // Header
-  doc.setFontSize(22);
+  doc.setFontSize(24);
   doc.setFont("helvetica", "bold");
-  doc.text("Moses Edem", 14, 20);
-  doc.setFontSize(16);
-  doc.text("Full Stack Developer (Backend Specialist)", 14, 30);
-
-  // Contact Information
-  doc.setFontSize(11);
-  doc.setFont("helvetica", "normal");
-  doc.text("Email: mosesedem81@gmail.com", 14, 40);
-  doc.text("Phone: +234 903 046 5501", 14, 46);
-  doc.text("Address: Uyo, Akwa Ibom State, Nigeria", 14, 52);
-  doc.text("LinkedIn: linkedin.com/in/mosesedem", 14, 58);
-  doc.text("GitHub: github.com/mosesedem", 14, 64);
-
-  // Personal Profile
+  doc.text("Moses Jacob Edem", 14, 20);
   doc.setFontSize(14);
-  doc.setFont("helvetica", "bold");
-  doc.text("Personal Profile", 14, 78);
+  doc.setTextColor(80, 80, 80);
+  doc.text(
+    "Fullstack Developer | Backend Specialist | DevOps Engineer",
+    14,
+    28
+  );
+  doc.setTextColor(0, 0, 0);
 
-  doc.setFontSize(11);
+  // Contact Information - Clean horizontal layout
+  doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  const profileText = `Dedicated backend developer and system architect with 4+ years of experience building scalable, high-performance web applications and APIs. Specialized in Node.js, and PHP with expertise in microservices architecture, database design, and system optimization. Proven success in delivering robust solutions for fintech, healthcare, e-commerce, and network security domains. Adept at remaining responsive to changing business needs and implementing best practices to safeguard smooth system operations. Now, with AI as a tool, I can happily say I'm a 200X developer.`;
-  let finalY = 86;
+  doc.text("mosesedem81@gmail.com  |  +234 903 046 5501  |  Nigeria", 14, 36);
+  doc.text("linkedin.com/in/mosesedem  |  github.com/mosesedem", 14, 42);
+
+  // Professional Summary
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "bold");
+  doc.text("PROFESSIONAL SUMMARY", 14, 54);
+  doc.setLineWidth(0.5);
+  doc.line(14, 56, 196, 56);
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  const profileText = `Results-driven Fullstack Developer with 5+ years of experience building scalable web applications and APIs. Currently focused on building my own startup, delivering production-ready solutions across fintech, healthcare, and e-commerce. Expert in Node.js (Express, Fastify, NestJS), Prisma ORM, PostgreSQL, and modern DevOps practices. Proven track record of architecting microservices handling 10,000+ daily users with 99.9% uptime. Strong expertise in CI/CD pipelines, Docker containerization, and cloud deployments (Vercel, AWS).`;
+  let finalY = 62;
   const maxWidth = 180;
   const profileLines = doc.splitTextToSize(profileText, maxWidth);
   doc.text(profileLines, 14, finalY);
@@ -47,39 +52,45 @@ export const generateProfessionalCV = () => {
     doc.addPage();
     finalY = 20;
   }
-  doc.setFontSize(14);
+  doc.setFontSize(12);
   doc.setFont("helvetica", "bold");
-  doc.text("Skills", 14, finalY);
-  finalY += getCurrentLineHeight() + 2;
+  doc.text("TECHNICAL SKILLS", 14, finalY);
+  doc.setLineWidth(0.5);
+  doc.line(14, finalY + 2, 196, finalY + 2);
+  finalY += getCurrentLineHeight() + 4;
 
   autoTable(doc, {
     startY: finalY,
-    head: [["Category", "Skills"]],
+    head: [["Category", "Technologies"]],
     body: [
       [
-        "Backend Development",
-        "• Node.js, Express.js, NestJS - Server-side JavaScript development and API creation High-level programming for web applications and data processing\n• PHP, Laravel - Web development and enterprise applications\n• Microservices Architecture - Distributed system design and implementation",
+        "Backend",
+        "Node.js (Express, Fastify, NestJS, Next.js API Routes), Go Lang, PHP (Laravel)",
       ],
       [
-        "Database Management",
-        "• PostgreSQL, MySQL - Relational database design and optimization\n• MongoDB - NoSQL database management and document storage\n• Redis - In-memory data structure store for caching and sessions\n• Database design, optimization, and performance tuning",
+        "Frontend",
+        "Next.js, React, TypeScript, Vanilla JavaScript, HTML5, CSS3, Tailwind CSS",
       ],
       [
-        "API Development & Integration",
-        "• RESTful APIs - Standard web service architecture and implementation\n• GraphQL - Query language and runtime for APIs\n• Third-party integrations - Payment gateways, SMS services, authentication providers\n• API security, rate limiting, and documentation",
+        "Database & ORM",
+        "Prisma ORM, PostgreSQL, MySQL, MongoDB, Redis, Database Design & Optimization",
       ],
       [
-        "Cloud & DevOps",
-        "• AWS - Cloud infrastructure and deployment\n• Docker - Containerization and application deployment\n• Server management and configuration\n• Performance tuning and load balancing\n• Monitoring and logging systems",
+        "DevOps",
+        "Docker, CI/CD (GitHub Actions, Vercel), AWS, Linux Server Management, Nginx",
       ],
       [
-        "Security & Compliance",
-        "• Authentication systems - JWT, OAuth, session management\n• Encryption and data protection\n• Healthcare system applications\n• PCIDSS Certified system applications for fintech and insurance industries\n• Fraud detection and prevention systems\n• Security best practices and vulnerability assessment",
+        "APIs & Auth",
+        "REST, GraphQL, JWT, OAuth 2.0, Payment Gateway Integration, WebSockets",
       ],
     ],
-    styles: { fontSize: 10, cellPadding: 3, overflow: "linebreak" },
-    columnStyles: { 0: { cellWidth: 50 }, 1: { cellWidth: 130 } },
-    headStyles: { fillColor: [41, 128, 185] },
+    styles: { fontSize: 9, cellPadding: 2, overflow: "linebreak" },
+    columnStyles: {
+      0: { cellWidth: 35, fontStyle: "bold" },
+      1: { cellWidth: 145 },
+    },
+    headStyles: { fillColor: [41, 128, 185], fontSize: 9 },
+    alternateRowStyles: { fillColor: [245, 245, 245] },
   });
   finalY = (doc as any).lastAutoTable.finalY + 10;
 
@@ -88,75 +99,184 @@ export const generateProfessionalCV = () => {
     doc.addPage();
     finalY = 20;
   }
-  doc.setFontSize(14);
+  doc.setFontSize(12);
   doc.setFont("helvetica", "bold");
-  doc.text("Work Experience", 14, finalY);
-  finalY += getCurrentLineHeight() + 4;
+  doc.text("PROFESSIONAL EXPERIENCE", 14, finalY);
+  doc.setLineWidth(0.5);
+  doc.line(14, finalY + 2, 196, finalY + 2);
+  finalY += getCurrentLineHeight() + 6;
 
   doc.setFontSize(11);
+  doc.setFont("helvetica", "bold");
+  doc.text("Founder & Lead Developer", 14, finalY);
   doc.setFont("helvetica", "normal");
-  doc.text("Backend Developer & System Architect (2020 - Present)", 14, finalY);
+  doc.text("2024 - Present", 160, finalY);
   finalY += getCurrentLineHeight();
-  doc.text("Freelance & Contract Work, Nigeria", 14, finalY);
+  doc.setFont("helvetica", "italic");
+  doc.text("Startup Ventures | Nigeria", 14, finalY);
+  finalY += getCurrentLineHeight() + 2;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(
+    "• Building and scaling multiple SaaS products serving thousands of users",
+    14,
+    finalY
+  );
+  finalY += getCurrentLineHeight();
+  doc.text(
+    "• Architecting full-stack solutions with Next.js, Prisma, and PostgreSQL",
+    14,
+    finalY
+  );
+  finalY += getCurrentLineHeight();
+  doc.text(
+    "• Managing DevOps pipelines and cloud infrastructure for production apps",
+    14,
+    finalY
+  );
   finalY += getCurrentLineHeight() + 4;
 
   doc.setFontSize(11);
-  doc.text("Key Projects & Achievements:", 14, finalY);
+  doc.setFont("helvetica", "bold");
+  doc.text("Fullstack Developer & DevOps Engineer", 14, finalY);
+  doc.setFont("helvetica", "normal");
+  doc.text("2020 - 2024", 160, finalY);
+  finalY += getCurrentLineHeight();
+  doc.setFont("helvetica", "italic");
+  doc.text("Freelance & Contract Work | Nigeria", 14, finalY);
+  finalY += getCurrentLineHeight() + 2;
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text("Key Projects:", 14, finalY);
   finalY += getCurrentLineHeight() + 2;
 
   doc.setFontSize(10);
   const projects = [
     {
-      name: "InstantOTP - Authentication Service (2024)",
+      name: "Proton Medicare (Personal - 2024)",
       bullets: [
-        "Designed and developed high-performance OTP service handling thousands of daily verifications",
-        "Implemented Node.js microservices architecture with Redis caching and PostgreSQL",
-        "Built SMS and email verification systems with multiple provider integrations",
-        "Achieved 99.9% uptime with robust error handling and monitoring",
+        "Affordable health insurance platform in Nigeria offering comprehensive medical, dental, and vision coverage",
+        "Implemented flexible plans, quick online enrollment, and 24/7 support from certified agents",
+        "Built scalable backend with secure payment processing for insurance transactions",
+        "Live: https://www.protonmedicare.com",
       ],
     },
     {
-      name: "Etegram Platform - Fintech Backend (2023-2024)",
+      name: "Servixing (Paid - 2024)",
       bullets: [
-        "Built scalable backend supporting 10,000+ daily users",
-        "Implemented secure payment processing and inventory management",
-        "Developed real-time order tracking with WebSocket integration",
-        "Created admin dashboard with comprehensive analytics and reporting",
+        "Professional device repair management service providing fast repairs for phones, laptops, tablets",
+        "Implemented 90-day warranty tracking, certified technician management, and real-time status updates",
+        "Built scheduling system and customer notification platform",
+        "Live: https://www.servixing.com",
       ],
     },
     {
-      name: "MonieCheap - Fintech Platform (2023)",
+      name: "Dakuri (Personal - 2023)",
       bullets: [
-        "Architected financial technology platform with secure transaction processing",
-        "Built comprehensive fraud detection systems using PHP and Laravel",
-        "Implemented real-time notifications and transaction monitoring",
-        "Designed secure API architecture for financial data handling",
+        "Cryptocurrency trading platform simplifying buying and selling of assets like USDT",
+        "Implemented secure Web3 transactions with real-time pricing and transaction limits",
+        "Built market data aggregation and order management system",
+        "Live: https://dakuri.vercel.app/",
       ],
     },
     {
-      name: "BrixVPN - VPN Service Backend (2024)",
+      name: "Instant OTP (Paid - 2024)",
       bullets: [
-        "Created VPN service backend with global server infrastructure management",
-        "Implemented user authentication and bandwidth monitoring systems",
-        "Built server selection algorithms and connection optimization",
-        "Developed admin dashboard for server management and user analytics",
+        "Management tool for creating white-label child panels for SMS verification services",
+        "Implemented real-time DNS verification and comprehensive dashboard monitoring",
+        "Built multi-tenant architecture supporting thousands of daily verifications",
+        "Live: https://instant-otp.vercel.app/",
       ],
     },
     {
-      name: "TunnelDeck - Network Infrastructure (2022-2023)",
+      name: "Instant OTP Payment (Paid - 2024)",
       bullets: [
-        "Developed advanced tunneling service with custom protocol implementation",
-        "Built traffic routing and performance optimization systems",
-        "Implemented real-time monitoring and analytics dashboard",
-        "Created high-throughput network applications with load balancing",
+        "Registration platform for Instant OTP child panels with simple form setup",
+        "Implemented status tracking through registration, payment, and completion stages",
+        "Built secure payment integration and automated provisioning system",
+        "Live: https://instant-otp-payment.vercel.app/",
       ],
     },
     {
-      name: "Proton Medicare - Health Insurance Management (2022 till date)",
+      name: "AI SEO (Personal - 2023)",
       bullets: [
-        "Automated Health Insurance Enrollment portal",
-        "Created secure communication channels for medical professionals",
-        "Location Based hospital finder",
+        "AI-powered SEO optimization tool that audits websites for AI and search engine visibility",
+        "Generates files like robots.txt and meta tags with actionable recommendations",
+        "Provides scores and detailed reports for SEO improvement",
+        "Live: https://ai-seo-seven.vercel.app/",
+      ],
+    },
+    {
+      name: "Online Shop (Paid - 2023)",
+      bullets: [
+        "Wellness products online store with age verification targeting adults",
+        "Implemented secure checkout, inventory management, and order tracking",
+        "Built admin dashboard for product and order management",
+        "Live: https://online-shop-liard-omega.vercel.app/",
+      ],
+    },
+    {
+      name: "Akwa Ibom Tech Week (Paid - 2024)",
+      bullets: [
+        "Event registration site for Akwa Ibom Tech Week 2025 offering ticket purchases",
+        "Implemented event details, networking opportunities for tech innovators",
+        "Built ticket generation and attendee management system",
+        "Live: https://akwaibomtechweek.moniecheap.com/",
+      ],
+    },
+    {
+      name: "UTQE NAKS (Paid - 2023)",
+      bullets: [
+        "Platform for Union of Tipper and Quarry Employers providing certification and fleet management",
+        "Implemented networking and verification services for transport professionals across Nigeria",
+        "Built document verification and compliance tracking system",
+        "Live: https://utqenaks.ng/",
+      ],
+    },
+    {
+      name: "Hotels Etegram Group (Paid - 2023)",
+      bullets: [
+        "Hotel management system for efficient guest onboarding, check-in/out, and stay tracking",
+        "Implemented analytics dashboard and secure data handling to prevent duplicates",
+        "Built reservation system and guest communication platform",
+        "Live: https://hotels.etegramgroup.com/",
+      ],
+    },
+    {
+      name: "Restaurant App (Paid - 2024)",
+      bullets: [
+        "Gen-Z focused food platform connecting users to 500+ restaurants with AI recommendations",
+        "Implemented real-time menus, user reviews, and fast delivery options integration",
+        "Built recommendation engine and order management system",
+        "Live: https://restaurant-ten-lake.vercel.app/",
+      ],
+    },
+    {
+      name: "Hospital Card (Paid - 2023)",
+      bullets: [
+        "Healthcare platform for searching providers, comparing plans, and accessing services",
+        "Implemented digital verification, tailored plans, and secure data handling in Nigeria",
+        "Built provider directory and plan comparison system",
+        "Live: https://hospitalcard.ng/",
+      ],
+    },
+    {
+      name: "DarNumber (Paid - 2023)",
+      bullets: [
+        "SMS verification service platform for secure and reliable messaging solutions",
+        "Built SMS delivery infrastructure and verification code management",
+        "Implemented provider integration and reliability monitoring",
+        "Live: https://darnumber.com/",
+      ],
+    },
+    {
+      name: "ScoreFusion (Paid - 2024)",
+      bullets: [
+        "Premium platform offering betting tips, predictions, and analytics for users",
+        "Implemented real-time data analysis and prediction algorithms",
+        "Built user dashboard and subscription management system",
+        "Live: https://getscorefusion.com/",
       ],
     },
   ];
@@ -448,14 +568,20 @@ export const generateProfessionalCV = () => {
   finalY += getCurrentLineHeight() + 2;
   doc.setFontSize(10);
   const portfolio = [
-    "InstantOTP (www.instantotp.com) - OTP verification service",
-    "Hospitalcard (www.hospitalcard.ng) - Healthcare management",
-    "Etegram Platform (www.etegram.com) - FIntech platform",
-    "MonieCheap (moniecheap.com) - Fintech platform",
-    "BrixVPN (www.brixvpn.com) - VPN service",
-    "TunnelDeck (tunneldeck.com) - Network infrastructure",
-    "ProtonMedicare (protonmedicare.com) - Healthcare management",
-    // "InstantOTP (www.instantotp.com) - OTP verification service",
+    "Proton Medicare (protonmedicare.com) - Health insurance platform",
+    "Servixing (servixing.com) - Device repair management",
+    "Dakuri (dakuri.vercel.app) - Cryptocurrency trading platform",
+    "Instant OTP (instant-otp.vercel.app) - SMS verification service",
+    "Instant OTP Payment (instant-otp-payment.vercel.app) - Registration platform",
+    "AI SEO (ai-seo-seven.vercel.app) - SEO optimization tool",
+    "Online Shop (online-shop-liard-omega.vercel.app) - Wellness product store",
+    "Akwa Ibom Tech Week (akwaibomtechweek.moniecheap.com) - Event registration",
+    "UTQE NAKS (utqenaks.ng) - Transport professionals platform",
+    "Hotels Etegram Group (hotels.etegramgroup.com) - Hotel management system",
+    "Restaurant App (restaurant-ten-lake.vercel.app) - Food delivery platform",
+    "Hospital Card (hospitalcard.ng) - Healthcare provider platform",
+    "DarNumber (darnumber.com) - SMS verification service",
+    "ScoreFusion (getscorefusion.com) - Betting predictions platform",
   ];
   for (const item of portfolio) {
     if (finalY > pageHeight - 20) {
@@ -492,25 +618,27 @@ export const generateProfessionalCV = () => {
   finalY += getCurrentLineHeight() + 12;
 
   // Closing Note
-  if (finalY > pageHeight - 50) {
+  if (finalY > pageHeight - 40) {
     doc.addPage();
     finalY = 20;
   }
-  const closingText = `Thank you for reviewing my CV. I am passionate about building robust, scalable backend systems that power modern applications and solve real-world problems. I look forward to discussing how my experience and skills can contribute to your organization's success. `;
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "italic");
+  const closingText = `I am eager to bring my expertise in fullstack development, DevOps, and startup experience to your team. Let's build something great together.`;
   const closingLines = doc.splitTextToSize(closingText, maxWidth);
   doc.text(closingLines, 14, finalY);
-  finalY += closingLines.length * getCurrentLineHeight() + 8;
+  finalY += closingLines.length * getCurrentLineHeight() + 6;
 
-  doc.text("Moses Edem", 14, finalY);
+  doc.setFont("helvetica", "bold");
+  doc.text("Moses Jacob Edem", 14, finalY);
+  doc.setFont("helvetica", "normal");
   finalY += getCurrentLineHeight();
-  doc.text("Backend Developer & System Architect", 14, finalY);
+  doc.text("mosesedem81@gmail.com  |  +234 903 046 5501", 14, finalY);
   finalY += getCurrentLineHeight();
-  doc.text("mosesedem81@gmail.com", 14, finalY);
-  finalY += getCurrentLineHeight();
-  doc.text("+234 903 046 5501", 14, finalY);
+  doc.text("linkedin.com/in/mosesedem  |  github.com/mosesedem", 14, finalY);
 
   // Save PDF
-  doc.save("Moses_Edem_Professional_CV.pdf");
+  doc.save("Moses_Jacob_Edem_CV.pdf");
 };
 
 export const downloadProfessionalCV = () => {

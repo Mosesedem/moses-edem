@@ -43,35 +43,44 @@ export default function Portfolio() {
 
   const skills = [
     {
-      name: "Node.js/Express",
+      name: "Node.js/Express/Fastify",
       icon: Server,
-      description: "Server-side JavaScript runtime",
+      description: "Backend APIs & Microservices",
     },
-
+    {
+      name: "Prisma ORM",
+      icon: Database,
+      description: "Type-safe database access",
+    },
+    {
+      name: "Next.js",
+      icon: Code,
+      description: "Fullstack React framework",
+    },
+    {
+      name: "PostgreSQL/MongoDB",
+      icon: Database,
+      description: "SQL & NoSQL databases",
+    },
+    {
+      name: "DevOps/CI-CD",
+      icon: Server,
+      description: "Docker, Vercel, GitHub Actions",
+    },
     {
       name: "PHP/Laravel",
       icon: Code,
-      description: "Web development framework",
+      description: "Web applications",
     },
     {
-      name: "Database Design",
-      icon: Database,
-      description: "Relational & NoSQL databases",
+      name: "Go Lang",
+      icon: Server,
+      description: "High-performance services",
     },
     {
       name: "API Development",
       icon: Globe,
-      description: "RESTful & GraphQL APIs",
-    },
-    {
-      name: "Microservices",
-      icon: Server,
-      description: "Distributed system architecture",
-    },
-    {
-      name: "MongoDB",
-      icon: Server,
-      description: "NoSQL",
+      description: "REST, GraphQL, WebSockets",
     },
   ];
 
@@ -224,7 +233,7 @@ export default function Portfolio() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
           <nav className="flex justify-between items-center">
             <div className="text-2xl font-bold bg-green-400 bg-clip-text text-transparent">
-              Moses Edem
+              Moses Jacob Edem
             </div>
             <ul className="hidden md:flex gap-8">
               {["About", "Skills", "Projects", "AI Chat", "Contact"].map(
@@ -259,19 +268,20 @@ export default function Portfolio() {
             >
               <div className="space-y-4">
                 <div className="text-green-400 font-semibold tracking-wide uppercase text-sm">
-                  Backend Developer & System Architect
+                  Fullstack Developer & DevOps Engineer
                 </div>
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
                   Moses{" "}
                   <span className="block bg-green-400  bg-clip-text text-transparent">
-                    Edem
+                    Jacob Edem
                   </span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl">
-                  Crafting robust, scalable backend systems and APIs that power
-                  modern applications. Expert in Node.js, PHP, and microservices
-                  architecture with 6+ years of professional experience
-                  delivering high-performance solutions.
+                  Building scalable web applications and APIs with Node.js,
+                  Prisma, and modern DevOps practices. Currently focused on
+                  building my startup while delivering production-ready
+                  solutions across fintech, healthcare, and e-commerce with 5+
+                  years of experience.
                 </p>
               </div>
               <div className="flex flex-col md:flex-row items-start md:items-center gap-4 text-gray-400">
@@ -365,14 +375,15 @@ export default function Portfolio() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-              Backend Expertise
+              Technical Expertise
             </h2>
             <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-              Specialized in building robust, scalable backend systems using
-              modern technologies and best practices.
+              Specialized in fullstack development with Node.js, Prisma ORM, and
+              DevOps practices. Building robust, scalable systems using modern
+              technologies.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {skills.map((skill, index) => {
               const Icon = skill.icon;
               return (
@@ -623,8 +634,8 @@ export default function Portfolio() {
       <footer className="py-8 px-4 md:px-6 border-t border-gray-800">
         <div className="max-w-7xl mx-auto text-center justify-between">
           <p className="text-gray-400">
-            &copy; {new Date().getFullYear()} Moses Edem. Building the future,
-            one API at a time.
+            &copy; {new Date().getFullYear()} Moses Jacob Edem. Building the
+            future, one API at a time.
           </p>
         </div>
       </footer>
