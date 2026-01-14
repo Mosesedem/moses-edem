@@ -470,7 +470,6 @@ export default function AIPlayground() {
           </div>
         )}
       </CardHeader>
-
       <CardContent className="p-0">
         <ScrollArea className="h-96 p-4" ref={scrollAreaRef}>
           <div className="space-y-4">
