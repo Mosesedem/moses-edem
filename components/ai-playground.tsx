@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   Mic,
   MicOff,
@@ -73,9 +75,19 @@ function CodeBlock({ code, lang }: CodeBlockProps) {
           )}
         </button>
       </div>
-      <pre className="overflow-x-auto p-4 text-sm leading-relaxed text-gray-200 font-mono">
-        <code>{code}</code>
-      </pre>
+      <div className="overflow-x-auto text-sm leading-relaxed font-mono [&>pre]:!bg-transparent">
+        <SyntaxHighlighter
+          language={lang || "text"}
+          style={vscDarkPlus}
+          customStyle={{
+            margin: 0,
+            padding: "1rem",
+            background: "transparent",
+          }}
+        >
+          {code}
+        </SyntaxHighlighter>
+      </div>
     </div>
   );
 }
@@ -83,7 +95,7 @@ function CodeBlock({ code, lang }: CodeBlockProps) {
 // Splits raw Markdown text into segments: fenced code blocks vs. prose.
 function parseMarkdown(raw: string): React.ReactNode[] {
   const nodes: React.ReactNode[] = [];
-  const codeBlockRe = /```([^\n]*)\n([\s\S]*?)```/g;
+  const codeBlockRe = /```([^\r\n]*)\r?\n([\s\S]*?)(?:```|$)/g;
   let lastIndex = 0;
   let match: RegExpExecArray | null;
 
@@ -93,8 +105,17 @@ function parseMarkdown(raw: string): React.ReactNode[] {
         <ProseBlock key={lastIndex} text={raw.slice(lastIndex, match.index)} />
       );
     }
+
+    let lang = match[1] ? match[1].trim().toLowerCase() : undefined;
+    if (lang === "golang" || lang === "go") lang = "go";
+    else if (lang === "js" || lang === "javascript") lang = "javascript";
+    else if (lang === "ts" || lang === "typescript") lang = "typescript";
+    else if (lang === "sh" || lang === "shell") lang = "bash";
+    else if (lang === "c++") lang = "cpp";
+    else if (lang === "c#") lang = "csharp";
+
     nodes.push(
-      <CodeBlock key={match.index} lang={match[1] || undefined} code={match[2].trimEnd()} />
+      <CodeBlock key={match.index} lang={lang} code={match[2].trimEnd()} />
     );
     lastIndex = match.index + match[0].length;
   }
