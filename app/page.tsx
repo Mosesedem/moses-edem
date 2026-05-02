@@ -1,23 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Github,
-  Linkedin,
-  Mail,
-  ExternalLink,
-  Code,
-  Server,
-  Database,
-  Globe,
-  Phone,
-  Download,
-  MapPin,
-  ArrowRight,
-} from "lucide-react";
+import { Github, Linkedin, Mail, Phone, Download, MapPin, ArrowRight, Heart } from "lucide-react";
 import Terminal from "@/components/terminal";
+import VentureStatsCard from "@/components/VentureStatsCard";
+import VibeCard from "@/components/VibeCard";
+import QuickBioCard from "@/components/QuickBioCard";
+import DynamicExpertise from "@/components/DynamicExpertise";
+import ProjectShowcase from "@/components/ProjectShowcase";
+import VenturesSection from "@/components/VenturesSection";
 import AIPlayground from "@/components/ai-playground";
 import { downloadProfessionalCV } from "@/components/cv-generator";
 import PersonaSelector from "@/components/PersonaSelector";
@@ -26,141 +16,63 @@ import { usePersona } from "@/hooks/usePersona";
 import { personaContent } from "@/lib/personaContent";
 import { motion, AnimatePresence } from "framer-motion";
 
+// WhatsApp SVG icon component
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  );
+}
+
 export default function Portfolio() {
-  const [showAllProjects, setShowAllProjects] = useState(false);
   const { currentPersona, hasSelectedInitialPersona } = usePersona();
+  const content = personaContent[currentPersona];
 
-  const skills = [
-    { name: "Node.js / Express / Fastify", icon: Server, description: "Backend APIs & Microservices" },
-    { name: "Prisma ORM", icon: Database, description: "Type-safe database access" },
-    { name: "Next.js", icon: Code, description: "Fullstack React framework" },
-    { name: "PostgreSQL / MongoDB", icon: Database, description: "SQL & NoSQL databases" },
-    { name: "DevOps / CI-CD", icon: Server, description: "Docker, Vercel, GitHub Actions" },
-    { name: "PHP / Laravel", icon: Code, description: "Web applications" },
-    { name: "Go Lang", icon: Server, description: "High-performance services" },
-    { name: "API Development", icon: Globe, description: "REST, GraphQL, WebSockets" },
-  ];
+  // Render the correct hero widget based on persona
+  const renderHeroWidget = () => {
+    switch (content.heroWidget) {
+      case 'venture-stats':
+        return <VentureStatsCard />;
+      case 'vibe-card':
+        return <VibeCard />;
+      case 'quick-bio':
+        return <QuickBioCard />;
+      case 'terminal':
+      default:
+        return <Terminal />;
+    }
+  };
 
-  const projects = [
-    {
-      title: "InstantOTP",
-      description: "High-performance OTP service handling thousands of SMS/email verifications daily. Built with Node.js microservices, Redis caching, and PostgreSQL.",
-      tech: ["Node.js", "Express.js", "Redis", "PostgreSQL", "SMS APIs"],
-      link: "https://www.instantotp.com/",
-      category: "Authentication",
-      image: "https://api.microlink.io/?url=https://www.instantotp.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
+  // Render persona-specific CTA buttons
+  const renderHeroCTAs = () => {
+    return content.heroCTAs.map((cta) => {
+      const isDownloadCV = cta.icon === 'download';
+      const Component = isDownloadCV ? 'button' : 'a';
+      const props = isDownloadCV
+        ? { onClick: downloadProfessionalCV }
+        : { href: cta.href };
 
-    {
-      title: "Etegram Platform",
-      description: "E-commerce platform backend supporting 10,000+ daily users with secure payment processing, inventory management, and real-time order tracking.",
-      tech: ["Hono", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
-      link: "https://www.etegram.com/",
-      category: "E-commerce",
-      image: "https://api.microlink.io/?url=https://www.etegram.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-    {
-      title: "MonieCheap",
-      description: "Fintech platform with secure transaction processing, real-time notifications, and comprehensive fraud detection systems.",
-      tech: ["Hono", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
-      link: "https://moniecheap.com/",
-      category: "Fintech",
-      image: "https://api.microlink.io/?url=https://moniecheap.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
+      const iconMap: Record<string, React.ReactNode> = {
+        'arrow-right': <ArrowRight className="w-4 h-4" />,
+        'download': <Download className="w-4 h-4" />,
+        'mail': <Mail className="w-4 h-4" />,
+        'heart': <Heart className="w-4 h-4" />,
+        'hand': <span className="text-sm">👋</span>,
+      };
 
-        {
-      title: "Akwa Ibom Teck Week",
-      description: "Event platform for Akwa Ibom Tech Week with booking systems, payment processing, and guest management infrastructure.",
-      tech: ["Express.js", "Next.js", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
-      link: "https://akwaibomtechweek.moniecheap.com/",
-      category: "Events",
-      image: "https://api.microlink.io/?url=https://akwaibomtechweek.moniecheap.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-
-
-    {
-      title: "Hotel Secured",
-      description: "Hospitality management platform with booking systems, payment processing, and guest management infrastructure.",
-      tech: ["Hono", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
-      link: "https://hotels.etegramgroup.com/",
-      category: "Hospitality",
-      image: "https://api.microlink.io/?url=https://hotels.etegramgroup.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-
-    {
-      title: "Union Of Tippers",
-      description: "Government-sector platform backend with user management, reporting infrastructure, and secure data handling.",
-      tech: ["Hono", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
-      link: "https://utqenaks.ng/",
-      category: "Government",
-      image: "https://api.microlink.io/?url=https://utqenaks.ng/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-
-        {
-      title: "Servixing",
-      description: "Repairs and services platform with booking systems, payment processing, and user management infrastructure.",
-      tech: ["Node.js", "Next.js", "PostgreSQL", "Payment APIs", "JWT Auth", "Docker"],
-      link: "https://www.servixing.com/",
-      category: "Infrastructure",
-      image: "https://api.microlink.io/?url=https://www.servixing.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-    {
-      title: "TunnelDeck",
-      description: "Advanced tunneling service with custom protocol implementation, traffic routing, and performance optimization.",
-      tech: ["Express.js", "PostgreSQL", "JWT Auth", "Docker", "Redis"],
-      link: "https://tunneldeck.com/",
-      category: "Infrastructure",
-      image: "https://api.microlink.io/?url=https://tunneldeck.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-    {
-      title: "Proton Medicare",
-      description: "Healthcare management system with HIPAA-compliant data handling, appointment scheduling, and patient records management.",
-      tech: ["Next.js", "React", "Redux Toolkit", "Tailwind CSS", "Express.js"],
-      link: "https://protonmedicare.com/",
-      category: "Healthcare",
-      image: "https://api.microlink.io/?url=https://protonmedicare.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-    
-        {
-      title: "AI SEO ",
-      description: "AI SEO ",
-      tech: ["Next.js", "React"],
-      link: "https://ai-seo-seven.vercel.app/",
-      category: "AI",
-      image: "https://api.microlink.io/?url=https://ai-seo-seven.vercel.app/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-    {
-      title: "Menu Rave",
-      description: "Digital menu and ordering platform backend with real-time updates and restaurant management capabilities.",
-      tech: ["Express.js", "PostgreSQL", "JWT Auth", "Docker", "WebSockets"],
-      link: "https://menurave.com/",
-      category: "Hospitality",
-      image: "https://api.microlink.io/?url=https://menurave.com/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-
-    {
-      title: "Dakuri",
-      description: "Concept crypto trading application built to explore AI prompting and vibe coding techniques.",
-      tech: ["Flutter", "Express.js", "Next.js", "Firebase"],
-      category: "Web3",
-      image: "https://api.microlink.io/?url=https://dakuri.vercel.app/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-    {
-      title: "Hospitalcard",
-      description: "Healthcare management system with appointment scheduling, patient records, and secure communication channels.",
-     tech: ["Next.js", "React", "Redux Toolkit", "Tailwind CSS", "Express.js"],
-      link: "https://hospitalcard-seven.vercel.app/",
-      category: "Healthcare",
-      image: "https://api.microlink.io/?url=https://hospitalcard-seven.vercel.app/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-        {
-      title: "LogShip",
-      description: "Javascript based tracking SDK and API for log tracking and analytics.",
-      tech: ["GOlang", "TypeScript", "Express.js", "Firebase", "Redis", "PostgreSQL", ],
-      category: "Infrastructure",
-      image: "https://api.microlink.io/?url=https://dakuri.vercel.app/&screenshot=true&meta=false&embed=screenshot.url",
-    },
-  ];
+      return (
+        <Component
+          key={cta.label}
+          {...props}
+          className={`${cta.variant === 'primary' ? 'btn-primary' : 'btn-outline'} inline-flex items-center gap-2`}
+        >
+          {cta.label}
+          {iconMap[cta.icon]}
+        </Component>
+      );
+    });
+  };
 
   return (
     <>
@@ -191,16 +103,16 @@ export default function Portfolio() {
                     Moses <span style={{ color: 'var(--gold)' }}>Edem</span>
                   </a>
                   <ul className="hidden md:flex gap-10 items-center">
-                    {["About", "Skills", "Projects", "AI Chat", "Contact"].map((item) => (
-                      <li key={item}>
+                    {content.navItems.map((item) => (
+                      <li key={item.label}>
                         <a
-                          href={`#${item.toLowerCase().replace(" ", "-")}`}
+                          href={item.href}
                           className="text-sm font-medium transition-colors duration-300 hover:opacity-100"
                           style={{ color: 'var(--text-secondary)' }}
                           onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--forest)'; }}
                           onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; }}
                         >
-                          {item}
+                          {item.label}
                         </a>
                       </li>
                     ))}
@@ -224,7 +136,7 @@ export default function Portfolio() {
                         className="text-sm uppercase tracking-[0.15em] font-semibold"
                         style={{ color: 'var(--gold)' }}
                       >
-                        {personaContent[currentPersona].role}
+                        {content.role}
                       </motion.p>
 
                       <motion.h1
@@ -235,9 +147,9 @@ export default function Portfolio() {
                         className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]"
                         style={{ color: 'var(--text-primary)' }}
                       >
-                        {personaContent[currentPersona].headline.split(' ').slice(0, -2).join(' ')}{" "}
+                        {content.headline.split(' ').slice(0, -2).join(' ')}{" "}
                         <span className="block" style={{ color: 'var(--forest)' }}>
-                          {personaContent[currentPersona].headline.split(' ').slice(-2).join(' ')}
+                          {content.headline.split(' ').slice(-2).join(' ')}
                         </span>
                       </motion.h1>
 
@@ -249,7 +161,7 @@ export default function Portfolio() {
                         className="text-lg leading-relaxed max-w-xl"
                         style={{ color: 'var(--text-secondary)' }}
                       >
-                        {personaContent[currentPersona].tagline}
+                        {content.tagline}
                       </motion.p>
                     </div>
 
@@ -262,7 +174,7 @@ export default function Portfolio() {
                     >
                       <div className="flex items-center gap-2 text-sm">
                         <MapPin className="w-4 h-4" style={{ color: 'var(--forest-light)' }} />
-                        <span>Port Harcourt, Nigeria</span>
+                        <span>Uyo, Akwa Ibom, Nigeria</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--forest-light)' }} />
@@ -274,20 +186,10 @@ export default function Portfolio() {
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.3 }}
+                      key={`ctas-${currentPersona}`}
                       className="flex flex-wrap gap-3"
                     >
-                      <a href="#projects" className="btn-primary inline-flex items-center gap-2">
-                        Explore Work
-                        <ArrowRight className="w-4 h-4" />
-                      </a>
-                      <button onClick={downloadProfessionalCV} className="btn-outline inline-flex items-center gap-2">
-                        Download CV
-                        <Download className="w-4 h-4" />
-                      </button>
-                      <a href="#contact" className="btn-outline inline-flex items-center gap-2">
-                        Get In Touch
-                        <Mail className="w-4 h-4" />
-                      </a>
+                      {renderHeroCTAs()}
                     </motion.div>
 
                     {/* Social links */}
@@ -328,159 +230,32 @@ export default function Portfolio() {
                     </motion.div>
                   </div>
 
-                  {/* Terminal */}
+                  {/* Dynamic Hero Widget */}
                   <div className="lg:pl-8">
-                    <Terminal />
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`hero-widget-${currentPersona}`}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        {renderHeroWidget()}
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* ─── Skills Section ─── */}
-            <section id="skills" className="section-padding" style={{ background: 'var(--surface-secondary)' }}>
-              <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-14">
-                  <h2 className="font-serif text-3xl md:text-5xl mb-4" style={{ color: 'var(--text-primary)' }}>
-                    Technical Expertise
-                  </h2>
-                  <p className="text-base max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                    Specialized in fullstack development with Node.js, Prisma ORM, and
-                    DevOps practices. Building robust, scalable systems.
-                  </p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                  {skills.map((skill, index) => {
-                    const Icon = skill.icon;
-                    return (
-                      <motion.div
-                        key={skill.name}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: index * 0.06 }}
-                        className="card-clean p-6 text-center"
-                      >
-                        <div
-                          className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-4 transition-transform duration-300"
-                          style={{ background: 'rgba(26, 77, 62, 0.07)' }}
-                        >
-                          <Icon className="w-6 h-6" style={{ color: 'var(--forest)' }} />
-                        </div>
-                        <h3 className="font-sans font-bold text-base mb-1" style={{ color: 'var(--text-primary)' }}>
-                          {skill.name}
-                        </h3>
-                        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-                          {skill.description}
-                        </p>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
+            {/* ─── Dynamic Expertise Section ─── */}
+            <DynamicExpertise />
+
+            {/* ─── Ventures Section (Investor only) ─── */}
+            {currentPersona === 'investor' && <VenturesSection />}
 
             {/* ─── Projects Section ─── */}
-            <section id="projects" className="section-padding" style={{ background: 'var(--cream)' }}>
-              <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-14">
-                  <h2 className="font-serif text-3xl md:text-5xl mb-4" style={{ color: 'var(--text-primary)' }}>
-                    Featured Projects
-                  </h2>
-                  <p className="text-base max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                    A showcase of backend systems and APIs I&apos;ve built, serving
-                    thousands of users daily.
-                  </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {(showAllProjects ? projects : projects.slice(0, 6)).map((project, index) => (
-                    <motion.div
-                      key={project.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.06 }}
-                      className="card-clean overflow-hidden group"
-                    >
-                      {/* Image */}
-                      <div className="relative h-52 overflow-hidden">
-                        <div
-                          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                          style={{ backgroundImage: `url(${project.image})` }}
-                        />
-                        <div className="absolute inset-0" style={{
-                          background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%)'
-                        }} />
-                        <span
-                          className="absolute top-4 left-4 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"
-                          style={{
-                            background: 'rgba(255,255,255,0.9)',
-                            color: 'var(--forest)',
-                          }}
-                        >
-                          {project.category}
-                        </span>
-                        {project.link && (
-                          <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="absolute bottom-4 right-4 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-                            style={{
-                              background: 'rgba(255,255,255,0.9)',
-                              color: 'var(--forest)',
-                            }}
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-                        )}
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-5">
-                        <h3
-                          className="font-sans font-bold text-lg mb-2 transition-colors duration-300 group-hover:text-forest"
-                          style={{ color: 'var(--text-primary)' }}
-                        >
-                          {project.title}
-                        </h3>
-                        <p
-                          className="text-sm leading-relaxed mb-4 line-clamp-2"
-                          style={{ color: 'var(--text-muted)' }}
-                        >
-                          {project.description}
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {project.tech.map((tech) => (
-                            <span
-                              key={tech}
-                              className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded"
-                              style={{
-                                background: 'var(--surface-secondary)',
-                                color: 'var(--text-muted)',
-                              }}
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {projects.length > 6 && !showAllProjects && (
-                  <div className="flex justify-center mt-14">
-                    <button
-                      onClick={() => setShowAllProjects(true)}
-                      className="btn-outline inline-flex items-center gap-2"
-                    >
-                      View All Projects
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
-              </div>
-            </section>
+            <ProjectShowcase />
 
             {/* ─── AI Playground Section ─── */}
             <section id="ai-chat" className="section-padding" style={{ background: 'var(--forest)' }}>
@@ -501,14 +276,26 @@ export default function Portfolio() {
             {/* ─── Contact Section ─── */}
             <section id="contact" className="section-padding" style={{ background: 'var(--cream)' }}>
               <div className="max-w-3xl mx-auto text-center">
-                <h2 className="font-serif text-3xl md:text-5xl mb-5" style={{ color: 'var(--text-primary)' }}>
-                  Let&apos;s Build Something Amazing
-                </h2>
-                <p className="text-base mb-10 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                  Looking for a backend developer who can architect scalable solutions
-                  and deliver robust APIs? I&apos;m always excited to work on challenging
-                  projects.
-                </p>
+                <motion.h2
+                  key={`contact-title-${currentPersona}`}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="font-serif text-3xl md:text-5xl mb-5"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  {content.contactTitle}
+                </motion.h2>
+                <motion.p
+                  key={`contact-sub-${currentPersona}`}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.05 }}
+                  className="text-base mb-10 leading-relaxed"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  {content.contactSubtitle}
+                </motion.p>
                 <div className="flex flex-wrap gap-4 justify-center mb-10">
                   <a href="mailto:mosesedem81@gmail.com" className="btn-primary inline-flex items-center gap-2">
                     <Mail className="w-4 h-4" />
@@ -517,6 +304,28 @@ export default function Portfolio() {
                   <a href="tel:+2349030465501" className="btn-outline inline-flex items-center gap-2">
                     <Phone className="w-4 h-4" />
                     Call Me
+                  </a>
+                  <a
+                    href="https://wa.me/2349030465501"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 font-semibold text-sm px-8 py-3.5 rounded-full transition-all duration-300 cursor-pointer hover:-translate-y-0.5"
+                    style={{
+                      background: '#25D366',
+                      color: '#FFFFFF',
+                      border: 'none',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#1da851';
+                      e.currentTarget.style.boxShadow = '0 4px 16px rgba(37, 211, 102, 0.35)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = '#25D366';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    <WhatsAppIcon className="w-4 h-4" />
+                    WhatsApp
                   </a>
                 </div>
                 <div className="flex justify-center gap-6">

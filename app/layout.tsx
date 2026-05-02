@@ -19,7 +19,7 @@ const dmSerif = DM_Serif_Display({
 
 export const metadata: Metadata = {
   title: "Moses Edem — Backend Engineer, Founder & Builder",
-  description: "Backend engineer specializing in scalable systems, APIs, and infrastructure. Founder, builder, and perpetual learner based in Port Harcourt, Nigeria.",
+  description: "Backend engineer specializing in scalable systems, APIs, and infrastructure. Founder, builder, and perpetual learner based in Uyo, Akwa Ibom, Nigeria.",
 }
 
 export default function RootLayout({
