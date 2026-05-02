@@ -54,7 +54,14 @@ export default function DynamicExpertise() {
                   className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl transition-transform duration-300 group-hover:scale-110"
                   style={{ background: 'rgba(26, 77, 62, 0.07)' }}
                 >
-                  {item.icon}
+                  {item.icon.trim().startsWith('<svg') ? (
+                    <div 
+                      className="w-6 h-6 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full text-forest" 
+                      dangerouslySetInnerHTML={{ __html: item.icon.replace(/fill="[^"]*"/g, 'fill="currentColor"') }} 
+                    />
+                  ) : (
+                    <span>{item.icon}</span>
+                  )}
                 </div>
                 {item.metric && (
                   <span
