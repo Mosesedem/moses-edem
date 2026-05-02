@@ -1,26 +1,30 @@
 'use client';
 
-import { usePersona } from '@/hooks/usePersona';
 import { PERSONA_LABELS, PERSONA_DESCRIPTIONS, PersonaMode } from '@/types/persona';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const personas: PersonaMode[] = ['employer', 'investor', 'romantic', 'academic', 'casual'];
 
-export function PersonaSelectionModal() {
-  const { showModal, setPersona } = usePersona();
+interface PersonaSelectionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSelect: (persona: PersonaMode) => void;
+}
 
+export default function PersonaSelectionModal({ isOpen, onClose, onSelect }: PersonaSelectionModalProps) {
   const handleSelect = (persona: PersonaMode) => {
-    setPersona(persona);
+    onSelect(persona);
   };
 
   return (
     <AnimatePresence>
-      {showModal && (
+      {isOpen && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={onClose}
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
@@ -28,6 +32,7 @@ export function PersonaSelectionModal() {
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="bg-background border border-border rounded-lg shadow-lg max-w-2xl w-full"
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="p-8">
               <h2 className="text-3xl font-bold text-foreground mb-2">Welcome!</h2>

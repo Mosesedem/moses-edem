@@ -7,7 +7,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const personas: PersonaMode[] = ['employer', 'investor', 'romantic', 'academic', 'casual'];
 
-export function PersonaSelector() {
+interface PersonaSelectorProps {
+  onOpenModal?: () => void;
+}
+
+export default function PersonaSelector({ onOpenModal }: PersonaSelectorProps) {
   const { currentPersona, setPersona } = usePersona();
   const [isOpen, setIsOpen] = useState(false);
 
