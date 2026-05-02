@@ -1,5 +1,5 @@
 %PDF-1.3
-%ºß¬à
+%ï¿½ß¬ï¿½
 3 0 obj
 <</Type /Page
 /Parent 1 0 R
@@ -61,7 +61,7 @@ BT
 39.6850393700787407 666.1419685039369369 Td
 (Results-driven Fullstack Developer with 5+ years of experience building scalable web applications and APIs.) Tj
 T* (Currently focused on building my own startup, delivering production-ready solutions across fintech, healthcare, and) Tj
-T* (e-commerce. Expert in Node.js \(Express, Fastify, NestJS\), Prisma ORM, PostgreSQL, and modern DevOps) Tj
+T* (e-commerce. Expert in Node.js \(Express, Fastify, Hono\), Prisma ORM, PostgreSQL, and modern DevOps) Tj
 T* (practices. Proven track record of architecting microservices handling 10,000+ daily users with 99.9% uptime. Strong) Tj
 T* (expertise in CI/CD pipelines, Docker containerization, and cloud deployments \(Vercel, AWS\).) Tj
 ET
@@ -132,7 +132,7 @@ BT
 10.3499999999999996 TL
 0.314 g
 144.881889763779526 537.1569291338581706 Td
-(Node.js \(Express, Fastify, NestJS, Next.js API Routes\), Go Lang, PHP \(Laravel\)) Tj
+(Node.js \(Express, Fastify, Hono, Next.js API Routes\), Go Lang, PHP \(Laravel\)) Tj
 ET
 1. g
 0.78 G
@@ -283,21 +283,21 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 351.9096850393699469 Td
-(• Building and scaling multiple SaaS products serving thousands of users) Tj
+(ï¿½ Building and scaling multiple SaaS products serving thousands of users) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 340.4096850393699469 Td
-(• Architecting full-stack solutions with Next.js, Prisma, and PostgreSQL) Tj
+(ï¿½ Architecting full-stack solutions with Next.js, Prisma, and PostgreSQL) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 328.9096850393699469 Td
-(• Managing DevOps pipelines and cloud infrastructure for production apps) Tj
+(ï¿½ Managing DevOps pipelines and cloud infrastructure for production apps) Tj
 ET
 BT
 /F2 11 Tf
@@ -339,28 +339,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 240.7632283464566854 Td
-(• Affordable health insurance platform in Nigeria offering comprehensive medical, dental, and vision coverage) Tj
+(ï¿½ Affordable health insurance platform in Nigeria offering comprehensive medical, dental, and vision coverage) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 226.4285826771654229 Td
-(• Implemented flexible plans, quick online enrollment, and 24/7 support from certified agents) Tj
+(ï¿½ Implemented flexible plans, quick online enrollment, and 24/7 support from certified agents) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 212.0939370078740467 Td
-(• Built scalable backend with secure payment processing for insurance transactions) Tj
+(ï¿½ Built scalable backend with secure payment processing for insurance transactions) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 197.7592913385826705 Td
-(• Live: https://www.protonmedicare.com) Tj
+(ï¿½ Live: https://www.protonmedicare.com) Tj
 ET
 BT
 /F2 10 Tf
@@ -374,28 +374,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 154.9167716535433783 Td
-(• Professional device repair management service providing fast repairs for phones, laptops, tablets) Tj
+(ï¿½ Professional device repair management service providing fast repairs for phones, laptops, tablets) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 140.5821259842520021 Td
-(• Implemented 90-day warranty tracking, certified technician management, and real-time status updates) Tj
+(ï¿½ Implemented 90-day warranty tracking, certified technician management, and real-time status updates) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 126.2474803149607396 Td
-(• Built scheduling system and customer notification platform) Tj
+(ï¿½ Built scheduling system and customer notification platform) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 111.9128346456693635 Td
-(• Live: https://www.servixing.com) Tj
+(ï¿½ Live: https://www.servixing.com) Tj
 ET
 BT
 /F2 10 Tf
@@ -409,7 +409,7 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 69.0703149606298439 Td
-(• Cryptocurrency trading platform simplifying buying and selling of assets like USDT) Tj
+(ï¿½ Cryptocurrency trading platform simplifying buying and selling of assets like USDT) Tj
 ET
 endstream
 endobj
@@ -433,21 +433,21 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 785.1970866141732586 Td
-(• Implemented secure Web3 transactions with real-time pricing and transaction limits) Tj
+(ï¿½ Implemented secure Web3 transactions with real-time pricing and transaction limits) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 770.8624409448818824 Td
-(• Built market data aggregation and order management system) Tj
+(ï¿½ Built market data aggregation and order management system) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 756.5277952755905062 Td
-(• Live: https://dakuri.vercel.app/) Tj
+(ï¿½ Live: https://dakuri.vercel.app/) Tj
 ET
 BT
 /F2 10 Tf
@@ -461,28 +461,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 713.6852755905511003 Td
-(• Management tool for creating white-label child panels for SMS verification services) Tj
+(ï¿½ Management tool for creating white-label child panels for SMS verification services) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 699.3506299212598378 Td
-(• Implemented real-time DNS verification and comprehensive dashboard monitoring) Tj
+(ï¿½ Implemented real-time DNS verification and comprehensive dashboard monitoring) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 685.0159842519684616 Td
-(• Built multi-tenant architecture supporting thousands of daily verifications) Tj
+(ï¿½ Built multi-tenant architecture supporting thousands of daily verifications) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 670.6813385826770855 Td
-(• Live: https://instant-otp.vercel.app/) Tj
+(ï¿½ Live: https://instant-otp.vercel.app/) Tj
 ET
 BT
 /F2 10 Tf
@@ -496,28 +496,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 627.8388188976377933 Td
-(• Registration platform for Instant OTP child panels with simple form setup) Tj
+(ï¿½ Registration platform for Instant OTP child panels with simple form setup) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 613.5041732283464171 Td
-(• Implemented status tracking through registration, payment, and completion stages) Tj
+(ï¿½ Implemented status tracking through registration, payment, and completion stages) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 599.1695275590550409 Td
-(• Built secure payment integration and automated provisioning system) Tj
+(ï¿½ Built secure payment integration and automated provisioning system) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 584.8348818897637784 Td
-(• Live: https://instant-otp-payment.vercel.app/) Tj
+(ï¿½ Live: https://instant-otp-payment.vercel.app/) Tj
 ET
 BT
 /F2 10 Tf
@@ -531,28 +531,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 541.9923622047244862 Td
-(• AI-powered SEO optimization tool that audits websites for AI and search engine visibility) Tj
+(ï¿½ AI-powered SEO optimization tool that audits websites for AI and search engine visibility) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 527.65771653543311 Td
-(• Generates files like robots.txt and meta tags with actionable recommendations) Tj
+(ï¿½ Generates files like robots.txt and meta tags with actionable recommendations) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 513.3230708661417339 Td
-(• Provides scores and detailed reports for SEO improvement) Tj
+(ï¿½ Provides scores and detailed reports for SEO improvement) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 498.9884251968504145 Td
-(• Live: https://ai-seo-seven.vercel.app/) Tj
+(ï¿½ Live: https://ai-seo-seven.vercel.app/) Tj
 ET
 BT
 /F2 10 Tf
@@ -566,28 +566,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 456.1459055118110655 Td
-(• Wellness products online store with age verification targeting adults) Tj
+(ï¿½ Wellness products online store with age verification targeting adults) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 441.8112598425197461 Td
-(• Implemented secure checkout, inventory management, and order tracking) Tj
+(ï¿½ Implemented secure checkout, inventory management, and order tracking) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 427.47661417322837 Td
-(• Built admin dashboard for product and order management) Tj
+(ï¿½ Built admin dashboard for product and order management) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 413.1419685039370506 Td
-(• Live: https://online-shop-liard-omega.vercel.app/) Tj
+(ï¿½ Live: https://online-shop-liard-omega.vercel.app/) Tj
 ET
 BT
 /F2 10 Tf
@@ -601,28 +601,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 370.2994488188977016 Td
-(• Event registration site for Akwa Ibom Tech Week 2025 offering ticket purchases) Tj
+(ï¿½ Event registration site for Akwa Ibom Tech Week 2025 offering ticket purchases) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 355.9648031496063822 Td
-(• Implemented event details, networking opportunities for tech innovators) Tj
+(ï¿½ Implemented event details, networking opportunities for tech innovators) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 341.6301574803150629 Td
-(• Built ticket generation and attendee management system) Tj
+(ï¿½ Built ticket generation and attendee management system) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 327.2955118110237436 Td
-(• Live: https://akwaibomtechweek.moniecheap.com/) Tj
+(ï¿½ Live: https://akwaibomtechweek.moniecheap.com/) Tj
 ET
 BT
 /F2 10 Tf
@@ -636,28 +636,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 284.4529921259843377 Td
-(• Platform for Union of Tipper and Quarry Employers providing certification and fleet management) Tj
+(ï¿½ Platform for Union of Tipper and Quarry Employers providing certification and fleet management) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 270.1183464566930752 Td
-(• Implemented networking and verification services for transport professionals across Nigeria) Tj
+(ï¿½ Implemented networking and verification services for transport professionals across Nigeria) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 255.783700787401699 Td
-(• Built document verification and compliance tracking system) Tj
+(ï¿½ Built document verification and compliance tracking system) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 241.4490551181104365 Td
-(• Live: https://utqenaks.ng/) Tj
+(ï¿½ Live: https://utqenaks.ng/) Tj
 ET
 BT
 /F2 10 Tf
@@ -671,28 +671,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 198.6065354330710306 Td
-(• Hotel management system for efficient guest onboarding, check-in/out, and stay tracking) Tj
+(ï¿½ Hotel management system for efficient guest onboarding, check-in/out, and stay tracking) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 184.2718897637797681 Td
-(• Implemented analytics dashboard and secure data handling to prevent duplicates) Tj
+(ï¿½ Implemented analytics dashboard and secure data handling to prevent duplicates) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 169.937244094488392 Td
-(• Built reservation system and guest communication platform) Tj
+(ï¿½ Built reservation system and guest communication platform) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 155.6025984251970158 Td
-(• Live: https://hotels.etegramgroup.com/) Tj
+(ï¿½ Live: https://hotels.etegramgroup.com/) Tj
 ET
 BT
 /F2 10 Tf
@@ -706,28 +706,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 112.7600787401576099 Td
-(• Gen-Z focused food platform connecting users to 500+ restaurants with AI recommendations) Tj
+(ï¿½ Gen-Z focused food platform connecting users to 500+ restaurants with AI recommendations) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 98.4254330708662337 Td
-(• Implemented real-time menus, user reviews, and fast delivery options integration) Tj
+(ï¿½ Implemented real-time menus, user reviews, and fast delivery options integration) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 84.0907874015748575 Td
-(• Built recommendation engine and order management system) Tj
+(ï¿½ Built recommendation engine and order management system) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 69.7561417322833677 Td
-(• Live: https://restaurant-ten-lake.vercel.app/) Tj
+(ï¿½ Live: https://restaurant-ten-lake.vercel.app/) Tj
 ET
 endstream
 endobj
@@ -758,28 +758,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 768.0277952755905062 Td
-(• Healthcare platform for searching providers, comparing plans, and accessing services) Tj
+(ï¿½ Healthcare platform for searching providers, comparing plans, and accessing services) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 753.6931496062992437 Td
-(• Implemented digital verification, tailored plans, and secure data handling in Nigeria) Tj
+(ï¿½ Implemented digital verification, tailored plans, and secure data handling in Nigeria) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 739.3585039370078675 Td
-(• Built provider directory and plan comparison system) Tj
+(ï¿½ Built provider directory and plan comparison system) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 725.0238582677164914 Td
-(• Live: https://hospitalcard.ng/) Tj
+(ï¿½ Live: https://hospitalcard.ng/) Tj
 ET
 BT
 /F2 10 Tf
@@ -793,28 +793,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 682.1813385826770855 Td
-(• SMS verification service platform for secure and reliable messaging solutions) Tj
+(ï¿½ SMS verification service platform for secure and reliable messaging solutions) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 667.846692913385823 Td
-(• Built SMS delivery infrastructure and verification code management) Tj
+(ï¿½ Built SMS delivery infrastructure and verification code management) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 653.5120472440944468 Td
-(• Implemented provider integration and reliability monitoring) Tj
+(ï¿½ Implemented provider integration and reliability monitoring) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 639.1774015748030706 Td
-(• Live: https://darnumber.com/) Tj
+(ï¿½ Live: https://darnumber.com/) Tj
 ET
 BT
 /F2 10 Tf
@@ -828,28 +828,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 596.3348818897637784 Td
-(• Premium platform offering betting tips, predictions, and analytics for users) Tj
+(ï¿½ Premium platform offering betting tips, predictions, and analytics for users) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 582.0002362204724022 Td
-(• Implemented real-time data analysis and prediction algorithms) Tj
+(ï¿½ Implemented real-time data analysis and prediction algorithms) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 567.6655905511811397 Td
-(• Built user dashboard and subscription management system) Tj
+(ï¿½ Built user dashboard and subscription management system) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 553.3309448818897636 Td
-(• Live: https://getscorefusion.com/) Tj
+(ï¿½ Live: https://getscorefusion.com/) Tj
 ET
 BT
 /F1 11 Tf
@@ -863,28 +863,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 509.3384251968504373 Td
-(• Established and maintained professional relationships with clients across multiple industries) Tj
+(ï¿½ Established and maintained professional relationships with clients across multiple industries) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 495.0037795275590611 Td
-(• Coordinated multiple projects simultaneously using agile methodologies) Tj
+(ï¿½ Coordinated multiple projects simultaneously using agile methodologies) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 480.6691338582677417 Td
-(• Provided technical consultation and system architecture guidance) Tj
+(ï¿½ Provided technical consultation and system architecture guidance) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 466.3344881889764224 Td
-(• Ensured code quality through testing, documentation, and peer reviews) Tj
+(ï¿½ Ensured code quality through testing, documentation, and peer reviews) Tj
 ET
 BT
 /F1 11 Tf
@@ -898,35 +898,35 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 433.6805511811024871 Td
-(• Successfully deployed over 20 production applications serving thousands of daily users) Tj
+(ï¿½ Successfully deployed over 20 production applications serving thousands of daily users) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 419.345905511811111 Td
-(• Implemented secure payment processing systems handling significant transaction volumes) Tj
+(ï¿½ Implemented secure payment processing systems handling significant transaction volumes) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 405.0112598425197916 Td
-(• Designed microservices architectures improving system scalability by 300%) Tj
+(ï¿½ Designed microservices architectures improving system scalability by 300%) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 390.6766141732284723 Td
-(• Achieved 99.9% uptime across all deployed services through robust system design) Tj
+(ï¿½ Achieved 99.9% uptime across all deployed services through robust system design) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 376.3419685039371529 Td
-(• Reduced API response times by 60% through optimization and caching strategies) Tj
+(ï¿½ Reduced API response times by 60% through optimization and caching strategies) Tj
 ET
 BT
 /F2 14 Tf
@@ -968,28 +968,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 266.9608661417325948 Td
-(• Research methodology and data analysis) Tj
+(ï¿½ Research methodology and data analysis) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 252.6262204724413323 Td
-(• Environmental systems and sustainability) Tj
+(ï¿½ Environmental systems and sustainability) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 238.2915748031499561 Td
-(• Project management and scientific methodology) Tj
+(ï¿½ Project management and scientific methodology) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 223.9569291338585799 Td
-(• Statistical analysis and problem-solving) Tj
+(ï¿½ Statistical analysis and problem-solving) Tj
 ET
 BT
 /F1 11 Tf
@@ -1003,28 +1003,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 191.3029921259847015 Td
-(• Analytical thinking and problem-solving) Tj
+(ï¿½ Analytical thinking and problem-solving) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 176.9683464566933253 Td
-(• Project management and team coordination) Tj
+(ï¿½ Project management and team coordination) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 162.6337007874019491 Td
-(• Technical documentation and communication) Tj
+(ï¿½ Technical documentation and communication) Tj
 ET
 BT
 /F1 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 148.2990551181106866 Td
-(• Continuous learning and adaptation to new technologies) Tj
+(ï¿½ Continuous learning and adaptation to new technologies) Tj
 ET
 endstream
 endobj
@@ -1062,35 +1062,35 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 739.4392125984252289 Td
-(• Regular participation in developer communities and forums) Tj
+(ï¿½ Regular participation in developer communities and forums) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 725.1045669291338527 Td
-(• Active contributions to open-source projects) Tj
+(ï¿½ Active contributions to open-source projects) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 710.7699212598424765 Td
-(• Continuous study of emerging backend technologies and frameworks) Tj
+(ï¿½ Continuous study of emerging backend technologies and frameworks) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 696.4352755905511003 Td
-(• Regular updates on industry best practices and security standards) Tj
+(ï¿½ Regular updates on industry best practices and security standards) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 682.1006299212597241 Td
-(• Attendance at virtual conferences and webinars) Tj
+(ï¿½ Attendance at virtual conferences and webinars) Tj
 ET
 BT
 /F2 11 Tf
@@ -1104,28 +1104,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 649.446692913385732 Td
-(• Advanced Node.js development patterns) Tj
+(ï¿½ Advanced Node.js development patterns) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 635.1120472440944695 Td
-(• Database design and optimization techniques) Tj
+(ï¿½ Database design and optimization techniques) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 620.7774015748030934 Td
-(• Cloud architecture and deployment strategies) Tj
+(ï¿½ Cloud architecture and deployment strategies) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 606.4427559055118309 Td
-(• Security best practices and compliance standards) Tj
+(ï¿½ Security best practices and compliance standards) Tj
 ET
 BT
 /F2 14 Tf
@@ -1146,28 +1146,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 546.350236220472425 Td
-(• 5+ years professional experience in Node.js, and PHP) Tj
+(ï¿½ 5+ years professional experience in Node.js, and PHP) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 532.0155905511810488 Td
-(• Expert-level knowledge of Express.js, Django, Flask, and Laravel) Tj
+(ï¿½ Expert-level knowledge of Express.js, Django, Flask, and Laravel) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 517.6809448818896726 Td
-(• Advanced understanding of microservices architecture and API design) Tj
+(ï¿½ Advanced understanding of microservices architecture and API design) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 503.3462992125984101 Td
-(• Proficient in both SQL and NoSQL database management) Tj
+(ï¿½ Proficient in both SQL and NoSQL database management) Tj
 ET
 BT
 /F2 11 Tf
@@ -1181,28 +1181,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 470.692362204724418 Td
-(• Proven track record in fintech, healthcare, e-commerce, and network security) Tj
+(ï¿½ Proven track record in fintech, healthcare, e-commerce, and network security) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 456.3577165354330987 Td
-(• Experience with high-traffic applications and real-time systems) Tj
+(ï¿½ Experience with high-traffic applications and real-time systems) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 442.0230708661417793 Td
-(• Strong focus on security, performance, and system reliability) Tj
+(ï¿½ Strong focus on security, performance, and system reliability) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 427.68842519685046 Td
-(• Expertise in payment processing and financial system integration) Tj
+(ï¿½ Expertise in payment processing and financial system integration) Tj
 ET
 BT
 /F2 11 Tf
@@ -1216,28 +1216,28 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 395.0344881889764679 Td
-(• Design and implementation of scalable microservices) Tj
+(ï¿½ Design and implementation of scalable microservices) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 380.6998425196851485 Td
-(• Performance optimization and load balancing) Tj
+(ï¿½ Performance optimization and load balancing) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 366.3651968503938292 Td
-(• Security architecture and compliance implementation) Tj
+(ï¿½ Security architecture and compliance implementation) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 352.0305511811025099 Td
-(• Integration with third-party services and APIs) Tj
+(ï¿½ Integration with third-party services and APIs) Tj
 ET
 BT
 /F2 14 Tf
@@ -1258,98 +1258,98 @@ BT
 11.5 TL
 0. g
 39.6850393700787407 291.9380314960632177 Td
-(• Proton Medicare \(protonmedicare.com\) - Health insurance platform) Tj
+(ï¿½ Proton Medicare \(protonmedicare.com\) - Health insurance platform) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 277.6033858267718415 Td
-(• Servixing \(servixing.com\) - Device repair management) Tj
+(ï¿½ Servixing \(servixing.com\) - Device repair management) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 263.268740157480579 Td
-(• Dakuri \(dakuri.vercel.app\) - Cryptocurrency trading platform) Tj
+(ï¿½ Dakuri \(dakuri.vercel.app\) - Cryptocurrency trading platform) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 248.9340944881892028 Td
-(• Instant OTP \(instant-otp.vercel.app\) - SMS verification service) Tj
+(ï¿½ Instant OTP \(instant-otp.vercel.app\) - SMS verification service) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 234.5994488188978266 Td
-(• Instant OTP Payment \(instant-otp-payment.vercel.app\) - Registration platform) Tj
+(ï¿½ Instant OTP Payment \(instant-otp-payment.vercel.app\) - Registration platform) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 220.2648031496065641 Td
-(• AI SEO \(ai-seo-seven.vercel.app\) - SEO optimization tool) Tj
+(ï¿½ AI SEO \(ai-seo-seven.vercel.app\) - SEO optimization tool) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 205.930157480315188 Td
-(• Online Shop \(online-shop-liard-omega.vercel.app\) - Wellness product store) Tj
+(ï¿½ Online Shop \(online-shop-liard-omega.vercel.app\) - Wellness product store) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 191.5955118110239255 Td
-(• Akwa Ibom Tech Week \(akwaibomtechweek.moniecheap.com\) - Event registration) Tj
+(ï¿½ Akwa Ibom Tech Week \(akwaibomtechweek.moniecheap.com\) - Event registration) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 177.2608661417325493 Td
-(• UTQE NAKS \(utqenaks.ng\) - Transport professionals platform) Tj
+(ï¿½ UTQE NAKS \(utqenaks.ng\) - Transport professionals platform) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 162.9262204724412868 Td
-(• Hotels Etegram Group \(hotels.etegramgroup.com\) - Hotel management system) Tj
+(ï¿½ Hotels Etegram Group \(hotels.etegramgroup.com\) - Hotel management system) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 148.5915748031499106 Td
-(• Restaurant App \(restaurant-ten-lake.vercel.app\) - Food delivery platform) Tj
+(ï¿½ Restaurant App \(restaurant-ten-lake.vercel.app\) - Food delivery platform) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 134.2569291338585344 Td
-(• Hospital Card \(hospitalcard.ng\) - Healthcare provider platform) Tj
+(ï¿½ Hospital Card \(hospitalcard.ng\) - Healthcare provider platform) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 119.9222834645672719 Td
-(• DarNumber \(darnumber.com\) - SMS verification service) Tj
+(ï¿½ DarNumber \(darnumber.com\) - SMS verification service) Tj
 ET
 BT
 /F2 10 Tf
 11.5 TL
 0. g
 39.6850393700787407 105.5876377952758958 Td
-(• ScoreFusion \(getscorefusion.com\) - Betting predictions platform) Tj
+(ï¿½ ScoreFusion \(getscorefusion.com\) - Betting predictions platform) Tj
 ET
 BT
 /F2 10 Tf

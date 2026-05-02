@@ -1,51 +1,3 @@
-// "use client"
-
-// import { useEffect, useState } from "react"
-
-// const terminalCommands = [
-//   "node server.js",
-//   "🚀 Server running on port 3000",
-//   "✅ Database connected",
-//   "⚡ Redis cache initialized",
-//   "🔐 JWT middleware active",
-//   "📊 API endpoints ready",
-//   "Ready to build amazing backends...",
-// ]
-
-// export default function Terminal() {
-//   const [currentCommand, setCurrentCommand] = useState(0)
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setCurrentCommand((prev) => (prev + 1) % terminalCommands.length)
-//     }, 3000)
-
-//     return () => clearInterval(interval)
-//   }, [])
-
-//   return (
-//     <div className="bg-gray-900 rounded-xl p-6 border border-green-400/30 font-mono relative">
-//       <div className="flex gap-2 mb-4">
-//         <div className="w-3 h-3 rounded-full bg-red-500"></div>
-//         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-//         <div className="w-3 h-3 rounded-full bg-green-500"></div>
-//       </div>
-//       <div className="text-green-400 space-y-2">
-//         {terminalCommands.slice(0, -1).map((command, index) => (
-//           <div key={index} className="flex items-center">
-//             {index === 0 && <span className="text-orange-400 mr-2">$</span>}
-//             <span>{command}</span>
-//           </div>
-//         ))}
-//         <div className="flex items-center typing">
-//           <span className="text-orange-400 mr-2">$</span>
-//           <span>{terminalCommands[currentCommand]}</span>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -60,12 +12,11 @@ export default function Terminal() {
     "moses_edem",
     "$ cat skills.txt",
     "Backend Development: ████████████ 95%",
-    "Node.js/Express: ████████████ 90%",
-    "PHP/Laravel: ██████████░░ 80%",
-    "Database Design: ████████████ 95%",
-    "MongoDB: ████████████ 95%",
-    "Prisma with Postgresql: ████████████ 95%",
-    "API Development: ████████████ 95%",
+    "Node.js/Express:     ████████████ 90%",
+    "PHP/Laravel:         ██████████░░ 80%",
+    "Database Design:     ████████████ 95%",
+    "Prisma + PostgreSQL: ████████████ 95%",
+    "API Development:     ████████████ 95%",
     "$ ls projects/",
     "InstantOTP/  Etegram/  MonieCheap/  BrixVPN/",
     "TunnelDeck/  ProtonMedicare/",
@@ -101,30 +52,42 @@ export default function Terminal() {
   }, [currentLine, currentChar, terminalLines]);
 
   return (
-    <div className="bg-gray-900/90 backdrop-blur-sm rounded-lg p-6 font-mono text-sm border border-gray-700 shadow-2xl">
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-        <span className="text-gray-400 ml-2">moses@portfolio:~</span>
+    <div
+      className="rounded-2xl p-6 font-mono text-sm overflow-hidden"
+      style={{
+        background: 'var(--forest-deep)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: 'var(--shadow-xl)',
+      }}
+    >
+      {/* Window chrome */}
+      <div className="flex items-center gap-2 mb-5">
+        <div className="w-3 h-3 rounded-full" style={{ background: '#FF5F57' }} />
+        <div className="w-3 h-3 rounded-full" style={{ background: '#FEBC2E' }} />
+        <div className="w-3 h-3 rounded-full" style={{ background: '#28C840' }} />
+        <span className="ml-3 text-xs" style={{ color: 'var(--text-on-dark-muted)' }}>
+          moses@portfolio:~
+        </span>
       </div>
+
+      {/* Terminal lines */}
       <div className="space-y-1">
         {displayText.map((line, index) => (
           <div
             key={index}
-            className={`${
-              line.startsWith("$")
-                ? "text-green-400"
+            style={{
+              color: line.startsWith("$")
+                ? 'var(--gold-light)'
                 : line.includes("%")
-                ? "text-blue-400"
+                ? 'rgba(250, 248, 245, 0.8)'
                 : line.includes("/")
-                ? "text-yellow-400"
-                : "text-gray-300"
-            }`}
+                ? 'var(--gold)'
+                : 'var(--text-on-dark-muted)',
+            }}
           >
             {line}
             {index === currentLine && (
-              <span className="animate-pulse text-green-400">|</span>
+              <span className="animate-pulse" style={{ color: 'var(--gold)' }}>|</span>
             )}
           </div>
         ))}

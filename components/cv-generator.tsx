@@ -40,7 +40,7 @@ export const generateProfessionalCV = () => {
 
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  const profileText = `Results-driven Fullstack Developer with 5+ years of experience building scalable web applications and APIs. Currently focused on building my own startup, delivering production-ready solutions across fintech, healthcare, and e-commerce. Expert in Node.js (Express, Fastify, NestJS), Prisma ORM, PostgreSQL, and modern DevOps practices. Proven track record of architecting microservices handling 10,000+ daily users with 99.9% uptime. Strong expertise in CI/CD pipelines, Docker containerization, and cloud deployments (Vercel, AWS).`;
+  const profileText = `Results-driven Fullstack Developer with 5+ years of experience building scalable web applications and APIs. Currently focused on building my own startup, delivering production-ready solutions across fintech, healthcare, and e-commerce. Expert in Node.js (Express, Fastify, Hono), Prisma ORM, PostgreSQL, and modern DevOps practices. Proven track record of architecting microservices handling 10,000+ daily users with 99.9% uptime. Strong expertise in CI/CD pipelines, Docker containerization, and cloud deployments (Vercel, AWS).`;
   let finalY = 62;
   const maxWidth = 180;
   const profileLines = doc.splitTextToSize(profileText, maxWidth);
@@ -65,7 +65,7 @@ export const generateProfessionalCV = () => {
     body: [
       [
         "Backend",
-        "Node.js (Express, Fastify, NestJS, Next.js API Routes), Go Lang, PHP (Laravel)",
+        "Node.js (Express, Fastify, Hono, Next.js API Routes), Go Lang, PHP (Laravel)",
       ],
       [
         "Frontend",
