@@ -6,7 +6,7 @@ import { MapPin, Github, Linkedin, Mail } from 'lucide-react';
 const quickFacts = [
   { label: 'Based in', value: 'Uyo, Akwa Ibom, Nigeria' },
   { label: 'Focus', value: 'Backend Engineering' },
-  { label: 'Experience', value: '5+ Years' },
+  { label: 'Experience', value: '7+ Years' },
   { label: 'Vibe', value: 'Building cool stuff' },
 ];
 
