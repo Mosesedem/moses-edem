@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
+import { PersonaProvider } from "@/contexts/PersonaContext"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,7 +28,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
-      <body>{children}</body>
+      <body>
+        <PersonaProvider>
+          {children}
+        </PersonaProvider>
+      </body>
     </html>
   )
 }

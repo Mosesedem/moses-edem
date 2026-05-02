@@ -20,6 +20,7 @@ import {
   Trash2,
   Menu,
 } from "lucide-react";
+import { usePersona } from "@/hooks/usePersona";
 
 interface Message {
   id: string;
@@ -29,6 +30,7 @@ interface Message {
 }
 
 export default function AIPlayground() {
+  const { currentPersona } = usePersona();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -87,6 +89,7 @@ export default function AIPlayground() {
         },
         body: JSON.stringify({
           message: content.trim(),
+          persona: currentPersona,
           history: messages.slice(-10), // Send last 10 messages for context
         }),
       });
