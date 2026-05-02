@@ -28,14 +28,25 @@ import Terminal from "@/components/terminal";
 import FloatingElements from "@/components/floating-elements";
 import AIPlayground from "@/components/ai-playground";
 import { downloadProfessionalCV } from "@/components/cv-generator";
+import PersonaSelectionModal from "@/components/PersonaSelectionModal";
+import PersonaSelector from "@/components/PersonaSelector";
+import { usePersona } from "@/hooks/usePersona";
 
 export default function Portfolio() {
   const [isVisible, setIsVisible] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [showPersonaModal, setShowPersonaModal] = useState(false);
+  const { currentPersona, setPersona } = usePersona();
 
   useEffect(() => {
     setIsVisible(true);
+    // Check if this is first visit
+    const hasSeenPersonaModal = localStorage.getItem("hasSeenPersonaModal");
+    if (!hasSeenPersonaModal) {
+      setShowPersonaModal(true);
+      localStorage.setItem("hasSeenPersonaModal", "true");
+    }
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -228,6 +239,16 @@ export default function Portfolio() {
         ))}
       </div>
 
+      {/* Persona Selection Modal */}
+      <PersonaSelectionModal 
+        isOpen={showPersonaModal}
+        onClose={() => setShowPersonaModal(false)}
+        onSelect={(persona) => {
+          setPersona(persona);
+          setShowPersonaModal(false);
+        }}
+      />
+
       {/* Modern Header */}
       <header className="fixed top-0 w-full bg-black/90 backdrop-blur-lg z-50 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
@@ -250,6 +271,9 @@ export default function Portfolio() {
                 )
               )}
             </ul>
+            <div>
+              <PersonaSelector onOpenModal={() => setShowPersonaModal(true)} />
+            </div>
           </nav>
         </div>
       </header>

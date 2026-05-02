@@ -128,6 +128,78 @@
     }
   }
 
+  /* Persona system animations */
+  .animate-typewriter {
+    animation: typewriter 3.5s steps(40, end);
+    overflow: hidden;
+    border-right: 2px solid rgba(74, 222, 128, 0.75);
+    white-space: nowrap;
+  }
+
+  @keyframes typewriter {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  @keyframes blink {
+    from {
+      border-color: rgba(74, 222, 128, 0.75);
+    }
+    to {
+      border-color: transparent;
+    }
+  }
+
+  .animate-blink {
+    animation: blink 0.7s infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  /* Modal animations */
+  .animate-modal-enter {
+    animation: modalEnter 0.3s ease-out;
+  }
+
+  @keyframes modalEnter {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-modal-backdrop-enter {
+    animation: backdropEnter 0.3s ease-out;
+  }
+
+  @keyframes backdropEnter {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   /* Mobile typography optimizations */
   .mobile-text {
     font-size: 14px;
