@@ -83,7 +83,7 @@ function CodeBlock({ code, lang }: CodeBlockProps) {
 // Splits raw Markdown text into segments: fenced code blocks vs. prose.
 function parseMarkdown(raw: string): React.ReactNode[] {
   const nodes: React.ReactNode[] = [];
-  const codeBlockRe = /```(\w*)\n([\s\S]*?)```/g;
+  const codeBlockRe = /```([^\n]*)\n([\s\S]*?)```/g;
   let lastIndex = 0;
   let match: RegExpExecArray | null;
 
@@ -212,7 +212,12 @@ export default function AIPlayground() {
   // ── Scroll helpers ──────────────────────────────────────────────────────────
 
   const scrollToBottom = useCallback((behavior: ScrollBehavior = "smooth") => {
-    messagesEndRef.current?.scrollIntoView({ behavior });
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior,
+      });
+    }
   }, []);
 
   // Auto-scroll when messages change
@@ -442,7 +447,7 @@ export default function AIPlayground() {
   // ── Render ──────────────────────────────────────────────────────────────────
 
   return (
-    <Card className="flex-1 flex flex-col mx-2 my-2 sm:mx-4 sm:my-4 lg:mx-auto lg:max-w-4xl bg-gray-900/60 backdrop-blur-md border-gray-800 shadow-2xl overflow-hidden">
+    <Card className="flex flex-col w-full h-[75vh] min-h-[500px] max-h-[800px] mx-2 my-2 sm:mx-4 sm:my-4 lg:mx-auto lg:max-w-4xl bg-gray-900/60 backdrop-blur-md border-gray-800 shadow-2xl overflow-hidden">
 
       {/* ── Header ── */}
       <CardHeader className="border-b border-gray-800 p-3 sm:p-5 flex-shrink-0">
