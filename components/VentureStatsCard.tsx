@@ -1,41 +1,44 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
+import { useEffect } from 'react';
 
 const stats = [
-  { label: 'Active Ventures', value: 4, suffix: '', icon: '🏢' },
-  { label: 'Daily Users', value: 10, suffix: 'K+', icon: '👥' },
-  { label: 'Industries Served', value: 6, suffix: '+', icon: '🌍' },
-  { label: 'Products Shipped', value: 12, suffix: '+', icon: '🚀' },
+  { label: 'Active ventures', value: 4, suffix: '' },
+  { label: 'Total Users', value: 100, suffix: 'K+' },
+  { label: 'Industries served', value: 5, suffix: '+' },
+  { label: 'Products shipped', value: 12, suffix: '+' },
 ];
 
-function AnimatedCounter({ target, suffix, delay }: { target: number; suffix: string; delay: number }) {
-  const [count, setCount] = useState(0);
+const industries = ['Fintech', 'HealthTech', '', 'E-commerce', '', 'SaaS', 'Logistics'];
+
+function AnimatedNumber({ target, suffix, delay }: { target: number; suffix: string; delay: number }) {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.floor(v));
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const duration = 1500;
-      const steps = 40;
-      const increment = target / steps;
-      let current = 0;
-      const interval = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          setCount(target);
-          clearInterval(interval);
-        } else {
-          setCount(Math.floor(current));
-        }
-      }, duration / steps);
-      return () => clearInterval(interval);
+    const timeout = setTimeout(() => {
+      animate(count, target, {
+        duration: 1.6,
+        ease: [0.16, 1, 0.3, 1], // expo ease-out
+      });
     }, delay);
-    return () => clearTimeout(timer);
-  }, [target, delay]);
+    return () => clearTimeout(timeout);
+  }, [target, delay, count]);
 
   return (
-    <span className="font-sans font-black text-3xl sm:text-4xl" style={{ color: 'var(--forest)' }}>
-      {count}{suffix}
+    <span
+      style={{
+        fontFamily: 'var(--font-sans, system-ui)',
+        fontSize: 'clamp(28px, 6vw, 38px)',
+        fontWeight: 800,
+        letterSpacing: '-0.03em',
+        lineHeight: 1,
+        color: 'var(--forest, #1a4d3e)',
+      }}
+    >
+      <motion.span>{rounded}</motion.span>
+      {suffix}
     </span>
   );
 }
@@ -43,69 +46,111 @@ function AnimatedCounter({ target, suffix, delay }: { target: number; suffix: st
 export default function VentureStatsCard() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.2 }}
-      className="rounded-2xl p-7 sm:p-8"
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       style={{
-        background: 'var(--surface-elevated)',
-        border: '1px solid var(--border-light)',
-        boxShadow: 'var(--shadow-lg)',
+        background: 'var(--surface-elevated, #fff)',
+        border: '1px solid var(--border-light, #e8e8e8)',
+        borderRadius: 20,
+        padding: 'clamp(1.5rem, 4vw, 2rem)',
+        boxShadow: 'var(--shadow-lg, 0 8px 32px rgba(0,0,0,0.08))',
       }}
     >
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center"
-          style={{ background: 'rgba(26, 77, 62, 0.08)' }}
+      <div style={{ marginBottom: '1.75rem' }}>
+        <h3
+          style={{
+            fontFamily: 'var(--font-sans, system-ui)',
+            fontSize: 13,
+            fontWeight: 600,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            color: 'var(--text-muted, #999)',
+            marginBottom: 6,
+          }}
         >
-          <span className="text-lg">📊</span>
-        </div>
-        <div>
-          <h3 className="font-sans font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
-            Venture Overview
-          </h3>
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-            Live metrics across portfolio
-          </p>
-        </div>
-        <div className="ml-auto flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#28C840' }} />
-          <span className="text-xs font-medium" style={{ color: 'var(--forest-light)' }}>Active</span>
-        </div>
+          Venture overview
+        </h3>
+        <p
+          style={{
+            fontFamily: 'var(--font-sans, system-ui)',
+            fontSize: 'clamp(16px, 3.5vw, 19px)',
+            fontWeight: 500,
+            color: 'var(--text-primary, #111)',
+            lineHeight: 1.35,
+            maxWidth: 280,
+          }}
+        >
+          Building across {industries.length} industries since&nbsp;2019.
+        </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-4">
-        {stats.map((stat, index) => (
+      {/* Stats — horizontal pairs */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '1px',
+          background: 'var(--border-light, #e8e8e8)',
+          borderRadius: 14,
+          overflow: 'hidden',
+          marginBottom: '1.5rem',
+        }}
+      >
+        {stats.map((stat, i) => (
           <motion.div
             key={stat.label}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
-            className="rounded-xl p-4 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.2 + i * 0.08 }}
             style={{
-              background: 'var(--surface-secondary)',
-              border: '1px solid var(--border-light)',
+              background: 'var(--surface-secondary, #f8f8f7)',
+              padding: 'clamp(1rem, 3vw, 1.25rem)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 6,
             }}
           >
-            <span className="text-xl mb-1 block">{stat.icon}</span>
-            <AnimatedCounter target={stat.value} suffix={stat.suffix} delay={500 + index * 200} />
-            <p className="text-[11px] font-semibold uppercase tracking-wider mt-1" style={{ color: 'var(--text-muted)' }}>
+            <AnimatedNumber target={stat.value} suffix={stat.suffix} delay={400 + i * 150} />
+            <span
+              style={{
+                fontFamily: 'var(--font-sans, system-ui)',
+                fontSize: 11.5,
+                fontWeight: 500,
+                color: 'var(--text-muted, #999)',
+                letterSpacing: '0.01em',
+              }}
+            >
               {stat.label}
-            </p>
+            </span>
           </motion.div>
         ))}
       </div>
 
-      {/* Bottom tag */}
-      <div className="mt-5 pt-4 flex items-center justify-between" style={{ borderTop: '1px solid var(--border-light)' }}>
-        <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
-          Building across Fintech, HealthTech, E-commerce & more
-        </span>
-        <span className="text-xs font-semibold" style={{ color: 'var(--gold)' }}>
-          Since 2019
-        </span>
+      {/* Industry tags */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+        {industries.map((name, i) => (
+          <motion.span
+            key={name}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.7 + i * 0.05 }}
+            style={{
+              fontFamily: 'var(--font-sans, system-ui)',
+              fontSize: 11.5,
+              fontWeight: 500,
+              padding: '4px 10px',
+              borderRadius: 20,
+              background: 'transparent',
+              border: '1px solid var(--border-light, #e8e8e8)',
+              color: 'var(--text-muted, #999)',
+              letterSpacing: '0.01em',
+            }}
+          >
+            {name}
+          </motion.span>
+        ))}
       </div>
     </motion.div>
   );

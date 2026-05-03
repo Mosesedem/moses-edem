@@ -73,7 +73,7 @@ export const generateProfessionalCV = () => {
       ],
       [
         "Database & ORM",
-        "Prisma ORM, PostgreSQL, MySQL, MongoDB, Redis, Database Design & Optimization",
+        "Prisma ORM, PostgreSQL, MySQL, Redis, Database Design & Optimization",
       ],
       [
         "DevOps",

@@ -17,16 +17,17 @@ export default function IntentDialog() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center"
+          className="fixed inset-0 z-[100] overflow-y-auto"
           style={{ background: 'var(--forest-deep)' }}
         >
           {/* Subtle background pattern */}
-          <div className="absolute inset-0 opacity-[0.03]" style={{
+          <div className="fixed inset-0 opacity-[0.03] pointer-events-none" style={{
             backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.5) 1px, transparent 0)`,
             backgroundSize: '40px 40px',
           }} />
 
-          <div className="relative w-full max-w-4xl mx-auto px-6 py-12">
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="relative w-full max-w-4xl mx-auto px-6 py-12 sm:py-16">
             {/* Header */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -106,6 +107,7 @@ export default function IntentDialog() {
             >
               You can switch anytime from the navigation bar.
             </motion.p>
+            </div>
           </div>
         </motion.div>
       )}

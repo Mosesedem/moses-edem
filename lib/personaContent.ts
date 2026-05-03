@@ -130,7 +130,7 @@ export const personaContent: Record<PersonaMode, PersonaContent> = {
     tagline: 'I can debug a server and still hold a conversation. Impressive, right?',
     aboutTitle: 'Beyond The Terminal',
     aboutDescription:
-      'I\'m sarcastic, probably too curious for my own good, and I make a mean jollof rice. I value deep talks, dry humor, and someone who won\'t ask me to "fix their printer" on the first date.',
+      'I love sarcasm, probably too curious for my own good, and I make a mean good food. I value deep talks, dry humor, and someone who won\'t ask me to "fix their printer" on the first date.',
     ctaText: 'Slide Into DMs',
     ctaDescription: 'Start a conversation that doesn\'t involve stack overflows.',
     heroWidget: 'vibe-card',

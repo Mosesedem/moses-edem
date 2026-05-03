@@ -258,7 +258,7 @@ export default function Portfolio() {
             <ProjectShowcase />
 
             {/* ─── AI Playground Section ─── */}
-            <section id="ai-chat" className="section-padding" style={{ background: 'var(--forest)' }}>
+            <section id="ai-chat" className="" style={{ background: 'var(--forest)' }}>
               <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-14">
                   <h2 className="font-serif text-3xl md:text-5xl mb-4" style={{ color: 'var(--text-on-dark)' }}>
@@ -275,6 +275,7 @@ export default function Portfolio() {
 
             {/* ─── Contact Section ─── */}
             <section id="contact" className="section-padding" style={{ background: 'var(--cream)' }}>
+              
               <div className="max-w-3xl mx-auto text-center">
                 <motion.h2
                   key={`contact-title-${currentPersona}`}
