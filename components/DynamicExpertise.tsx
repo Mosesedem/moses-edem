@@ -89,6 +89,25 @@ export default function DynamicExpertise() {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* View More Button */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.5 }}
+          className="mt-12 text-center"
+        >
+          <a 
+            href={(currentPersona === 'employer' || currentPersona === 'investor') ? '/why-moses' : '/about-me'} 
+            className="btn-outline inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5"
+          >
+            View Full Profile
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14m-7-7 7 7-7 7"/>
+            </svg>
+          </a>
+        </motion.div>
       </div>
     </section>
   );
