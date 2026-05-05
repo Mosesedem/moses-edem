@@ -2,10 +2,12 @@
 
 import React, { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
-
+import Image from "next/image"
+import {Button} from "@/components/ui/button"
+import { ArrowLeftIcon } from "lucide-react";
 // --- DATA ---
 const facts = [
-  { icon: "📍", key: "Based in", val: "Uyo, Nigeria — heading to Japan in 5 years" },
+  { icon: "📍", key: "Based in", val: "Uyo, Nigeria" },
   { icon: "💻", key: "By day", val: "Software Developer & Founder" },
   { icon: "🥊", key: "Surprise skill", val: "Boxing. Yes, really." },
   { icon: "🎵", key: "Soundtrack", val: "Blues & Afrobeats — depends on the mood" },
@@ -27,7 +29,7 @@ const relationshipCards = [
     label: "Love language",
     content: (
       <>
-        I'm all about <strong className="text-gold font-medium">physical touch</strong> — presence over words. Being there, holding space, showing up. That's how I love and how I want to be loved.
+        I'm all about <strong className="text-gold font-medium">physical touch</strong>. Presence over words. Being there, holding space, showing up. That's how I love and how I want to be loved.
       </>
     ),
     accent: false,
@@ -36,7 +38,7 @@ const relationshipCards = [
     label: "Communication style",
     content: (
       <>
-        <strong className="text-gold font-medium">Very expressive and open.</strong> I say what I mean and mean what I say. No games, no subtext — just honest, real conversation.
+        <strong className="text-gold font-medium">Very expressive and open.</strong> I say what I mean and mean what I say. No games, no subtext, just honest, and real conversation.
       </>
     ),
     accent: false,
@@ -45,7 +47,7 @@ const relationshipCards = [
     label: "Attachment style",
     content: (
       <>
-        <strong className="text-gold font-medium">Secure.</strong> I don't need constant validation but I show up fully when I'm in. I'm a lover — and yes, I've been a leaver too. Growth is part of the story.
+        <strong className="text-gold font-medium">Secure.</strong> I don't need constant validation but I show up fully when I'm in. I'm a lover ✌️ and yes, I've been a leaver too. Growth is part of the story.
       </>
     ),
     accent: true,
@@ -54,7 +56,7 @@ const relationshipCards = [
     label: "The green flag you should know",
     content: (
       <>
-        I will <strong className="text-gold font-medium">genuinely make you laugh.</strong> Not forced, not performed — real, dark-humoured, sarcastic, belly-laugh funny. And I've got a big heart to back it up.
+        I will <strong className="text-gold font-medium">genuinely make you laugh.</strong> Not forced, not performed. Real, dark-humoured, sarcastic, belly-laugh funny. And I've got a big heart to back it up.
       </>
     ),
     accent: false,
@@ -79,34 +81,49 @@ const visionSteps = [
     title: "Born in Akwa Ibom",
     desc: "The journey started in the heart of Uyo, Nigeria. A background that taught the value of community, resilience, and the drive to build something that lasts.",
   },
+    {
+    date: "2015",
+    title: "Heritage Polytechnic, Eket",
+    desc: "Moved to Eket to study.",
+  },
+    {
+    date: "2018",
+    title: "Back to Uyo",
+    desc: "Tried starting a business, struggled at it, then settled for a job.",
+  },
   {
-    date: "Education",
+    date: "2019",
     title: "University of Uyo",
     desc: "Studying Soil Science and Land Resource Management while simultaneously teaching myself the architecture of the digital world. The transition from physical soil to digital systems.",
   },
   {
-    date: "2023",
-    title: "First Major Builds",
-    desc: "Launched Dakuri (Crypto trading) and AI SEO. Exploring the intersection of finance, automation, and user experience for the first time at scale.",
+    date: "2021",
+    title: "Broke into tech.",
+    desc: "Launched Rainbowtellers, starting learning HTML, CSS ans Js.",
+  },
+    {
+    date: "2022",
+    title: "Proton Medicare",
+    desc: "Launched Proton Medicare, built it from the ground up and got our first 200. customers.",
   },
   {
     date: "2024",
     title: "The Expansion",
-    desc: "Scaling Proton Medicare and Instant OTP. Deep-diving into healthcare accessibility and global SMS infrastructure, serving hundreds of thousands of users.",
+    desc: "Scaling Proton Medicare and realized I had other passions.",
   },
   {
     date: "Now",
-    title: "Proton Medicare & Renboot",
-    desc: "Scaling health insurance access in Nigeria while building Renboot—decentralised hardware infrastructure for the next generation of builders.",
+    title: "Renboot",
+    desc: " Recently started building Renboot. A decentralised hardware infrastructure for the next generation of builders.",
   },
   {
     date: "5 Years",
-    title: "Living in Japan",
-    desc: "Immersed in a culture that values precision, craftsmanship, and quiet ambition. Building global tech from the heart of Asia.",
+    title: "A family man",
+    desc: "I should have a thriving family.",
   },
   {
     date: "Long-term",
-    title: "Wealth & Legacy",
+    title: "Legacy",
     desc: "Passing on wealth to the next generation — not just money, but values, opportunities, and a name that means something.",
   },
 ];
@@ -229,13 +246,24 @@ function Hero() {
       <div className="hidden lg:flex items-center justify-center p-20 relative bg-forest-deep">
         <div className="relative group">
           {/* Decorative frame */}
-          <div className="absolute -inset-4 border border-gold/20 rounded-[200px_200px_0_0] scale-[1.02] group-hover:scale-105 transition-transform duration-700" />
-          
-          <div className="w-80 h-[450px] rounded-[160px_160px_0_0] bg-gradient-to-b from-[#2a3a30] via-[#1a2d25] to-[#0f1d18] border border-gold/30 flex items-center justify-center overflow-hidden relative">
+          <div className="absolute -inset-4 border border-gold/20  group-hover:scale-105 transition-transform duration-700" />
+          {/* rounded-[160px_160px_0_0] */}
+          <div className="w-80 h-[450px]  bg-gradient-to-b from-[#2a3a30] via-[#1a2d25] to-[#0f1d18] border border-gold/30 flex items-center justify-center overflow-hidden relative">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(212,168,67,0.1),transparent_70%)]" />
             <span className="font-serif text-[120px] font-black text-gold/30 tracking-tighter select-none">
               ME
             </span>
+            
+{/* <Image 
+height={100}
+width={100}
+alt='Moses Edem Best Photo'
+src='/images/moses.jpg'
+fill
+// className="w-full h-full"
+/> */}
+
+
           </div>
 
           {/* Floating Stats */}
@@ -547,7 +575,7 @@ function CtaFooter() {
     "Wants children",
     "Faith-driven",
     "Ambitious builder",
-    "Japan bound",
+    // "Japan bound",
   ];
 
   return (
@@ -605,6 +633,29 @@ function CtaFooter() {
 export default function AboutMePage() {
   return (
     <main className="min-h-screen bg-cream text-forest font-sans selection:bg-gold/30 selection:text-forest overflow-x-hidden">
+      {/* --- Navigation --- */}
+      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-forest/5 px-6 py-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+<Button variant="ghost" onClick={() => window.history.back()}>
+  <ArrowLeftIcon /> 
+<span>Go Back</span> 
+</Button>
+          
+          {/* <Link href="/" className="text-xl font-serif text-forest group">
+            Moses <span className="text-gold group-hover:opacity-80 transition-opacity">Edem</span>
+          </Link> */}
+          <div className="flex gap-6 items-center">
+            {/* <Link href="/why-moses" className="text-sm font-medium text-gray-500 hover:text-forest transition-colors">Professional</Link> */}
+            {/* <a 
+              href="mailto:mosesedem81@gmail.com" 
+              className="bg-forest text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-forest/90 transition-all shadow-lg shadow-forest/10"
+            >
+              Hire Moses
+            </a> */}
+          </div>
+        </div>
+      </nav>
+
       <FloatingParticles />
       
       <Hero />

@@ -91,6 +91,9 @@ export default function DynamicExpertise() {
         </motion.div>
 
         {/* View More Button */}
+
+
+      { (currentPersona === "employer" || currentPersona === "romantic") && (
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -99,7 +102,7 @@ export default function DynamicExpertise() {
           className="mt-12 text-center"
         >
           <a 
-            href={(currentPersona === 'employer' || currentPersona === 'investor') ? '/why-moses' : '/about-me'} 
+            href={currentPersona === 'employer' ? '/why-moses' : '/about-me'} 
             className="btn-outline inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5"
           >
             View Full Profile
@@ -108,6 +111,7 @@ export default function DynamicExpertise() {
             </svg>
           </a>
         </motion.div>
+      )}
       </div>
     </section>
   );

@@ -18,10 +18,12 @@ import {
   CheckCircle2,
   ExternalLink,
   Code2,
-  Download
+  Download,
+  ArrowLeftIcon
 } from "lucide-react";
 import Link from "next/link";
 import { downloadProfessionalCV } from "@/components/cv-generator";
+import { Button } from "@/components/ui/button";
 
 // --- Components ---
 
@@ -144,17 +146,22 @@ export default function WhyMosesPage() {
       {/* --- Navigation --- */}
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-forest/5 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-serif text-forest group">
+<Button variant="ghost" onClick={() => window.history.back()}>
+  <ArrowLeftIcon /> 
+<span>Go Back</span> 
+</Button>
+          
+          {/* <Link href="/" className="text-xl font-serif text-forest group">
             Moses <span className="text-gold group-hover:opacity-80 transition-opacity">Edem</span>
-          </Link>
+          </Link> */}
           <div className="flex gap-6 items-center">
-            <Link href="/about-me" className="text-sm font-medium text-gray-500 hover:text-forest transition-colors">Personal</Link>
-            <a 
+            {/* <Link href="/why-moses" className="text-sm font-medium text-gray-500 hover:text-forest transition-colors">Professional</Link> */}
+            {/* <a 
               href="mailto:mosesedem81@gmail.com" 
               className="bg-forest text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-forest/90 transition-all shadow-lg shadow-forest/10"
             >
               Hire Moses
-            </a>
+            </a> */}
           </div>
         </div>
       </nav>
@@ -163,14 +170,14 @@ export default function WhyMosesPage() {
       <section className="relative pt-40 pb-20 px-6 overflow-hidden">
         <div className="max-w-4xl mx-auto text-center">
           <div className="relative z-10 flex flex-col items-center">
-            <motion.div 
+            {/* <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest/5 border border-forest/10 text-forest text-xs font-bold uppercase tracking-widest mb-6"
             >
               <span className="w-2 h-2 rounded-full bg-forest animate-pulse" />
               Available for Strategic Roles
-            </motion.div>
+            </motion.div> */}
             
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
@@ -253,7 +260,7 @@ export default function WhyMosesPage() {
                 className="p-10 rounded-3xl bg-white border border-forest/5 hover:border-gold/30 hover:shadow-xl transition-all group"
               >
                 <div className="w-14 h-14 rounded-2xl bg-forest/5 flex items-center justify-center text-forest mb-8 group-hover:bg-forest group-hover:text-white transition-all">
-                  {React.cloneElement(reason.icon as React.ReactElement, { className: "w-7 h-7" })}
+                  {React.cloneElement(reason.icon as React.ReactElement<any>, { className: "w-7 h-7" })}
                 </div>
                 <h3 className="text-xl font-bold text-forest mb-4">{reason.title}</h3>
                 <p className="text-gray-500 leading-relaxed">{reason.desc}</p>
