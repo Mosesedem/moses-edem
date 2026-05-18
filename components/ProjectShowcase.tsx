@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { ComponentType } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import { usePersona } from "@/hooks/usePersona";
@@ -10,24 +11,52 @@ import {
   Shield,
   Code,
   Terminal,
-  Check,
-  Github,
   Database,
   Lock,
   Globe,
   Bell,
   Key,
-  Menu,
 } from "lucide-react";
+
+type ProjectIcon = ComponentType<{ className?: string }>;
+
+const categoryIcons: Record<string, ProjectIcon> = {
+  "Virtual Numbers": Key,
+  "Fintech / Payments": Database,
+  Investment: Shield,
+  Events: Bell,
+  Hospitality: Globe,
+  Government: Shield,
+  Marketplace: Code,
+  DevTools: Terminal,
+  Healthcare: Lock,
+  AI: Zap,
+  Infrastructure: Database,
+  Web3: Globe,
+};
+
+const fallbackProjectIcons: ProjectIcon[] = [
+  Key,
+  Database,
+  Globe,
+  Bell,
+  Zap,
+  Shield,
+  Lock,
+  Code,
+  Terminal,
+];
+
 export default function ProjectShowcase() {
   const { currentPersona } = usePersona();
   const content = personaContent[currentPersona];
   const [showAll, setShowAll] = useState(false);
 
-  const visibleProjects = showAll ? projectsData : projectsData.slice(0, 6);
-  const featured = projectsData.filter((p) => p.featured);
-  const regular = projectsData.filter((p) => !p.featured);
-  const displayRegular = showAll ? regular : regular.slice(0, 3);
+  const featuredProjects = projectsData.filter((p) => p.featured);
+  const regularProjects = projectsData.filter((p) => !p.featured);
+  const visibleRegularProjects = showAll
+    ? regularProjects
+    : regularProjects.slice(0, 4);
 
   // Category color mapping
   const categoryColors: Record<string, string> = {
@@ -45,20 +74,27 @@ export default function ProjectShowcase() {
     Web3: "#f97316",
   };
 
+  const getProjectIcon = (category: string, index: number) => {
+    const Icon =
+      categoryIcons[category] ||
+      fallbackProjectIcons[index % fallbackProjectIcons.length];
+    return <Icon className="h-5 w-5" />;
+  };
+
   return (
     <section
       id="projects"
       className="section-padding"
       style={{ background: "var(--cream)" }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <motion.div
           key={`projects-header-${currentPersona}`}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-14"
+          className="text-center mb-12"
         >
           <h2
             className="font-serif text-3xl md:text-5xl mb-4"
@@ -74,191 +110,299 @@ export default function ProjectShowcase() {
           </p>
         </motion.div>
 
-        {/* Featured Projects — Bento Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-          {featured.map((project, index) => {
-            const catColor =
-              categoryColors[project.category] || "var(--forest)";
-            return (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                className="card-clean overflow-hidden group relative"
-              >
-                {/* Accent bar */}
-                {/* <div className="h-1 w-full" style={{ background: catColor }} /> */}
+        {featuredProjects.length > 0 && (
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p
+                  className="text-[11px] font-bold uppercase tracking-[0.24em] mb-2"
+                  style={{ color: "var(--gold)" }}
+                >
+                  Featured Projects
+                </p>
+                <h3
+                  className="text-xl md:text-2xl font-semibold"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  The pieces worth calling out first
+                </h3>
+              </div>
+            </div>
 
-                <div className="p-6 sm:p-7">
-                  {/* Top row */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <span
-                        className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"
-                        style={{
-                          background: `${catColor}12`,
-                          color: catColor,
-                          border: `1px solid ${catColor}25`,
-                        }}
-                      >
-                        {project.category}
-                      </span>
-                      {project.metrics && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {featuredProjects.map((project, index) => {
+                const catColor =
+                  categoryColors[project.category] || "var(--forest)";
+                const techPreview = project.tech.slice(0, 4);
+                const hiddenTechCount = Math.max(
+                  project.tech.length - techPreview.length,
+                  0,
+                );
+
+                return (
+                  <motion.div
+                    key={project.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.45, delay: index * 0.05 }}
+                    className="card-clean p-8 sm:p-10 group relative"
+                    style={{
+                      background: "var(--surface-primary)",
+                      boxShadow: "var(--shadow-md)",
+                    }}
+                  >
+                    <div
+                      className="w-10 h-10 border flex items-center justify-center mb-6 rounded-md transition-all duration-300 group-hover:scale-[1.03]"
+                      style={{
+                        borderColor: `${catColor}25`,
+                        background: `${catColor}08`,
+                        color: catColor,
+                      }}
+                    >
+                      {getProjectIcon(project.category, index)}
+                    </div>
+
+                    <div className="flex items-start justify-between gap-3 mb-4">
+                      <div className="flex flex-wrap items-center gap-2">
                         <span
-                          className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
+                          className="text-[10px] font-bold uppercase tracking-[0.18em] px-3 py-1 rounded-full"
                           style={{
-                            background: "rgba(212, 168, 67, 0.1)",
-                            color: "var(--gold)",
+                            background: `${catColor}10`,
+                            color: catColor,
+                            border: `1px solid ${catColor}20`,
                           }}
                         >
-                          {project.metrics[currentPersona]}
+                          {project.category}
+                        </span>
+                        <span
+                          className="text-[10px] font-bold uppercase tracking-[0.18em] px-3 py-1 rounded-full"
+                          style={{
+                            background: "rgba(212, 168, 67, 0.08)",
+                            color: "var(--gold)",
+                            border: "1px solid rgba(212, 168, 67, 0.16)",
+                          }}
+                        >
+                          Featured
+                        </span>
+                        {project.metrics && (
+                          <span
+                            className="text-[10px] font-bold uppercase tracking-[0.18em] px-3 py-1 rounded-full"
+                            style={{
+                              background: "var(--surface-secondary)",
+                              color: "var(--forest)",
+                              border: "1px solid var(--border-light)",
+                            }}
+                          >
+                            {project.metrics[currentPersona]}
+                          </span>
+                        )}
+                      </div>
+
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 opacity-60 group-hover:opacity-100"
+                          style={{
+                            border: "1px solid var(--border-light)",
+                            color: "var(--text-muted)",
+                            background: "var(--surface-secondary)",
+                          }}
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
+
+                    <h3
+                      className="text-[17px] sm:text-[18px] font-semibold mb-3 tracking-normal leading-snug"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      {project.title}
+                    </h3>
+
+                    <p
+                      className="text-[14px] leading-[1.65] font-light mb-6"
+                      style={{ color: "var(--text-secondary)" }}
+                    >
+                      {project.descriptions[currentPersona]}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 items-center">
+                      {techPreview.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-[10px] font-semibold uppercase tracking-[0.16em] px-2.5 py-1 rounded-md"
+                          style={{
+                            background: "var(--surface-secondary)",
+                            color: "var(--text-muted)",
+                            border: "1px solid var(--border-light)",
+                          }}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {hiddenTechCount > 0 && (
+                        <span
+                          className="text-[10px] font-semibold px-2 py-1 rounded-md"
+                          style={{ color: "var(--text-muted)" }}
+                        >
+                          +{hiddenTechCount}
                         </span>
                       )}
                     </div>
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 opacity-60 group-hover:opacity-100"
-                        style={{
-                          border: "1px solid var(--border-light)",
-                          color: "var(--text-muted)",
-                        }}
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    )}
-                  </div>
 
-                  {/* Title */}
-                  <h3
-                    className="font-sans font-bold text-xl sm:text-2xl mb-3 transition-colors duration-300 group-hover:text-forest"
-                    style={{ color: "var(--text-primary)" }}
-                  >
-                    {project.title}
-                  </h3>
+                    <div
+                      className="absolute inset-x-0 bottom-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{
+                        background: `linear-gradient(90deg, transparent, ${catColor}, transparent)`,
+                      }}
+                    />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
-                  {/* Description — persona-specific */}
-                  <p
-                    className="text-sm leading-relaxed mb-5"
-                    style={{ color: "var(--text-secondary)" }}
-                  >
-                    {project.descriptions[currentPersona]}
-                  </p>
-
-                  {/* Tech pills */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md"
-                        style={{
-                          background: "var(--surface-secondary)",
-                          color: "var(--text-muted)",
-                        }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Regular Projects — Compact Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {displayRegular.map((project, index) => {
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px rounded-xl overflow-hidden"
+          style={{
+            background: "var(--border-light)",
+            border: "1px solid var(--border-light)",
+            boxShadow: "var(--shadow-sm)",
+          }}
+        >
+          {visibleRegularProjects.map((project, index) => {
             const catColor =
               categoryColors[project.category] || "var(--forest)";
+            const techPreview = project.tech.slice(0, 4);
+            const hiddenTechCount = Math.max(
+              project.tech.length - techPreview.length,
+              0,
+            );
+
             return (
               <motion.div
                 key={project.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.06 }}
-                className="card-clean overflow-hidden group"
+                transition={{ duration: 0.45, delay: index * 0.05 }}
+                className="card-clean p-8 sm:p-10 hover:-translate-y-0.5 group relative"
+                style={{
+                  background: "var(--surface-primary)",
+                  borderRadius: "0",
+                  boxShadow: "none",
+                }}
               >
-                {/* <div
-                  className="h-0.5 w-full"
-                  style={{ background: catColor }}
-                /> */}
-                <div className="p-5">
-                  <div className="flex items-start justify-between mb-3">
+                <div
+                  className="w-10 h-10 border flex items-center justify-center mb-6 rounded-md transition-all duration-300 group-hover:scale-[1.03]"
+                  style={{
+                    borderColor: `${catColor}25`,
+                    background: `${catColor}08`,
+                    color: catColor,
+                  }}
+                >
+                  {getProjectIcon(project.category, index)}
+                </div>
+
+                <div className="flex items-start justify-between gap-3 mb-4">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span
-                      className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full"
+                      className="text-[10px] font-bold uppercase tracking-[0.18em] px-3 py-1 rounded-full"
                       style={{
-                        background: `${catColor}12`,
+                        background: `${catColor}10`,
                         color: catColor,
-                        border: `1px solid ${catColor}25`,
+                        border: `1px solid ${catColor}20`,
                       }}
                     >
                       {project.category}
                     </span>
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 opacity-50 group-hover:opacity-100"
+                    {project.metrics && (
+                      <span
+                        className="text-[10px] font-bold uppercase tracking-[0.18em] px-3 py-1 rounded-full"
                         style={{
+                          background: "var(--surface-secondary)",
+                          color: "var(--forest)",
                           border: "1px solid var(--border-light)",
-                          color: "var(--text-muted)",
                         }}
                       >
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
+                        {project.metrics[currentPersona]}
+                      </span>
                     )}
                   </div>
 
-                  <h3
-                    className="font-sans font-bold text-base mb-2 transition-colors duration-300 group-hover:text-forest"
-                    style={{ color: "var(--text-primary)" }}
-                  >
-                    {project.title}
-                  </h3>
-                  <p
-                    className="text-sm leading-relaxed mb-3 line-clamp-2"
-                    style={{ color: "var(--text-muted)" }}
-                  >
-                    {project.descriptions[currentPersona]}
-                  </p>
-                  <div className="flex flex-wrap gap-1">
-                    {project.tech.slice(0, 4).map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded"
-                        style={{
-                          background: "var(--surface-secondary)",
-                          color: "var(--text-muted)",
-                        }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.tech.length > 4 && (
-                      <span
-                        className="text-[10px] font-semibold px-2 py-0.5"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        +{project.tech.length - 4}
-                      </span>
-                    )}
-                  </div>
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 opacity-60 group-hover:opacity-100"
+                      style={{
+                        border: "1px solid var(--border-light)",
+                        color: "var(--text-muted)",
+                        background: "var(--surface-secondary)",
+                      }}
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  )}
                 </div>
+
+                <h3
+                  className="text-[17px] sm:text-[18px] font-semibold mb-3 tracking-normal leading-snug"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  {project.title}
+                </h3>
+
+                <p
+                  className="text-[14px] leading-[1.65] font-light mb-6"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  {project.descriptions[currentPersona]}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 items-center">
+                  {techPreview.map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-[10px] font-semibold uppercase tracking-[0.16em] px-2.5 py-1 rounded-md"
+                      style={{
+                        background: "var(--surface-secondary)",
+                        color: "var(--text-muted)",
+                        border: "1px solid var(--border-light)",
+                      }}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                  {hiddenTechCount > 0 && (
+                    <span
+                      className="text-[10px] font-semibold px-2 py-1 rounded-md"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      +{hiddenTechCount}
+                    </span>
+                  )}
+                </div>
+
+                <div
+                  className="absolute inset-x-0 bottom-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: `linear-gradient(90deg, transparent, ${catColor}, transparent)`,
+                  }}
+                />
               </motion.div>
             );
           })}
         </div>
 
-        {/* Show All Button */}
-        {regular.length > 3 && !showAll && (
-          <div className="flex justify-center mt-14">
+        {regularProjects.length > visibleRegularProjects.length && !showAll && (
+          <div className="flex justify-center mt-12">
             <button
               onClick={() => setShowAll(true)}
               className="btn-outline inline-flex items-center gap-2"
@@ -268,70 +412,6 @@ export default function ProjectShowcase() {
             </button>
           </div>
         )}
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.08] border border-white/[0.08] rounded-xl overflow-hidden ">
-        {[
-          {
-            icon: <Key className="h-5 w-5" />,
-            title: "Authentication",
-            desc: "Email/password, OAuth (Google, GitHub), magic links, and session management — all production-ready out of the box.",
-          },
-          {
-            icon: <Database className="h-5 w-5" />,
-            title: "Type-Safe Database",
-            desc: "A schema-driven document database with full TypeScript autocomplete. Define once, query everywhere, validate always.",
-          },
-          {
-            icon: <Globe className="h-5 w-5" />,
-            title: "File Storage",
-            desc: "Upload, move, copy, and serve files via Cloudflare R2 or S3. Presigned URLs and CDN delivery built-in.",
-          },
-          {
-            icon: <Bell className="h-5 w-5" />,
-            title: "Realtime Events",
-            desc: "Subscribe to document changes in real time over WebSocket. Token-scoped, per-collection, with automatic reconnection.",
-          },
-          {
-            icon: <Zap className="h-5 w-5" />,
-            title: "Webhooks & Cron",
-            desc: "Register HTTP webhooks on document events and schedule recurring jobs with human-readable syntax or cron expressions.",
-          },
-          {
-            icon: <Shield className="h-5 w-5" />,
-            title: "Schema Validation",
-            desc: "Define required fields, types, and uniqueness constraints. The API enforces them on every write — no extra code needed.",
-          },
-          {
-            icon: <Lock className="h-5 w-5" />,
-            title: "Secure by Default",
-            desc: "AES-256-GCM encryption for sensitive data, HMAC-signed webhooks, CSRF-protected OAuth, and rate limiting on every endpoint.",
-          },
-          {
-            icon: <Code className="h-5 w-5" />,
-            title: "REST API",
-            desc: "Every collection gets a full REST API automatically. OpenAPI spec included — import into Postman or generate a client in any language.",
-          },
-          {
-            icon: <Terminal className="h-5 w-5" />,
-            title: "Self-Host Ready",
-            desc: "Deploy via Docker. Full data ownership with zero vendor lock-in. Runs on any VPS, Kubernetes cluster, or cloud provider.",
-          },
-        ].map(({ icon, title, desc }) => (
-          <div
-            key={title}
-            className="bg-black p-10 hover:bg-[#050505] transition-colors duration-300 group"
-          >
-            <div className="w-10 h-10 border border-white/10 flex items-center justify-center mb-6 text-zinc-400 group-hover:border-white/30 group-hover:text-white transition-all bg-white/[0.02] rounded-md">
-              {icon}
-            </div>
-            <h3 className="text-[16px] font-semibold text-white mb-3 tracking-tight">
-              {title}
-            </h3>
-            <p className="text-[14px] text-zinc-400 leading-[1.6] font-light">
-              {desc}
-            </p>
-          </div>
-        ))}
       </div>
     </section>
   );
