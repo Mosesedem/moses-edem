@@ -1,27 +1,64 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 
 import React, { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
-import Image from "next/image"
-import {Button} from "@/components/ui/button"
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 // --- DATA ---
 const facts = [
   { icon: "📍", key: "Based in", val: "Uyo, Nigeria" },
   { icon: "💻", key: "By day", val: "Software Developer & Founder" },
   { icon: "🥊", key: "Surprise skill", val: "Boxing. Yes, really." },
-  { icon: "🎵", key: "Soundtrack", val: "Blues & Afrobeats — depends on the mood" },
-  { icon: "📚", key: "Currently", val: "Moving into OS-level programming (wish me luck)" },
-  { icon: "🙏", key: "Faith", val: "Very important — it's a foundation, not a footnote" },
+  {
+    icon: "🎵",
+    key: "Soundtrack",
+    val: "Blues & Afrobeats — depends on the mood",
+  },
+  {
+    icon: "📚",
+    key: "Currently",
+    val: "Moving into OS-level programming (wish me luck)",
+  },
+  {
+    icon: "🙏",
+    key: "Faith",
+    val: "Very important — it's a foundation, not a footnote",
+  },
 ];
 
 const interests = [
-  { icon: "🎵", title: "Music", desc: "Blues and Afrobeats are my reset buttons. Music is how I recharge, think, and feel. It's not a hobby — it's a lifestyle." },
-  { icon: "🍳", title: "Cooking", desc: "I genuinely love to cook. It's creative, grounding, and one of the best ways I know to show someone I care." },
-  { icon: "✈️", title: "Travel", desc: "My dream? Visit all the STAN countries — Kazakhstan, Uzbekistan, Kyrgyzstan... the kind of trip most people never take." },
-  { icon: "📖", title: "Reading", desc: "Self-improvement and business books. I invest in my mind like I invest in my projects — intentionally." },
-  { icon: "🌍", title: "Global Politics", desc: "International politics fascinates me. Geopolitics, diplomacy, the power of nations — I'm watching it all carefully." },
-  { icon: "🥊", title: "Boxing & Gym", desc: "The gym keeps me grounded. Boxing teaches discipline and confidence in a way nothing else does." },
+  {
+    icon: "🎵",
+    title: "Music",
+    desc: "Blues and Afrobeats are my reset buttons. Music is how I recharge, think, and feel. It's not a hobby — it's a lifestyle.",
+  },
+  {
+    icon: "🍳",
+    title: "Cooking",
+    desc: "I genuinely love to cook. It's creative, grounding, and one of the best ways I know to show someone I care.",
+  },
+  {
+    icon: "✈️",
+    title: "Travel",
+    desc: "My dream? Visit all the STAN countries — Kazakhstan, Uzbekistan, Kyrgyzstan... the kind of trip most people never take.",
+  },
+  {
+    icon: "📖",
+    title: "Reading",
+    desc: "Self-improvement and business books. I invest in my mind like I invest in my projects — intentionally.",
+  },
+  {
+    icon: "🌍",
+    title: "Global Politics",
+    desc: "International politics fascinates me. Geopolitics, diplomacy, the power of nations — I'm watching it all carefully.",
+  },
+  {
+    icon: "🥊",
+    title: "Boxing & Gym",
+    desc: "The gym keeps me grounded. Boxing teaches discipline and confidence in a way nothing else does.",
+  },
 ];
 
 const relationshipCards = [
@@ -29,7 +66,10 @@ const relationshipCards = [
     label: "Love language",
     content: (
       <>
-        I'm all about <strong className="text-gold font-medium">physical touch</strong>. Presence over words. Being there, holding space, showing up. That's how I love and how I want to be loved.
+        I'm all about{" "}
+        <strong className="text-gold font-medium">physical touch</strong>.
+        Presence over words. Being there, holding space, showing up. That's how
+        I love and how I want to be loved.
       </>
     ),
     accent: false,
@@ -38,7 +78,11 @@ const relationshipCards = [
     label: "Communication style",
     content: (
       <>
-        <strong className="text-gold font-medium">Very expressive and open.</strong> I say what I mean and mean what I say. No games, no subtext, just honest, and real conversation.
+        <strong className="text-gold font-medium">
+          Very expressive and open.
+        </strong>{" "}
+        I say what I mean and mean what I say. No games, no subtext, just
+        honest, and real conversation.
       </>
     ),
     accent: false,
@@ -47,7 +91,9 @@ const relationshipCards = [
     label: "Attachment style",
     content: (
       <>
-        <strong className="text-gold font-medium">Secure.</strong> I don't need constant validation but I show up fully when I'm in. I'm a lover ✌️ and yes, I've been a leaver too. Growth is part of the story.
+        <strong className="text-gold font-medium">Secure.</strong> I don't need
+        constant validation but I show up fully when I'm in. I'm a lover ✌️ and
+        yes, I've been a leaver too. Growth is part of the story.
       </>
     ),
     accent: true,
@@ -56,7 +102,12 @@ const relationshipCards = [
     label: "The green flag you should know",
     content: (
       <>
-        I will <strong className="text-gold font-medium">genuinely make you laugh.</strong> Not forced, not performed. Real, dark-humoured, sarcastic, belly-laugh funny. And I've got a big heart to back it up.
+        I will{" "}
+        <strong className="text-gold font-medium">
+          genuinely make you laugh.
+        </strong>{" "}
+        Not forced, not performed. Real, dark-humoured, sarcastic, belly-laugh
+        funny. And I've got a big heart to back it up.
       </>
     ),
     accent: false,
@@ -81,12 +132,12 @@ const visionSteps = [
     title: "Born in Akwa Ibom",
     desc: "The journey started in the heart of Uyo, Nigeria. A background that taught the value of community, resilience, and the drive to build something that lasts.",
   },
-    {
+  {
     date: "2015",
     title: "Heritage Polytechnic, Eket",
     desc: "Moved to Eket to study.",
   },
-    {
+  {
     date: "2018",
     title: "Back to Uyo",
     desc: "Tried starting a business, struggled at it, then settled for a job.",
@@ -97,14 +148,19 @@ const visionSteps = [
     desc: "Studying Soil Science and Land Resource Management while simultaneously teaching myself the architecture of the digital world. The transition from physical soil to digital systems.",
   },
   {
-    date: "2021",
-    title: "Broke into tech.",
-    desc: "Launched Rainbowtellers, starting learning HTML, CSS ans Js.",
+    date: "2020",
+    title: "Covid Happened",
+    desc: "Broke into tech, starting by learning HTML, CSS ans Js.",
   },
-    {
+  {
+    date: "2021",
+    title: "The Tech Journey begins",
+    desc: "Started Rainbowtellers, Joined the Koboconnect team",
+  },
+  {
     date: "2022",
     title: "Proton Medicare",
-    desc: "Launched Proton Medicare, built it from the ground up and got our first 200. customers.",
+    desc: "Launched Proton Medicare, built it from the ground up and got our first 200 customers.",
   },
   {
     date: "2024",
@@ -169,7 +225,7 @@ function FadeUp({
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -222,7 +278,8 @@ function Hero() {
           </p>
 
           <p className="font-serif text-xl italic text-forest leading-relaxed border-l-2 border-gold pl-6 mb-12 max-w-md">
-            "A builder at heart — of software, of wealth, of something real with someone worth it."
+            "A builder at heart — of software, of wealth, of something real with
+            someone worth it."
           </p>
 
           <div className="flex flex-wrap gap-2">
@@ -230,8 +287,8 @@ function Hero() {
               <span
                 key={chip}
                 className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wider border transition-all duration-300 ${
-                  i === 0 
-                    ? "bg-forest text-cream border-forest shadow-lg" 
+                  i === 0
+                    ? "bg-forest text-cream border-forest shadow-lg"
                     : "bg-transparent text-forest border-forest/30 hover:border-gold hover:text-gold"
                 }`}
               >
@@ -253,8 +310,8 @@ function Hero() {
             <span className="font-serif text-[120px] font-black text-gold/30 tracking-tighter select-none">
               ME
             </span>
-            
-{/* <Image 
+
+            {/* <Image 
 height={100}
 width={100}
 alt='Moses Edem Best Photo'
@@ -262,8 +319,6 @@ src='/images/moses.jpg'
 fill
 // className="w-full h-full"
 /> */}
-
-
           </div>
 
           {/* Floating Stats */}
@@ -273,13 +328,17 @@ fill
               { num: "27", label: "Years" },
               { num: "∞", label: "Ambition" },
             ].map((s, i) => (
-              <div 
-                key={s.label} 
+              <div
+                key={s.label}
                 className="bg-cream/95 backdrop-blur-md p-4 rounded-xl shadow-xl border border-gold/10 min-w-[100px] animate-slide-up"
                 style={{ animationDelay: `${i * 200}ms` }}
               >
-                <div className="font-serif text-2xl font-bold text-forest leading-none">{s.num}</div>
-                <div className="text-[9px] text-text-secondary uppercase tracking-widest mt-1">{s.label}</div>
+                <div className="font-serif text-2xl font-bold text-forest leading-none">
+                  {s.num}
+                </div>
+                <div className="text-[9px] text-text-secondary uppercase tracking-widest mt-1">
+                  {s.label}
+                </div>
               </div>
             ))}
           </div>
@@ -310,18 +369,23 @@ function About() {
             </h2>
             <div className="text-lg text-text-secondary leading-relaxed space-y-6 max-w-2xl font-light">
               <p>
-                I'm a software developer from Uyo who codes things into existence — not just apps,
-                but futures. My weekends mostly look like writing code that <em className="text-forest font-normal">actually works</em>, 
-                listening to blues or Afrobeats, and cooking something I invented on the spot.
+                I'm a software developer from Uyo who codes things into
+                existence — not just apps, but futures. My weekends mostly look
+                like writing code that{" "}
+                <em className="text-forest font-normal">actually works</em>,
+                listening to blues or Afrobeats, and cooking something I
+                invented on the spot.
               </p>
               <p>
-                I'm an ambivert with a big heart, a dark sense of humour, and the kind of loyalty
-                that people write songs about. I'm chill until I'm not — and when I'm
-                passionate about something, you'll know it immediately.
+                I'm an ambivert with a big heart, a dark sense of humour, and
+                the kind of loyalty that people write songs about. I'm chill
+                until I'm not — and when I'm passionate about something, you'll
+                know it immediately.
               </p>
               <p>
-                Fun fact nobody asked for: <span className="text-forest font-normal">I box.</span> Not professionally, but enough to surprise people
-                at the gym.
+                Fun fact nobody asked for:{" "}
+                <span className="text-forest font-normal">I box.</span> Not
+                professionally, but enough to surprise people at the gym.
               </p>
             </div>
           </FadeUp>
@@ -342,7 +406,9 @@ function About() {
                     <div className="text-[10px] text-gold font-bold tracking-widest uppercase mb-1">
                       {f.key}
                     </div>
-                    <div className="text-base text-forest font-medium">{f.val}</div>
+                    <div className="text-base text-forest font-medium">
+                      {f.val}
+                    </div>
                   </div>
                 </li>
               ))}
@@ -381,9 +447,11 @@ function Building() {
           <FadeUp key={p.name} delay={i * 150}>
             <div className="group h-full p-10 rounded-[2rem] bg-forest-deep border border-gold/10 relative overflow-hidden hover:border-gold/40 transition-all duration-500">
               <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                <span className="text-8xl font-serif font-black text-gold">{i + 1}</span>
+                <span className="text-8xl font-serif font-black text-gold">
+                  {i + 1}
+                </span>
               </div>
-              
+
               <div className="relative z-10">
                 <div className="text-[11px] font-bold tracking-[0.2em] text-gold/60 uppercase mb-4">
                   {p.type}
@@ -400,7 +468,16 @@ function Building() {
                   className="inline-flex items-center gap-3 text-gold text-sm font-semibold tracking-wider hover:gap-5 transition-all"
                 >
                   Explore Venture
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M7 17l10-10M17 7H7M17 7v10" />
                   </svg>
                 </Link>
@@ -419,7 +496,9 @@ function TheVision() {
       <div className="max-w-7xl mx-auto">
         <FadeUp>
           <SectionLabel>The Vision</SectionLabel>
-          <h2 className="font-serif text-4xl md:text-6xl text-cream mb-20">Where I'm Headed</h2>
+          <h2 className="font-serif text-4xl md:text-6xl text-cream mb-20">
+            Where I'm Headed
+          </h2>
         </FadeUp>
 
         <div className="relative">
@@ -429,19 +508,29 @@ function TheVision() {
           <div className="space-y-24">
             {visionSteps.map((step, i) => (
               <FadeUp key={step.title} delay={i * 200}>
-                <div className={`relative flex flex-col lg:flex-row items-center gap-12 ${i % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
+                <div
+                  className={`relative flex flex-col lg:flex-row items-center gap-12 ${i % 2 !== 0 ? "lg:flex-row-reverse" : ""}`}
+                >
                   {/* Point */}
                   <div className="absolute left-0 lg:left-1/2 top-0 w-4 h-4 bg-gold rounded-full border-4 border-forest lg:-translate-x-1/2 z-10" />
-                  
+
                   <div className="w-full lg:w-1/2 lg:text-right">
-                    <div className={`${i % 2 === 0 ? 'lg:text-right' : 'lg:text-left'}`}>
-                      <div className="text-gold font-bold text-2xl mb-2">{step.date}</div>
-                      <h3 className="font-serif text-2xl text-cream mb-4">{step.title}</h3>
+                    <div
+                      className={`${i % 2 === 0 ? "lg:text-right" : "lg:text-left"}`}
+                    >
+                      <div className="text-gold font-bold text-2xl mb-2">
+                        {step.date}
+                      </div>
+                      <h3 className="font-serif text-2xl text-cream mb-4">
+                        {step.title}
+                      </h3>
                     </div>
                   </div>
 
                   <div className="w-full lg:w-1/2">
-                    <div className={`${i % 2 === 0 ? 'lg:text-left' : 'lg:text-right'}`}>
+                    <div
+                      className={`${i % 2 === 0 ? "lg:text-left" : "lg:text-right"}`}
+                    >
                       <p className="text-cream/60 leading-relaxed text-lg font-light max-w-md mx-auto lg:mx-0">
                         {step.desc}
                       </p>
@@ -462,23 +551,29 @@ function RelationshipDNA() {
     <section className="max-w-7xl mx-auto px-6 md:px-16 py-32">
       <FadeUp>
         <SectionLabel>Relationship DNA</SectionLabel>
-        <h2 className="font-serif text-4xl md:text-6xl text-forest mb-16">In a relationship, I am...</h2>
+        <h2 className="font-serif text-4xl md:text-6xl text-forest mb-16">
+          In a relationship, I am...
+        </h2>
       </FadeUp>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {relationshipCards.map((card, i) => (
           <FadeUp key={card.label} delay={i * 100}>
-            <div 
+            <div
               className={`p-10 rounded-[2rem] h-full transition-all duration-500 border ${
-                card.accent 
-                  ? "bg-forest text-cream border-forest shadow-2xl" 
+                card.accent
+                  ? "bg-forest text-cream border-forest shadow-2xl"
                   : "bg-surface-secondary text-forest border-border-light hover:border-gold/40"
               }`}
             >
-              <div className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-6 ${card.accent ? 'text-gold' : 'text-gold'}`}>
+              <div
+                className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-6 ${card.accent ? "text-gold" : "text-gold"}`}
+              >
                 {card.label}
               </div>
-              <div className={`text-xl leading-relaxed font-light ${card.accent ? 'text-cream/90' : 'text-text-secondary'}`}>
+              <div
+                className={`text-xl leading-relaxed font-light ${card.accent ? "text-cream/90" : "text-text-secondary"}`}
+              >
                 {card.content}
               </div>
             </div>
@@ -499,9 +594,11 @@ function WinMyHeart() {
               <SectionLabel>Substance over Surface</SectionLabel>
               <h2 className="font-serif text-4xl md:text-6xl text-cream mb-12">
                 Win my heart with <br />
-                <em className="text-gold italic font-medium">real substance.</em>
+                <em className="text-gold italic font-medium">
+                  real substance.
+                </em>
               </h2>
-              
+
               <ul className="space-y-6">
                 {greenFlags.map((flag, i) => (
                   <li key={i} className="flex gap-4 items-start group">
@@ -523,7 +620,10 @@ function WinMyHeart() {
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {dealbreakers.map((d) => (
-                    <span key={d} className="px-6 py-3 rounded-full bg-forest-deep/50 border border-red-500/30 text-red-400 text-sm font-medium">
+                    <span
+                      key={d}
+                      className="px-6 py-3 rounded-full bg-forest-deep/50 border border-red-500/30 text-red-400 text-sm font-medium"
+                    >
                       {d}
                     </span>
                   ))}
@@ -535,8 +635,10 @@ function WinMyHeart() {
                   Perfect First Date
                 </div>
                 <p className="text-cream/60 leading-relaxed font-light text-lg italic">
-                  "A quiet dinner — somewhere we can actually hear each other. No noise, no distractions.
-                  Just presence, eye contact, and real conversation. Atmosphere matters. Chemistry matters more."
+                  "A quiet dinner — somewhere we can actually hear each other.
+                  No noise, no distractions. Just presence, eye contact, and
+                  real conversation. Atmosphere matters. Chemistry matters
+                  more."
                 </p>
               </div>
             </FadeUp>
@@ -552,12 +654,17 @@ function QuoteBand() {
     <section className="bg-cream py-32 px-6 text-center border-y border-gold/10">
       <FadeUp>
         <div className="max-w-3xl mx-auto">
-          <svg className="w-12 h-12 text-gold/20 mx-auto mb-8" fill="currentColor" viewBox="0 0 32 32">
+          <svg
+            className="w-12 h-12 text-gold/20 mx-auto mb-8"
+            fill="currentColor"
+            viewBox="0 0 32 32"
+          >
             <path d="M10 8v8h6v8h-9v-8h3v-8h0zM22 8v8h6v8h-9v-8h3v-8h0z" />
           </svg>
           <blockquote className="font-serif text-3xl md:text-5xl text-forest leading-tight mb-10">
-            Success is being able to independently rely on yourself for the means of a quality
-            life — while having the ones you truly care about right beside you.
+            Success is being able to independently rely on yourself for the
+            means of a quality life — while having the ones you truly care about
+            right beside you.
           </blockquote>
           <cite className="text-[11px] font-bold tracking-[0.3em] uppercase text-gold not-italic">
             — Moses Jacob Edem
@@ -594,12 +701,17 @@ function CtaFooter() {
           </div>
           <h2 className="font-serif text-5xl md:text-7xl text-cream leading-tight mb-12">
             Are you the one <br />
-            <em className="text-gold italic font-medium">worth building with?</em>
+            <em className="text-gold italic font-medium">
+              worth building with?
+            </em>
           </h2>
-          
+
           <div className="flex flex-wrap justify-center gap-3 mb-16">
             {ctaChips.map((chip) => (
-              <span key={chip} className="px-6 py-3 rounded-full bg-forest/20 border border-gold/10 text-gold text-sm font-medium">
+              <span
+                key={chip}
+                className="px-6 py-3 rounded-full bg-forest/20 border border-gold/10 text-gold text-sm font-medium"
+              >
                 {chip}
               </span>
             ))}
@@ -610,7 +722,16 @@ function CtaFooter() {
             className="inline-flex items-center gap-4 bg-gold text-forest-deep px-12 py-6 rounded-full font-bold text-lg hover:scale-105 hover:shadow-[0_0_40px_rgba(212,168,67,0.3)] transition-all"
           >
             Send a Signal
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <line x1="22" y1="2" x2="11" y2="13" />
               <polygon points="22 2 15 22 11 13 2 9 22 2" />
             </svg>
@@ -619,7 +740,9 @@ function CtaFooter() {
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-center gap-8 pt-12 border-t border-gold/10 relative z-10">
-        <div className="font-serif text-2xl font-bold text-gold">Moses Edem</div>
+        <div className="font-serif text-2xl font-bold text-gold">
+          Moses Edem
+        </div>
         <div className="text-[10px] text-cream/40 tracking-widest uppercase">
           Uyo, Nigeria · Software Developer · Founder · 2026
         </div>
@@ -636,11 +759,11 @@ export default function AboutMePage() {
       {/* --- Navigation --- */}
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-forest/5 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-<Button variant="ghost" onClick={() => window.history.back()}>
-  <ArrowLeftIcon /> 
-<span>Go Back</span> 
-</Button>
-          
+          <Button variant="ghost" onClick={() => window.history.back()}>
+            <ArrowLeftIcon />
+            <span>Go Back</span>
+          </Button>
+
           {/* <Link href="/" className="text-xl font-serif text-forest group">
             Moses <span className="text-gold group-hover:opacity-80 transition-opacity">Edem</span>
           </Link> */}
@@ -657,7 +780,7 @@ export default function AboutMePage() {
       </nav>
 
       <FloatingParticles />
-      
+
       <Hero />
       <About />
       <QuoteBand />
@@ -669,15 +792,29 @@ export default function AboutMePage() {
 
       <style jsx global>{`
         @keyframes float {
-          0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-          10% { opacity: 0.8; }
-          90% { opacity: 0.8; }
-          100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+          0% {
+            transform: translateY(100vh) translateX(0);
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.8;
+          }
+          90% {
+            opacity: 0.8;
+          }
+          100% {
+            transform: translateY(-10vh) translateX(50px);
+            opacity: 0;
+          }
         }
 
         @keyframes scrollLine {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
         }
 
         .animate-float {

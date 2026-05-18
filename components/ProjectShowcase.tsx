@@ -1,11 +1,24 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ExternalLink, ArrowRight } from 'lucide-react';
-import { usePersona } from '@/hooks/usePersona';
-import { personaContent, projectsData } from '@/lib/personaContent';
-
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ExternalLink, ArrowRight } from "lucide-react";
+import { usePersona } from "@/hooks/usePersona";
+import { personaContent, projectsData } from "@/lib/personaContent";
+import {
+  Zap,
+  Shield,
+  Code,
+  Terminal,
+  Check,
+  Github,
+  Database,
+  Lock,
+  Globe,
+  Bell,
+  Key,
+  Menu,
+} from "lucide-react";
 export default function ProjectShowcase() {
   const { currentPersona } = usePersona();
   const content = personaContent[currentPersona];
@@ -18,22 +31,26 @@ export default function ProjectShowcase() {
 
   // Category color mapping
   const categoryColors: Record<string, string> = {
-    Authentication: '#6366f1',
-    'E-commerce': '#ec4899',
-    Fintech: '#14b8a6',
-    Events: '#f59e0b',
-    Hospitality: '#8b5cf6',
-    Government: '#64748b',
-    Marketplace: '#06b6d4',
-    DevTools: '#22c55e',
-    Healthcare: '#ef4444',
-    AI: '#a855f7',
-    Infrastructure: '#3b82f6',
-    Web3: '#f97316',
+    Authentication: "#6366f1",
+    "E-commerce": "#ec4899",
+    Fintech: "#14b8a6",
+    Events: "#f59e0b",
+    Hospitality: "#8b5cf6",
+    Government: "#64748b",
+    Marketplace: "#06b6d4",
+    DevTools: "#22c55e",
+    Healthcare: "#ef4444",
+    AI: "#a855f7",
+    Infrastructure: "#3b82f6",
+    Web3: "#f97316",
   };
 
   return (
-    <section id="projects" className="section-padding" style={{ background: 'var(--cream)' }}>
+    <section
+      id="projects"
+      className="section-padding"
+      style={{ background: "var(--cream)" }}
+    >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -43,10 +60,16 @@ export default function ProjectShowcase() {
           transition={{ duration: 0.5 }}
           className="text-center mb-14"
         >
-          <h2 className="font-serif text-3xl md:text-5xl mb-4" style={{ color: 'var(--text-primary)' }}>
+          <h2
+            className="font-serif text-3xl md:text-5xl mb-4"
+            style={{ color: "var(--text-primary)" }}
+          >
             {content.projectsSectionTitle}
           </h2>
-          <p className="text-base max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+          <p
+            className="text-base max-w-2xl mx-auto leading-relaxed"
+            style={{ color: "var(--text-secondary)" }}
+          >
             {content.projectsSectionSubtitle}
           </p>
         </motion.div>
@@ -54,7 +77,8 @@ export default function ProjectShowcase() {
         {/* Featured Projects — Bento Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
           {featured.map((project, index) => {
-            const catColor = categoryColors[project.category] || 'var(--forest)';
+            const catColor =
+              categoryColors[project.category] || "var(--forest)";
             return (
               <motion.div
                 key={project.title}
@@ -65,7 +89,7 @@ export default function ProjectShowcase() {
                 className="card-clean overflow-hidden group relative"
               >
                 {/* Accent bar */}
-                <div className="h-1 w-full" style={{ background: catColor }} />
+                {/* <div className="h-1 w-full" style={{ background: catColor }} /> */}
 
                 <div className="p-6 sm:p-7">
                   {/* Top row */}
@@ -85,8 +109,8 @@ export default function ProjectShowcase() {
                         <span
                           className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
                           style={{
-                            background: 'rgba(212, 168, 67, 0.1)',
-                            color: 'var(--gold)',
+                            background: "rgba(212, 168, 67, 0.1)",
+                            color: "var(--gold)",
                           }}
                         >
                           {project.metrics[currentPersona]}
@@ -100,8 +124,8 @@ export default function ProjectShowcase() {
                         rel="noopener noreferrer"
                         className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 opacity-60 group-hover:opacity-100"
                         style={{
-                          border: '1px solid var(--border-light)',
-                          color: 'var(--text-muted)',
+                          border: "1px solid var(--border-light)",
+                          color: "var(--text-muted)",
                         }}
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
@@ -112,13 +136,16 @@ export default function ProjectShowcase() {
                   {/* Title */}
                   <h3
                     className="font-sans font-bold text-xl sm:text-2xl mb-3 transition-colors duration-300 group-hover:text-forest"
-                    style={{ color: 'var(--text-primary)' }}
+                    style={{ color: "var(--text-primary)" }}
                   >
                     {project.title}
                   </h3>
 
                   {/* Description — persona-specific */}
-                  <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--text-secondary)' }}>
+                  <p
+                    className="text-sm leading-relaxed mb-5"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
                     {project.descriptions[currentPersona]}
                   </p>
 
@@ -129,8 +156,8 @@ export default function ProjectShowcase() {
                         key={tech}
                         className="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md"
                         style={{
-                          background: 'var(--surface-secondary)',
-                          color: 'var(--text-muted)',
+                          background: "var(--surface-secondary)",
+                          color: "var(--text-muted)",
                         }}
                       >
                         {tech}
@@ -146,7 +173,8 @@ export default function ProjectShowcase() {
         {/* Regular Projects — Compact Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {displayRegular.map((project, index) => {
-            const catColor = categoryColors[project.category] || 'var(--forest)';
+            const catColor =
+              categoryColors[project.category] || "var(--forest)";
             return (
               <motion.div
                 key={project.title}
@@ -156,7 +184,10 @@ export default function ProjectShowcase() {
                 transition={{ duration: 0.4, delay: index * 0.06 }}
                 className="card-clean overflow-hidden group"
               >
-                <div className="h-0.5 w-full" style={{ background: catColor }} />
+                {/* <div
+                  className="h-0.5 w-full"
+                  style={{ background: catColor }}
+                /> */}
                 <div className="p-5">
                   <div className="flex items-start justify-between mb-3">
                     <span
@@ -176,8 +207,8 @@ export default function ProjectShowcase() {
                         rel="noopener noreferrer"
                         className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 opacity-50 group-hover:opacity-100"
                         style={{
-                          border: '1px solid var(--border-light)',
-                          color: 'var(--text-muted)',
+                          border: "1px solid var(--border-light)",
+                          color: "var(--text-muted)",
                         }}
                       >
                         <ExternalLink className="w-3 h-3" />
@@ -187,11 +218,14 @@ export default function ProjectShowcase() {
 
                   <h3
                     className="font-sans font-bold text-base mb-2 transition-colors duration-300 group-hover:text-forest"
-                    style={{ color: 'var(--text-primary)' }}
+                    style={{ color: "var(--text-primary)" }}
                   >
                     {project.title}
                   </h3>
-                  <p className="text-sm leading-relaxed mb-3 line-clamp-2" style={{ color: 'var(--text-muted)' }}>
+                  <p
+                    className="text-sm leading-relaxed mb-3 line-clamp-2"
+                    style={{ color: "var(--text-muted)" }}
+                  >
                     {project.descriptions[currentPersona]}
                   </p>
                   <div className="flex flex-wrap gap-1">
@@ -200,15 +234,18 @@ export default function ProjectShowcase() {
                         key={tech}
                         className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded"
                         style={{
-                          background: 'var(--surface-secondary)',
-                          color: 'var(--text-muted)',
+                          background: "var(--surface-secondary)",
+                          color: "var(--text-muted)",
                         }}
                       >
                         {tech}
                       </span>
                     ))}
                     {project.tech.length > 4 && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5" style={{ color: 'var(--text-muted)' }}>
+                      <span
+                        className="text-[10px] font-semibold px-2 py-0.5"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         +{project.tech.length - 4}
                       </span>
                     )}
@@ -231,6 +268,70 @@ export default function ProjectShowcase() {
             </button>
           </div>
         )}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.08] border border-white/[0.08] rounded-xl overflow-hidden ">
+        {[
+          {
+            icon: <Key className="h-5 w-5" />,
+            title: "Authentication",
+            desc: "Email/password, OAuth (Google, GitHub), magic links, and session management — all production-ready out of the box.",
+          },
+          {
+            icon: <Database className="h-5 w-5" />,
+            title: "Type-Safe Database",
+            desc: "A schema-driven document database with full TypeScript autocomplete. Define once, query everywhere, validate always.",
+          },
+          {
+            icon: <Globe className="h-5 w-5" />,
+            title: "File Storage",
+            desc: "Upload, move, copy, and serve files via Cloudflare R2 or S3. Presigned URLs and CDN delivery built-in.",
+          },
+          {
+            icon: <Bell className="h-5 w-5" />,
+            title: "Realtime Events",
+            desc: "Subscribe to document changes in real time over WebSocket. Token-scoped, per-collection, with automatic reconnection.",
+          },
+          {
+            icon: <Zap className="h-5 w-5" />,
+            title: "Webhooks & Cron",
+            desc: "Register HTTP webhooks on document events and schedule recurring jobs with human-readable syntax or cron expressions.",
+          },
+          {
+            icon: <Shield className="h-5 w-5" />,
+            title: "Schema Validation",
+            desc: "Define required fields, types, and uniqueness constraints. The API enforces them on every write — no extra code needed.",
+          },
+          {
+            icon: <Lock className="h-5 w-5" />,
+            title: "Secure by Default",
+            desc: "AES-256-GCM encryption for sensitive data, HMAC-signed webhooks, CSRF-protected OAuth, and rate limiting on every endpoint.",
+          },
+          {
+            icon: <Code className="h-5 w-5" />,
+            title: "REST API",
+            desc: "Every collection gets a full REST API automatically. OpenAPI spec included — import into Postman or generate a client in any language.",
+          },
+          {
+            icon: <Terminal className="h-5 w-5" />,
+            title: "Self-Host Ready",
+            desc: "Deploy via Docker. Full data ownership with zero vendor lock-in. Runs on any VPS, Kubernetes cluster, or cloud provider.",
+          },
+        ].map(({ icon, title, desc }) => (
+          <div
+            key={title}
+            className="bg-black p-10 hover:bg-[#050505] transition-colors duration-300 group"
+          >
+            <div className="w-10 h-10 border border-white/10 flex items-center justify-center mb-6 text-zinc-400 group-hover:border-white/30 group-hover:text-white transition-all bg-white/[0.02] rounded-md">
+              {icon}
+            </div>
+            <h3 className="text-[16px] font-semibold text-white mb-3 tracking-tight">
+              {title}
+            </h3>
+            <p className="text-[14px] text-zinc-400 leading-[1.6] font-light">
+              {desc}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );
