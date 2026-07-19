@@ -94,7 +94,13 @@ async function main() {
     console.error("DATABASE_URL is not set");
     process.exit(1);
   }
-  const pool = new Pool({ connectionString: url, ssl: false });
+  const disableSsl =
+    url.includes("sslmode=disable") ||
+    /localhost|127\.0\.0\.1/.test(url);
+  const pool = new Pool({
+    connectionString: url,
+    ssl: disableSsl ? false : { rejectUnauthorized: false },
+  });
   try {
     if (DROP) {
       console.log("Dropping existing CMS tables ...");

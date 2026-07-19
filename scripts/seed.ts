@@ -41,17 +41,18 @@ async function seedFileStore() {
 async function seedPostgres() {
   const url = process.env.DATABASE_URL?.trim();
   if (!url) {
-    console.log("DATABASE_URL not set — skipping Postgres seed.");
+    console.log("DATABASE_URL not set — skipping Neon seed.");
     return;
   }
 
-  console.log("Connecting to Postgres ...");
-  const isLocal =
-    /localhost|127\.0\.0\.1/.test(url) || url.includes("sslmode=disable");
+  console.log("Connecting to Neon Postgres ...");
+  const disableSsl =
+    url.includes("sslmode=disable") ||
+    /localhost|127\.0\.0\.1/.test(url);
   const pool = new Pool({
     connectionString: url,
     max: 3,
-    ssl: isLocal ? false : undefined,
+    ssl: disableSsl ? false : { rejectUnauthorized: false },
   });
   const db = drizzle(pool);
 
@@ -200,8 +201,8 @@ async function seedPostgres() {
         (SELECT COUNT(*)::int FROM blog_posts) AS blog_posts,
         (SELECT COUNT(*)::int FROM profile) AS profile
     `);
-    console.log("Postgres row counts:", counts.rows?.[0] ?? counts);
-    console.log("Postgres seed complete.");
+    console.log("Neon row counts:", counts.rows?.[0] ?? counts);
+    console.log("Neon seed complete.");
   } finally {
     await pool.end();
   }
@@ -212,7 +213,7 @@ async function main() {
 
   if (!process.env.DATABASE_URL?.trim()) {
     console.log(
-      "Tip: set DATABASE_URL and run `pnpm db:push` then `pnpm db:seed` to load Postgres."
+      "Tip: set DATABASE_URL to your Neon pooled URL, then: pnpm db:reset"
     );
     return;
   }
@@ -220,10 +221,10 @@ async function main() {
   try {
     await seedPostgres();
   } catch (err) {
-    console.error("\nPostgres seed failed.");
+    console.error("\nNeon seed failed.");
     console.error(err);
     console.error(
-      "\nIf tables are missing, run: pnpm db:push\nThen: pnpm db:seed\n"
+      "\nIf tables are missing, run: pnpm db:push:ci\nThen: pnpm db:seed\n"
     );
     process.exit(1);
   }
