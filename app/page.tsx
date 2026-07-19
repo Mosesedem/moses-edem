@@ -2,16 +2,28 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { PersonaCard } from "@/components/persona-card";
+import { defaultSnapshot } from "@/lib/cms-store";
 import { getAllPersonas, getProfile, getPublishedPosts } from "@/lib/queries";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [personas, profile, posts] = await Promise.all([
-    getAllPersonas(),
-    getProfile(),
-    getPublishedPosts(),
-  ]);
+  let personas;
+  let profile;
+  let posts;
+  try {
+    [personas, profile, posts] = await Promise.all([
+      getAllPersonas(),
+      getProfile(),
+      getPublishedPosts(),
+    ]);
+  } catch (err) {
+    console.error("[home] data load failed, using seed:", err);
+    const snap = defaultSnapshot();
+    personas = snap.personas.filter((p) => p.isActive !== false);
+    profile = snap.profile;
+    posts = snap.blogPosts.filter((p) => p.published);
+  }
 
   const lenses = personas.map((p) => ({
     key: p.key,

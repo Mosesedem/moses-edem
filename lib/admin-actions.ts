@@ -9,7 +9,12 @@ import {
   setAdminSession,
   verifyAdminPassword,
 } from "@/lib/admin-auth";
-import { updateCmsStore } from "@/lib/cms-store";
+import {
+  deleteBlockMysql,
+  deleteBlogMysql,
+  deleteProjectMysql,
+  persistCms,
+} from "@/lib/persist";
 import type {
   BlogPost,
   ContentBlock,
@@ -43,7 +48,7 @@ export async function logoutAction() {
 
 export async function saveProfileAction(formData: FormData) {
   await requireAdmin();
-  await updateCmsStore((snap) => {
+  await persistCms((snap) => {
     const profile: Profile = {
       ...snap.profile,
       fullName: String(formData.get("fullName") ?? snap.profile.fullName),
@@ -65,7 +70,7 @@ export async function saveProfileAction(formData: FormData) {
 export async function savePersonaAction(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  await updateCmsStore((snap) => {
+  await persistCms((snap) => {
     const personas = snap.personas.map((p) => {
       if (p.id !== id) return p;
       const next: Persona = {
@@ -105,7 +110,7 @@ export async function saveBlockAction(formData: FormData) {
     }
   }
 
-  await updateCmsStore((snap) => {
+  await persistCms((snap) => {
     const nextBlock: ContentBlock = {
       id: blockId,
       personaKey: String(formData.get("personaKey") ?? "visitor"),
@@ -134,10 +139,11 @@ export async function saveBlockAction(formData: FormData) {
 export async function deleteBlockAction(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  await updateCmsStore((snap) => ({
+  await persistCms((snap) => ({
     ...snap,
     blocks: snap.blocks.filter((b) => b.id !== id),
   }));
+  await deleteBlockMysql(id);
   revalidatePath("/");
   revalidatePath("/admin/blocks");
   redirect("/admin/blocks?deleted=1");
@@ -160,7 +166,7 @@ export async function saveBlogAction(formData: FormData) {
     .filter(Boolean);
   const now = new Date();
 
-  await updateCmsStore((snap) => {
+  await persistCms((snap) => {
     const existing = snap.blogPosts.find((p) => p.id === postId);
     const post: BlogPost = {
       id: postId,
@@ -193,10 +199,11 @@ export async function saveBlogAction(formData: FormData) {
 export async function deleteBlogAction(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  await updateCmsStore((snap) => ({
+  await persistCms((snap) => ({
     ...snap,
     blogPosts: snap.blogPosts.filter((p) => p.id !== id),
   }));
+  await deleteBlogMysql(id);
   revalidatePath("/blog");
   revalidatePath("/admin/blog");
   redirect("/admin/blog?deleted=1");
@@ -231,7 +238,7 @@ export async function saveProjectAction(formData: FormData) {
     }
   }
 
-  await updateCmsStore((snap) => {
+  await persistCms((snap) => {
     const existing = (snap.projects ?? []).find((p) => p.id === projectId);
     const project: PortfolioProject = {
       id: projectId,
@@ -266,10 +273,11 @@ export async function saveProjectAction(formData: FormData) {
 export async function deleteProjectAction(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  await updateCmsStore((snap) => ({
+  await persistCms((snap) => ({
     ...snap,
     projects: (snap.projects ?? []).filter((p) => p.id !== id),
   }));
+  await deleteProjectMysql(id);
   revalidatePath("/projects");
   revalidatePath("/admin/projects");
   redirect("/admin/projects?deleted=1");

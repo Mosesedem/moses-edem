@@ -30,13 +30,44 @@ pnpm dev
 
 Open [http://localhost:18](http://localhost:18).
 
-Content is stored in `.data/cms.json` (writable via admin). Seed regenerates it with `pnpm db:seed`.
+### Content storage
+
+1. **File CMS** — `.data/cms.json` (always written by seed/admin; works offline)
+2. **MySQL** — when `DATABASE_URL` is set, seed + admin sync into tables:
+   - `personas`, `content_blocks`, `profile`, `blog_posts`, `portfolio_projects`
+
+Public reads prefer MySQL when configured, then fall back to the file store.
+
+```bash
+# 1) Ensure DATABASE_URL points at a reachable MySQL host
+# 2) Create tables
+pnpm db:push
+
+# 3) Seed file + MySQL
+pnpm db:seed
+
+# Or both:
+pnpm db:reset
+```
+
+If `db:seed` prints `MySQL seed complete` and row counts, tables are filled.
+If it only prints `File CMS seed complete` / `DATABASE_URL not set`, MySQL was skipped.
+If it errors with `ENOTFOUND` or connection refused, fix the host/credentials first.
+
+Local Docker MySQL (matches `.env.example`):
+
+```bash
+pnpm db:up
+# DATABASE_URL=mysql://moses:moses@127.0.0.1:3306/mosesedem
+pnpm db:reset
+```
 
 ## Admin
 
 - URL: `/admin` (login at `/admin/login`)
 - Password: `ADMIN_PASSWORD` env (default for local: `moses-admin-change-me`)
-- Manage personas, content blocks, blog posts, and profile
+- Manage personas, content blocks, projects, blog posts, and profile
+- Saves write to `.data/cms.json` and mirror into MySQL when connected
 
 ## AI chat
 

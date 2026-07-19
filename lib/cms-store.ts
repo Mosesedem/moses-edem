@@ -29,6 +29,9 @@ export type CmsSnapshot = {
 const DATA_DIR = path.join(process.cwd(), ".data");
 const STORE_PATH = path.join(DATA_DIR, "cms.json");
 
+/** In-memory fallback when disk is read-only (e.g. Vercel). */
+let memorySnapshot: CmsSnapshot | null = null;
+
 function toPersona(row: SeedPersona): Persona {
   return { ...row };
 }
@@ -57,7 +60,7 @@ function toProject(row: SeedProject): PortfolioProject {
   return { ...row };
 }
 
-function defaultSnapshot(): CmsSnapshot {
+export function defaultSnapshot(): CmsSnapshot {
   return {
     personas: seedPersonas.map(toPersona),
     blocks: seedBlocks.map(toBlock),
@@ -92,33 +95,62 @@ function revive(raw: CmsSnapshot): CmsSnapshot {
   };
 }
 
+/**
+ * Read CMS data. Never throws because of a read-only filesystem.
+ * Order: memory → disk → built-in seed.
+ */
 export async function readCmsStore(): Promise<CmsSnapshot> {
+  if (memorySnapshot) {
+    return revive(memorySnapshot);
+  }
+
   try {
     const raw = await fs.readFile(STORE_PATH, "utf8");
     const parsed = JSON.parse(raw) as CmsSnapshot & { projects?: unknown };
     const snap = revive(parsed);
-    // Migrate older cms.json files missing projects
-    if (!parsed.projects) {
-      await writeCmsStore(snap);
-    }
+    memorySnapshot = snap;
     return snap;
   } catch {
+    // Missing file or unreadable path (common on serverless deploys).
     const snap = defaultSnapshot();
-    await writeCmsStore(snap);
+    memorySnapshot = snap;
+    // Best-effort persist for local/dev only — never fail the request.
+    void writeCmsStore(snap).catch(() => undefined);
     return snap;
   }
 }
 
+/**
+ * Persist snapshot. On serverless (read-only FS) keeps memory only and
+ * does not throw so public pages still work. Callers that need durable
+ * storage should also write MySQL via persistCms.
+ */
 export async function writeCmsStore(snapshot: CmsSnapshot): Promise<void> {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  await fs.writeFile(STORE_PATH, JSON.stringify(snapshot, null, 2), "utf8");
+  memorySnapshot = revive(snapshot);
+
+  try {
+    await fs.mkdir(DATA_DIR, { recursive: true });
+    await fs.writeFile(
+      STORE_PATH,
+      JSON.stringify(memorySnapshot, null, 2),
+      "utf8"
+    );
+  } catch (err) {
+    // Vercel / Lambda / read-only deploy: disk write is expected to fail.
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        "[cms-store] disk write skipped/failed; using in-memory snapshot:",
+        err instanceof Error ? err.message : err
+      );
+    }
+  }
 }
 
 export async function updateCmsStore(
   mutator: (snap: CmsSnapshot) => CmsSnapshot | Promise<CmsSnapshot>
 ): Promise<CmsSnapshot> {
   const current = await readCmsStore();
-  const next = await mutator(current);
+  const next = revive(await mutator(current));
   await writeCmsStore(next);
   return next;
 }
