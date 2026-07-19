@@ -8,12 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 const X_URL = "https://x.com/mosesedem_me";
 
 /** X / Twitter mark — Lucide has no official X glyph. */
-function XIcon({
-  size = 16,
-}: {
-  size?: number;
-  strokeWidth?: number;
-}) {
+function XIcon({ size = 16 }: { size?: number; strokeWidth?: number }) {
   return (
     <svg
       width={size}
@@ -43,39 +38,74 @@ type SiteFooterProps = {
 };
 
 export function SiteFooter({ profile, lenses, currentKey }: SiteFooterProps) {
-  const links: SocialLink[] = [
-    profile.githubUrl
-      ? {
-          href: profile.githubUrl,
-          icon: Github,
-          label: "GitHub",
-          external: true,
-        }
-      : null,
-    profile.linkedinUrl
-      ? {
-          href: profile.linkedinUrl,
-          icon: Linkedin,
-          label: "LinkedIn",
-          external: true,
-        }
-      : null,
-    {
-      href: X_URL,
-      icon: XIcon,
-      label: "X",
-      external: true,
-    },
-    profile.email
-      ? {
-          href: `mailto:${profile.email}`,
-          icon: Mail,
-          label: "Email",
-          external: false,
-        }
-      : null,
-  ].filter((l): l is SocialLink => l != null);
+  // const links: SocialLink[] = [
+  //   profile.githubUrl
+  //     ? {
+  //         href: profile.githubUrl,
+  //         icon: Github,
+  //         label: "GitHub",
+  //         external: true,
+  //       }
+  //     : null,
+  //   profile.linkedinUrl
+  //     ? {
+  //         href: profile.linkedinUrl,
+  //         icon: Linkedin,
+  //         label: "LinkedIn",
+  //         external: true,
+  //       }
+  //     : null,
+  //   {
+  //     href: X_URL,
+  //     icon: XIcon,
+  //     label: "X",
+  //     external: true,
+  //   },
+  //   profile.email
+  //     ? {
+  //         href: `mailto:${profile.email}`,
+  //         icon: Mail,
+  //         label: "Email",
+  //         external: false,
+  //       }
+  //     : null,
+  // ].filter((l): l is SocialLink => l != null);
 
+  const links: SocialLink[] = [];
+
+  if (profile.githubUrl) {
+    links.push({
+      href: profile.githubUrl,
+      icon: Github,
+      label: "GitHub",
+      external: true,
+    });
+  }
+
+  if (profile.linkedinUrl) {
+    links.push({
+      href: profile.linkedinUrl,
+      icon: Linkedin,
+      label: "LinkedIn",
+      external: true,
+    });
+  }
+
+  links.push({
+    href: X_URL,
+    icon: XIcon,
+    label: "X",
+    external: true,
+  });
+
+  if (profile.email) {
+    links.push({
+      href: `mailto:${profile.email}`,
+      icon: Mail,
+      label: "Email",
+      external: false,
+    });
+  }
   return (
     <footer className="mt-auto border-t border-border">
       {lenses && lenses.length > 0 ? (
