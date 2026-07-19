@@ -111,12 +111,10 @@ export const moses = {
                   Take compatibility quiz
                   <ArrowRight size={16} strokeWidth={1.75} />
                 </a>
-                {email ? (
-                  <a href={`mailto:${email}`} className="btn-secondary">
-                    <Mail size={16} strokeWidth={1.75} />
-                    Email
-                  </a>
-                ) : null}
+                <Link href="/contact?intent=personal" className="btn-secondary">
+                  <Mail size={16} strokeWidth={1.75} />
+                  Contact page
+                </Link>
                 <Link href="#ai-chat" className="btn-secondary">
                   Ask AI Moses
                 </Link>

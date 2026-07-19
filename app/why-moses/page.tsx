@@ -250,7 +250,7 @@ export default function WhyMosesPage() {
               className="flex flex-wrap gap-4 justify-center"
             >
               <Link
-                href="/#contact"
+                href="/contact"
                 className="bg-forest text-white px-8 py-4 rounded-full font-bold flex items-center gap-3 hover:gap-5 transition-all shadow-xl shadow-forest/20"
               >
                 Discuss a Project <ArrowRight className="w-5 h-5" />
@@ -451,7 +451,7 @@ export default function WhyMosesPage() {
 
             <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
               <Link
-                href="/#contact"
+                href="/contact"
                 className="bg-gold text-forest px-12 py-5 rounded-full font-black uppercase tracking-widest text-sm hover:scale-105 transition-all shadow-2xl shadow-gold/20"
               >
                 Email Me Directly

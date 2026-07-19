@@ -718,7 +718,7 @@ function CtaFooter() {
           </div>
 
           <Link
-            href="/#contact"
+            href="/contact?intent=personal"
             className="inline-flex items-center gap-4 bg-gold text-forest-deep px-12 py-6 rounded-full font-bold text-lg hover:scale-105 hover:shadow-[0_0_40px_rgba(212,168,67,0.3)] transition-all"
           >
             Send a Signal

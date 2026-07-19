@@ -165,12 +165,19 @@ export default async function PersonaPage({ params }: PageProps) {
                   <ArrowRight size={16} strokeWidth={1.75} />
                 </a>
               ) : null}
-              {profile.email ? (
-                <a href={`mailto:${profile.email}`} className="btn-secondary">
-                  <Mail size={16} strokeWidth={1.75} />
-                  Contact
-                </a>
-              ) : null}
+              <Link
+                href={`/contact?intent=${
+                  key === "investor"
+                    ? "partner"
+                    : key === "employer"
+                      ? "hire"
+                      : "other"
+                }&lens=${key}`}
+                className="btn-secondary"
+              >
+                <Mail size={16} strokeWidth={1.75} />
+                Contact
+              </Link>
               {profile.resumeUrl ? (
                 <a href={profile.resumeUrl} className="btn-secondary">
                   <FileText size={16} strokeWidth={1.75} />

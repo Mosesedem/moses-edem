@@ -48,11 +48,12 @@ export function SiteFooter({ profile, lenses, currentKey }: SiteFooterProps) {
               />
             </div>
 
-            <nav className="mt-6 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-5">
+            <nav className="mt-6 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-5">
               {[
                 { href: "/", label: "Home" },
                 { href: "/projects", label: "Projects" },
                 { href: "/blog", label: "Blog" },
+                { href: "/contact", label: "Contact" },
               ].map((item) => (
                 <Link
                   key={item.href}
