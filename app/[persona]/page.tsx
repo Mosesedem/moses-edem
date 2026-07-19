@@ -15,6 +15,7 @@ import { SectionCard } from "@/components/section-card";
 import { CodePane } from "@/components/code-pane";
 import { AiChat } from "@/components/ai-chat";
 import { ProjectsBrowser } from "@/components/projects-browser";
+import { DatingProfileView } from "@/components/dating/dating-profile";
 import {
   getAllPersonas,
   getPersona,
@@ -67,6 +68,31 @@ export default async function PersonaPage({ params }: PageProps) {
     label: p.label,
     iconName: p.iconName,
   }));
+
+  // Romantic lens gets a full dating-profile experience
+  if (key === "romantic") {
+    return (
+      <div className="page-shell">
+        <SiteHeader
+          showBack
+          personaLabel={persona.key}
+          lenses={lenses}
+          currentKey={persona.key}
+        />
+        <main className="page-main">
+          <DatingProfileView
+            email={profile.email}
+            phone={profile.phone}
+          />
+        </main>
+        <SiteFooter
+          profile={profile}
+          lenses={lenses}
+          currentKey={persona.key}
+        />
+      </div>
+    );
+  }
 
   const stats = blocks.filter((b) => b.type === "stat");
   const texts = blocks.filter((b) => b.type === "text");
