@@ -16,18 +16,41 @@ type PageProps = {
 
 export const revalidate = 45;
 
-export async function generateMetadata({ params }: PageProps) {
-  const { slug } = await params;
-  const post = await getPostBySlug(slug);
-  if (!post) return { title: "Not found" };
+function asValidDate(value: unknown): Date | null {
+  if (value == null) return null;
+  const d = value instanceof Date ? value : new Date(value as string | number);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function formatPublished(value: unknown): { iso: string; label: string } | null {
+  const d = asValidDate(value);
+  if (!d) return null;
   return {
-    title: `${post.title} — Moses Edem`,
-    description: post.excerpt ?? undefined,
+    iso: d.toISOString(),
+    label: d.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }),
   };
 }
 
+export async function generateMetadata({ params }: PageProps) {
+  try {
+    const { slug } = await params;
+    const post = await getPostBySlug(slug);
+    if (!post) return { title: "Not found" };
+    return {
+      title: `${post.title} — Moses Edem`,
+      description: post.excerpt ?? undefined,
+    };
+  } catch {
+    return { title: "Blog — Moses Edem" };
+  }
+}
+
 function readingTimeFromHtml(body: string): number {
-  const words = body
+  const words = (body ?? "")
     .replace(/<[^>]*>/g, " ")
     .replace(/\s+/g, " ")
     .trim()
@@ -38,6 +61,8 @@ function readingTimeFromHtml(body: string): number {
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
+  if (!slug?.trim()) notFound();
+
   const [post, profile, personas] = await Promise.all([
     getPostBySlug(slug),
     getProfile(),
@@ -52,7 +77,8 @@ export default async function BlogPostPage({ params }: PageProps) {
   }));
 
   const tags = Array.isArray(post.tags) ? (post.tags as string[]) : [];
-  const minutes = readingTimeFromHtml(post.body);
+  const minutes = readingTimeFromHtml(post.body ?? "");
+  const published = formatPublished(post.publishedAt);
 
   return (
     <div className="page-shell">
@@ -77,16 +103,10 @@ export default async function BlogPostPage({ params }: PageProps) {
             ) : null}
 
             <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] text-muted-foreground sm:text-xs">
-              {post.publishedAt ? (
-                <time dateTime={new Date(post.publishedAt).toISOString()}>
-                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </time>
+              {published ? (
+                <time dateTime={published.iso}>{published.label}</time>
               ) : null}
-              <span className="text-border">·</span>
+              {published ? <span className="text-border">·</span> : null}
               <span>{minutes} min read</span>
               {tags.length > 0 ? (
                 <>
@@ -109,7 +129,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           ) : null}
 
           <div className="mt-8 sm:mt-10">
-            <BlogContent body={post.body} />
+            <BlogContent body={post.body ?? ""} />
           </div>
 
           <footer className="mt-12 border-t border-border pt-8 sm:mt-14">

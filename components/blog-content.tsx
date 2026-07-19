@@ -1,4 +1,4 @@
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeHtml } from "@/lib/sanitize-html";
 
 type BlogContentProps = {
   body: string;
@@ -80,6 +80,7 @@ function renderInline(text: string) {
 
 /**
  * Renders blog body: sanitized HTML from the rich editor, or legacy plain text.
+ * Uses a pure-JS sanitizer (no jsdom) so it works on Vercel serverless.
  */
 export function BlogContent({ body }: BlogContentProps) {
   if (!body?.trim()) {
@@ -92,23 +93,32 @@ export function BlogContent({ body }: BlogContentProps) {
     return renderLegacyMarkdown(body);
   }
 
-  const clean = DOMPurify.sanitize(body, {
-    USE_PROFILES: { html: true },
-    ADD_TAGS: ["iframe"],
-    ADD_ATTR: [
-      "allow",
-      "allowfullscreen",
-      "frameborder",
-      "scrolling",
-      "src",
-      "target",
-      "rel",
-      "class",
-      "style",
-      "width",
-      "height",
-    ],
-  });
+  let clean = "";
+  try {
+    clean = sanitizeHtml(body);
+  } catch (err) {
+    console.error("[BlogContent] sanitize failed:", err);
+    // Last resort: strip tags so the page never 500s
+    clean = body
+      .replace(/<script[\s\S]*?<\/script>/gi, "")
+      .replace(/<style[\s\S]*?<\/style>/gi, "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    return (
+      <div className="blog-content space-y-5">
+        <p className="text-[0.975rem] leading-[1.75] text-muted-foreground sm:text-base">
+          {clean}
+        </p>
+      </div>
+    );
+  }
+
+  if (!clean.trim()) {
+    return (
+      <p className="text-sm text-muted-foreground">This post has no content.</p>
+    );
+  }
 
   return (
     <div
