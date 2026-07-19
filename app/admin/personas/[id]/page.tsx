@@ -1,11 +1,22 @@
 import { notFound, redirect } from "next/navigation";
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import {
+  AdminBackLink,
+  AdminCheckbox,
+  AdminField,
+  AdminFlash,
+  AdminPageHeader,
+  AdminSelect,
+  AdminSubmit,
+  AdminTextArea,
+} from "@/components/admin/form-controls";
 import { savePersonaAction } from "@/lib/admin-actions";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { getCmsSnapshot } from "@/lib/queries";
+import { PERSONA_KEYS } from "@/lib/schema";
 
 type Props = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{ saved?: string; error?: string }>;
 };
 
 export default async function AdminPersonaEditPage({
@@ -14,85 +25,137 @@ export default async function AdminPersonaEditPage({
 }: Props) {
   if (!(await isAdminAuthenticated())) redirect("/admin/login");
   const { id } = await params;
-  const { saved } = await searchParams;
+  const sp = await searchParams;
+  const isNew = id === "new";
   const { personas } = await getCmsSnapshot();
-  const persona = personas.find((p) => p.id === id);
+  const usedKeys = new Set(personas.map((p) => p.key));
+
+  const persona = isNew
+    ? {
+        id: "new",
+        key: PERSONA_KEYS.find((k) => !usedKeys.has(k)) ?? "visitor",
+        label: "",
+        tagline: "",
+        heroHeading: "",
+        heroBody: "",
+        ctaLabel: "",
+        ctaHref: "",
+        iconName: "User",
+        sortOrder: personas.length + 1,
+        isActive: true,
+      }
+    : personas.find((p) => p.id === id);
+
   if (!persona) notFound();
+
+  const keyOptions = isNew
+    ? PERSONA_KEYS.filter((k) => !usedKeys.has(k)).map((k) => ({
+        value: k,
+        label: k,
+      }))
+    : [{ value: persona.key, label: persona.key }];
+
+  if (isNew && keyOptions.length === 0) {
+    return (
+      <div className="max-w-xl">
+        <AdminBackLink href="/admin/personas" label="All personas" />
+        <AdminPageHeader
+          kicker="Personas"
+          title="All lens keys are in use"
+          description="The site routes only five keys (employer, investor, romantic, academic, visitor). Edit an existing persona instead of creating another."
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-xl">
-      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        EDIT PERSONA
-      </p>
-      <h1 className="mt-2 text-2xl font-medium">{persona.label}</h1>
-      {saved ? (
-        <p className="mt-2 font-mono text-xs text-accent">Saved</p>
-      ) : null}
+      <AdminBackLink href="/admin/personas" label="All personas" />
+      <AdminPageHeader
+        kicker={isNew ? "New persona" : "Edit persona"}
+        title={isNew ? "Create audience lens" : persona.label}
+        description={
+          isNew
+            ? "Key is fixed after save and maps to a public URL like /employer."
+            : `Public URL: /${persona.key}`
+        }
+      />
+      <AdminFlash
+        saved={Boolean(sp.saved)}
+        error={sp.error ? decodeURIComponent(sp.error) : null}
+      />
+
       <form action={savePersonaAction} className="mt-8 space-y-4">
         <input type="hidden" name="id" value={persona.id} />
-        {(
-          [
-            ["label", "Label", persona.label],
-            ["tagline", "Tagline", persona.tagline ?? ""],
-            ["heroHeading", "Hero heading", persona.heroHeading ?? ""],
-            ["ctaLabel", "CTA label", persona.ctaLabel ?? ""],
-            ["ctaHref", "CTA href", persona.ctaHref ?? ""],
-            ["iconName", "Icon (Lucide name)", persona.iconName],
-            ["sortOrder", "Sort order", String(persona.sortOrder ?? 0)],
-          ] as const
-        ).map(([name, label, value]) => (
-          <Field key={name} name={name} label={label} defaultValue={value} />
-        ))}
-        <div>
-          <label className="text-xs font-mono text-muted-foreground">
-            Hero body
-          </label>
-          <textarea
-            name="heroBody"
-            rows={4}
-            defaultValue={persona.heroBody ?? ""}
-            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-accent"
+        {isNew ? (
+          <AdminSelect
+            name="key"
+            label="Key (URL segment)"
+            defaultValue={persona.key}
+            options={keyOptions}
+            hint="Must be unique. Only these five keys power public routes."
+          />
+        ) : (
+          <input type="hidden" name="key" value={persona.key} />
+        )}
+        <AdminField
+          name="label"
+          label="Label"
+          defaultValue={persona.label}
+          required
+          hint="Shown on the home picker and nav"
+        />
+        <AdminField
+          name="tagline"
+          label="Tagline"
+          defaultValue={persona.tagline ?? ""}
+        />
+        <AdminField
+          name="heroHeading"
+          label="Hero heading"
+          defaultValue={persona.heroHeading ?? ""}
+        />
+        <AdminTextArea
+          name="heroBody"
+          label="Hero body"
+          rows={4}
+          defaultValue={persona.heroBody ?? ""}
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <AdminField
+            name="ctaLabel"
+            label="CTA label"
+            defaultValue={persona.ctaLabel ?? ""}
+          />
+          <AdminField
+            name="ctaHref"
+            label="CTA href"
+            defaultValue={persona.ctaHref ?? ""}
+            placeholder="/cv/moses.pdf"
           />
         </div>
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            name="isActive"
-            defaultChecked={persona.isActive !== false}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <AdminField
+            name="iconName"
+            label="Icon (Lucide name)"
+            defaultValue={persona.iconName}
+            hint="e.g. Briefcase, Heart, TrendingUp"
           />
-          Active
-        </label>
-        <button
-          type="submit"
-          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground"
-        >
-          Save persona
-        </button>
+          <AdminField
+            name="sortOrder"
+            label="Sort order"
+            type="number"
+            defaultValue={String(persona.sortOrder ?? 0)}
+          />
+        </div>
+        <AdminCheckbox
+          name="isActive"
+          label="Active on the public site"
+          defaultChecked={persona.isActive !== false}
+          hint="Inactive personas are hidden from the home picker"
+        />
+        <AdminSubmit>{isNew ? "Create persona" : "Save persona"}</AdminSubmit>
       </form>
-    </div>
-  );
-}
-
-function Field({
-  name,
-  label,
-  defaultValue,
-}: {
-  name: string;
-  label: string;
-  defaultValue: string;
-}) {
-  return (
-    <div>
-      <label htmlFor={name} className="text-xs font-mono text-muted-foreground">
-        {label}
-      </label>
-      <input
-        id={name}
-        name={name}
-        defaultValue={defaultValue}
-        className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-accent"
-      />
     </div>
   );
 }

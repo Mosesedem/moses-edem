@@ -29,7 +29,7 @@ type PageProps = {
   params: Promise<{ persona: string }>;
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 45;
 
 export async function generateMetadata({ params }: PageProps) {
   const { persona: key } = await params;

@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { randomUUID } from "crypto";
 import {
@@ -9,11 +8,16 @@ import {
   setAdminSession,
   verifyAdminPassword,
 } from "@/lib/admin-auth";
+import { revalidateAdmin, revalidatePublicSite } from "@/lib/admin-revalidate";
+import { defaultSnapshot, writeCmsStore } from "@/lib/cms-store";
+import { isDatabaseConfigured } from "@/lib/db";
 import {
-  deleteBlockMysql,
-  deleteBlogMysql,
-  deleteProjectMysql,
+  deleteBlogDb,
+  deleteBlockDb,
+  deletePersonaDb,
+  deleteProjectDb,
   persistCms,
+  syncCmsToDatabase,
 } from "@/lib/persist";
 import type {
   BlogPost,
@@ -24,12 +28,17 @@ import type {
   Profile,
   ProjectLensMap,
 } from "@/lib/schema";
-import { PERSONA_KEYS } from "@/lib/schema";
+import { PERSONA_KEYS, isPersonaKey } from "@/lib/schema";
 
 async function requireAdmin() {
   if (!(await isAdminAuthenticated())) {
     throw new Error("Unauthorized");
   }
+}
+
+function afterWrite() {
+  revalidatePublicSite();
+  revalidateAdmin();
 }
 
 export async function loginAction(formData: FormData) {
@@ -44,6 +53,40 @@ export async function loginAction(formData: FormData) {
 export async function logoutAction() {
   await clearAdminSession();
   redirect("/admin/login");
+}
+
+/** Push current CMS snapshot to Postgres (no content changes). */
+export async function syncDatabaseAction() {
+  await requireAdmin();
+  const result = await syncCmsToDatabase();
+  afterWrite();
+  if (!result.ok) {
+    redirect(
+      `/admin?error=${encodeURIComponent(result.error ?? "Sync failed")}`
+    );
+  }
+  redirect("/admin?synced=1");
+}
+
+/**
+ * Reload built-in seed into file CMS + Postgres.
+ * Overwrites all CMS content — intentional reseed tool.
+ */
+export async function reseedContentAction() {
+  await requireAdmin();
+  const snap = defaultSnapshot();
+  await writeCmsStore(snap);
+  if (isDatabaseConfigured()) {
+    const result = await syncCmsToDatabase();
+    if (!result.ok) {
+      afterWrite();
+      redirect(
+        `/admin?error=${encodeURIComponent(result.error ?? "Reseed DB sync failed")}`
+      );
+    }
+  }
+  afterWrite();
+  redirect("/admin?seeded=1");
 }
 
 export async function saveProfileAction(formData: FormData) {
@@ -62,36 +105,97 @@ export async function saveProfileAction(formData: FormData) {
     };
     return { ...snap, profile };
   });
-  revalidatePath("/");
-  revalidatePath("/admin");
+  afterWrite();
   redirect("/admin/profile?saved=1");
 }
 
 export async function savePersonaAction(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");
-  await persistCms((snap) => {
-    const personas = snap.personas.map((p) => {
-      if (p.id !== id) return p;
+  const isNew = !id || id === "new";
+  const personaId = isNew ? randomUUID() : id;
+  const rawKey = String(formData.get("key") ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  try {
+    await persistCms((snap) => {
+      const existing = snap.personas.find((p) => p.id === personaId);
+      const keyCandidate = isNew ? rawKey : existing?.key ?? rawKey;
+
+      if (!keyCandidate || !isPersonaKey(keyCandidate)) {
+        throw new Error(
+          `Persona key must be one of: ${PERSONA_KEYS.join(", ")}`
+        );
+      }
+
+      const key = (isNew ? keyCandidate : existing!.key) as PersonaKey;
+
+      const keyTaken = snap.personas.some(
+        (p) => p.key === key && p.id !== personaId
+      );
+      if (keyTaken) {
+        throw new Error(`Persona key “${key}” is already in use`);
+      }
+
       const next: Persona = {
-        ...p,
-        label: String(formData.get("label") ?? p.label),
+        id: personaId,
+        key,
+        label: String(formData.get("label") ?? existing?.label ?? key),
         tagline: String(formData.get("tagline") ?? "") || null,
         heroHeading: String(formData.get("heroHeading") ?? "") || null,
         heroBody: String(formData.get("heroBody") ?? "") || null,
         ctaLabel: String(formData.get("ctaLabel") ?? "") || null,
         ctaHref: String(formData.get("ctaHref") ?? "") || null,
-        iconName: String(formData.get("iconName") ?? p.iconName),
-        sortOrder: Number(formData.get("sortOrder") ?? p.sortOrder ?? 0),
+        iconName: String(
+          formData.get("iconName") ?? existing?.iconName ?? "User"
+        ),
+        sortOrder: Number(
+          formData.get("sortOrder") ?? existing?.sortOrder ?? 0
+        ),
         isActive: formData.get("isActive") === "on",
       };
-      return next;
+
+      const personas = isNew
+        ? [...snap.personas, next]
+        : snap.personas.map((p) => (p.id === personaId ? next : p));
+
+      return { ...snap, personas };
     });
-    return { ...snap, personas };
+  } catch (err) {
+    const msg =
+      err instanceof Error ? err.message : "Could not save persona";
+    redirect(
+      `/admin/personas/${isNew ? "new" : personaId}?error=${encodeURIComponent(msg)}`
+    );
+  }
+
+  afterWrite();
+  redirect(`/admin/personas/${personaId}?saved=1`);
+}
+
+export async function deletePersonaAction(formData: FormData) {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) redirect("/admin/personas");
+
+  await persistCms((snap) => {
+    const persona = snap.personas.find((p) => p.id === id);
+    const key = persona?.key;
+    return {
+      ...snap,
+      personas: snap.personas.filter((p) => p.id !== id),
+      // Drop blocks that only applied to this lens
+      blocks: key
+        ? snap.blocks.filter((b) => b.personaKey !== key)
+        : snap.blocks,
+    };
   });
-  revalidatePath("/");
-  revalidatePath("/admin/personas");
-  redirect(`/admin/personas/${id}?saved=1`);
+  await deletePersonaDb(id);
+  afterWrite();
+  redirect("/admin/personas?deleted=1");
 }
 
 export async function saveBlockAction(formData: FormData) {
@@ -111,9 +215,10 @@ export async function saveBlockAction(formData: FormData) {
   }
 
   await persistCms((snap) => {
+    const personaKey = String(formData.get("personaKey") ?? "visitor");
     const nextBlock: ContentBlock = {
       id: blockId,
-      personaKey: String(formData.get("personaKey") ?? "visitor"),
+      personaKey,
       type: String(formData.get("type") ?? "text"),
       title: String(formData.get("title") ?? "") || null,
       body: String(formData.get("body") ?? "") || null,
@@ -131,9 +236,8 @@ export async function saveBlockAction(formData: FormData) {
     return { ...snap, blocks };
   });
 
-  revalidatePath("/");
-  revalidatePath("/admin/blocks");
-  redirect(`/admin/blocks?saved=1`);
+  afterWrite();
+  redirect(`/admin/blocks/${blockId}?saved=1`);
 }
 
 export async function deleteBlockAction(formData: FormData) {
@@ -143,9 +247,8 @@ export async function deleteBlockAction(formData: FormData) {
     ...snap,
     blocks: snap.blocks.filter((b) => b.id !== id),
   }));
-  await deleteBlockMysql(id);
-  revalidatePath("/");
-  revalidatePath("/admin/blocks");
+  await deleteBlockDb(id);
+  afterWrite();
   redirect("/admin/blocks?deleted=1");
 }
 
@@ -191,8 +294,7 @@ export async function saveBlogAction(formData: FormData) {
     return { ...snap, blogPosts };
   });
 
-  revalidatePath("/blog");
-  revalidatePath("/admin/blog");
+  afterWrite();
   redirect(`/admin/blog/${postId}?saved=1`);
 }
 
@@ -203,9 +305,8 @@ export async function deleteBlogAction(formData: FormData) {
     ...snap,
     blogPosts: snap.blogPosts.filter((p) => p.id !== id),
   }));
-  await deleteBlogMysql(id);
-  revalidatePath("/blog");
-  revalidatePath("/admin/blog");
+  await deleteBlogDb(id);
+  afterWrite();
   redirect("/admin/blog?deleted=1");
 }
 
@@ -264,9 +365,7 @@ export async function saveProjectAction(formData: FormData) {
     return { ...snap, projects };
   });
 
-  revalidatePath("/projects");
-  revalidatePath("/admin/projects");
-  revalidatePath("/");
+  afterWrite();
   redirect(`/admin/projects/${projectId}?saved=1`);
 }
 
@@ -277,8 +376,7 @@ export async function deleteProjectAction(formData: FormData) {
     ...snap,
     projects: (snap.projects ?? []).filter((p) => p.id !== id),
   }));
-  await deleteProjectMysql(id);
-  revalidatePath("/projects");
-  revalidatePath("/admin/projects");
+  await deleteProjectDb(id);
+  afterWrite();
   redirect("/admin/projects?deleted=1");
 }

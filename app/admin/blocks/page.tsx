@@ -1,7 +1,15 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { DeleteButton } from "@/components/admin/delete-button";
+import {
+  AdminEmpty,
+  AdminEditLink,
+  AdminFlash,
+  AdminPageHeader,
+  AdminPrimaryLink,
+  AdminRow,
+} from "@/components/admin/form-controls";
 import { deleteBlockAction } from "@/lib/admin-actions";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { getCmsSnapshot } from "@/lib/queries";
 
 type Props = { searchParams: Promise<{ saved?: string; deleted?: string }> };
@@ -9,7 +17,11 @@ type Props = { searchParams: Promise<{ saved?: string; deleted?: string }> };
 export default async function AdminBlocksPage({ searchParams }: Props) {
   if (!(await isAdminAuthenticated())) redirect("/admin/login");
   const { saved, deleted } = await searchParams;
-  const { blocks } = await getCmsSnapshot();
+  const { blocks, personas } = await getCmsSnapshot();
+  const labelByKey = Object.fromEntries(
+    personas.map((p) => [p.key, p.label])
+  );
+
   const sorted = [...blocks].sort((a, b) => {
     if (a.personaKey !== b.personaKey)
       return a.personaKey.localeCompare(b.personaKey);
@@ -18,59 +30,48 @@ export default async function AdminBlocksPage({ searchParams }: Props) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            BLOCKS
-          </p>
-          <h1 className="mt-2 text-2xl font-medium">Content blocks</h1>
-          {saved || deleted ? (
-            <p className="mt-2 font-mono text-xs text-accent">
-              {deleted ? "Deleted" : "Saved"}
-            </p>
-          ) : null}
-        </div>
-        <Link
-          href="/admin/blocks/new"
-          className="rounded-md bg-accent px-3 py-2 text-sm font-medium text-accent-foreground"
-        >
-          New block
-        </Link>
-      </div>
-      <ul className="mt-8 space-y-2">
-        {sorted.map((b) => (
-          <li
-            key={b.id}
-            className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border px-4 py-3"
-          >
-            <div className="min-w-0">
-              <p className="truncate text-sm font-medium">
-                {b.title || "(untitled)"}
-              </p>
-              <p className="font-mono text-xs text-muted-foreground">
-                {b.personaKey} · {b.type} · order {b.sortOrder ?? 0}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/admin/blocks/${b.id}`}
-                className="rounded border border-border px-2 py-1 text-xs hover:border-accent"
-              >
-                Edit
-              </Link>
-              <form action={deleteBlockAction}>
-                <input type="hidden" name="id" value={b.id} />
-                <button
-                  type="submit"
-                  className="rounded border border-border px-2 py-1 text-xs text-muted-foreground hover:border-red-500 hover:text-red-500"
-                >
-                  Delete
-                </button>
-              </form>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <AdminPageHeader
+        kicker="Blocks"
+        title="Content blocks"
+        description="Per-persona stats, narrative sections, timeline items, and links. Each block belongs to one audience lens."
+        action={
+          <AdminPrimaryLink href="/admin/blocks/new">New block</AdminPrimaryLink>
+        }
+      />
+      <AdminFlash saved={Boolean(saved)} deleted={Boolean(deleted)} />
+
+      {sorted.length === 0 ? (
+        <AdminEmpty
+          title="No content blocks"
+          description="Add stats and sections for each persona, or load the built-in seed from the dashboard."
+          action={
+            <AdminPrimaryLink href="/admin/blocks/new">
+              Create block
+            </AdminPrimaryLink>
+          }
+        />
+      ) : (
+        <ul className="mt-8 space-y-2">
+          {sorted.map((b) => (
+            <AdminRow
+              key={b.id}
+              title={b.title || "(untitled)"}
+              meta={`${labelByKey[b.personaKey] ?? b.personaKey} · ${b.type} · order ${b.sortOrder ?? 0}${
+                b.isActive === false ? " · off" : ""
+              }`}
+              actions={
+                <>
+                  <AdminEditLink href={`/admin/blocks/${b.id}`} />
+                  <form action={deleteBlockAction} className="flex flex-1 sm:flex-none">
+                    <input type="hidden" name="id" value={b.id} />
+                    <DeleteButton itemLabel={b.title || b.type} />
+                  </form>
+                </>
+              }
+            />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

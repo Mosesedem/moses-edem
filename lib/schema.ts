@@ -1,14 +1,14 @@
 import {
-  mysqlTable,
+  pgTable,
   varchar,
   text,
-  int,
+  integer,
   boolean,
   timestamp,
-  json,
-} from "drizzle-orm/mysql-core";
+  jsonb,
+} from "drizzle-orm/pg-core";
 
-export const personas = mysqlTable("personas", {
+export const personas = pgTable("personas", {
   id: varchar("id", { length: 36 }).primaryKey(),
   key: varchar("key", { length: 32 }).notNull().unique(),
   label: varchar("label", { length: 64 }).notNull(),
@@ -18,11 +18,11 @@ export const personas = mysqlTable("personas", {
   ctaLabel: varchar("cta_label", { length: 64 }),
   ctaHref: varchar("cta_href", { length: 255 }),
   iconName: varchar("icon_name", { length: 32 }).notNull(),
-  sortOrder: int("sort_order").default(0),
+  sortOrder: integer("sort_order").default(0),
   isActive: boolean("is_active").default(true),
 });
 
-export const contentBlocks = mysqlTable("content_blocks", {
+export const contentBlocks = pgTable("content_blocks", {
   id: varchar("id", { length: 36 }).primaryKey(),
   personaKey: varchar("persona_key", { length: 32 }).notNull(),
   type: varchar("type", { length: 32 }).notNull(),
@@ -30,12 +30,12 @@ export const contentBlocks = mysqlTable("content_blocks", {
   body: text("body"),
   iconName: varchar("icon_name", { length: 32 }),
   href: varchar("href", { length: 255 }),
-  metadata: json("metadata"),
-  sortOrder: int("sort_order").default(0),
+  metadata: jsonb("metadata"),
+  sortOrder: integer("sort_order").default(0),
   isActive: boolean("is_active").default(true),
 });
 
-export const profile = mysqlTable("profile", {
+export const profile = pgTable("profile", {
   id: varchar("id", { length: 36 }).primaryKey(),
   fullName: varchar("full_name", { length: 120 }).notNull(),
   location: varchar("location", { length: 120 }),
@@ -44,36 +44,40 @@ export const profile = mysqlTable("profile", {
   linkedinUrl: varchar("linkedin_url", { length: 255 }),
   resumeUrl: varchar("resume_url", { length: 255 }),
   phone: varchar("phone", { length: 40 }),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
-export const blogPosts = mysqlTable("blog_posts", {
+export const blogPosts = pgTable("blog_posts", {
   id: varchar("id", { length: 36 }).primaryKey(),
   slug: varchar("slug", { length: 160 }).notNull().unique(),
   title: varchar("title", { length: 200 }).notNull(),
   excerpt: varchar("excerpt", { length: 400 }),
   body: text("body").notNull(),
   coverImage: varchar("cover_image", { length: 255 }),
-  tags: json("tags"),
+  tags: jsonb("tags"),
   published: boolean("published").default(false),
-  publishedAt: timestamp("published_at"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  publishedAt: timestamp("published_at", { withTimezone: true, mode: "date" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
-export const portfolioProjects = mysqlTable("portfolio_projects", {
+export const portfolioProjects = pgTable("portfolio_projects", {
   id: varchar("id", { length: 36 }).primaryKey(),
   slug: varchar("slug", { length: 160 }).notNull().unique(),
   title: varchar("title", { length: 160 }).notNull(),
   category: varchar("category", { length: 80 }),
   iconName: varchar("icon_name", { length: 32 }),
   href: varchar("href", { length: 255 }),
-  tech: json("tech"),
+  tech: jsonb("tech"),
   featured: boolean("featured").default(false),
-  sortOrder: int("sort_order").default(0),
+  sortOrder: integer("sort_order").default(0),
   isActive: boolean("is_active").default(true),
   /** Per-lens copy: { employer: { summary, body, metric }, ... } */
-  lens: json("lens").notNull(),
+  lens: jsonb("lens").notNull(),
 });
 
 export type Persona = typeof personas.$inferSelect;

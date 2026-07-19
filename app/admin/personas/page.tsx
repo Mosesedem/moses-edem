@@ -1,38 +1,79 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { DeleteButton } from "@/components/admin/delete-button";
+import {
+  AdminEmpty,
+  AdminFlash,
+  AdminPageHeader,
+  AdminPrimaryLink,
+  AdminRow,
+  AdminEditLink,
+} from "@/components/admin/form-controls";
+import { deletePersonaAction } from "@/lib/admin-actions";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { getCmsSnapshot } from "@/lib/queries";
 
-export default async function AdminPersonasPage() {
+type Props = {
+  searchParams: Promise<{ deleted?: string; error?: string }>;
+};
+
+export default async function AdminPersonasPage({ searchParams }: Props) {
   if (!(await isAdminAuthenticated())) redirect("/admin/login");
+  const sp = await searchParams;
   const { personas } = await getCmsSnapshot();
+  const sorted = [...personas].sort(
+    (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)
+  );
 
   return (
     <div>
-      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        PERSONAS
-      </p>
-      <h1 className="mt-2 text-2xl font-medium">Edit audience lenses</h1>
-      <ul className="mt-8 space-y-2">
-        {personas
-          .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
-          .map((p) => (
-            <li key={p.id}>
-              <Link
-                href={`/admin/personas/${p.id}`}
-                className="flex items-center justify-between rounded-lg border border-border px-4 py-3 transition-colors hover:border-accent"
-              >
-                <div>
-                  <p className="font-medium">{p.label}</p>
-                  <p className="font-mono text-xs text-muted-foreground">{p.key}</p>
-                </div>
-                <span className="font-mono text-xs text-muted-foreground">
-                  {p.isActive ? "active" : "off"}
-                </span>
-              </Link>
-            </li>
+      <AdminPageHeader
+        kicker="Personas"
+        title="Audience lenses"
+        description="These drive /employer, /investor, and the other lens routes. Labels, heroes, and CTAs are stored in the CMS — not hardcoded on the site."
+        action={
+          <AdminPrimaryLink href="/admin/personas/new">
+            New persona
+          </AdminPrimaryLink>
+        }
+      />
+      <AdminFlash
+        deleted={Boolean(sp.deleted)}
+        error={sp.error ? decodeURIComponent(sp.error) : null}
+      />
+
+      {sorted.length === 0 ? (
+        <AdminEmpty
+          title="No personas yet"
+          description="Load built-in seed from the dashboard, or create a lens (key must be employer, investor, romantic, academic, or visitor)."
+          action={
+            <AdminPrimaryLink href="/admin/personas/new">
+              Create persona
+            </AdminPrimaryLink>
+          }
+        />
+      ) : (
+        <ul className="mt-8 space-y-2">
+          {sorted.map((p) => (
+            <AdminRow
+              key={p.id}
+              title={p.label}
+              meta={`/${p.key} · icon ${p.iconName} · ${
+                p.isActive !== false ? "active" : "hidden"
+              }`}
+              actions={
+                <>
+                  <AdminEditLink href={`/admin/personas/${p.id}`} />
+                  <form action={deletePersonaAction} className="flex flex-1 sm:flex-none">
+                    <input type="hidden" name="id" value={p.id} />
+                    <DeleteButton itemLabel={p.label} />
+                  </form>
+                </>
+              }
+            />
           ))}
-      </ul>
+        </ul>
+      )}
     </div>
   );
 }

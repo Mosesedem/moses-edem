@@ -1,6 +1,7 @@
 import "dotenv/config";
-import { drizzle } from "drizzle-orm/mysql2";
-import mysql from "mysql2/promise";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { sql } from "drizzle-orm";
+import { Pool } from "pg";
 import { writeCmsStore } from "../lib/cms-store";
 import {
   blogPosts,
@@ -37,19 +38,24 @@ async function seedFileStore() {
   console.log("File CMS seed complete.");
 }
 
-async function seedMysql() {
+async function seedPostgres() {
   const url = process.env.DATABASE_URL?.trim();
   if (!url) {
-    console.log("DATABASE_URL not set — skipping MySQL seed.");
+    console.log("DATABASE_URL not set — skipping Postgres seed.");
     return;
   }
 
-  console.log("Connecting to MySQL ...");
-  const pool = mysql.createPool({ uri: url, connectionLimit: 3 });
+  console.log("Connecting to Postgres ...");
+  const isLocal =
+    /localhost|127\.0\.0\.1/.test(url) || url.includes("sslmode=disable");
+  const pool = new Pool({
+    connectionString: url,
+    max: 3,
+    ssl: isLocal ? false : undefined,
+  });
   const db = drizzle(pool);
 
   try {
-    // Verify connection
     await pool.query("SELECT 1");
 
     console.log("Seeding profile ...");
@@ -65,7 +71,8 @@ async function seedMysql() {
         resumeUrl: seedProfile.resumeUrl,
         phone: seedProfile.phone,
       })
-      .onDuplicateKeyUpdate({
+      .onConflictDoUpdate({
+        target: profile.id,
         set: {
           fullName: seedProfile.fullName,
           location: seedProfile.location,
@@ -82,7 +89,8 @@ async function seedMysql() {
       await db
         .insert(personas)
         .values(row)
-        .onDuplicateKeyUpdate({
+        .onConflictDoUpdate({
+          target: personas.id,
           set: {
             label: row.label,
             tagline: row.tagline,
@@ -102,7 +110,8 @@ async function seedMysql() {
       await db
         .insert(contentBlocks)
         .values(row)
-        .onDuplicateKeyUpdate({
+        .onConflictDoUpdate({
+          target: contentBlocks.id,
           set: {
             personaKey: row.personaKey,
             type: row.type,
@@ -134,7 +143,8 @@ async function seedMysql() {
           isActive: row.isActive,
           lens: row.lens,
         })
-        .onDuplicateKeyUpdate({
+        .onConflictDoUpdate({
+          target: portfolioProjects.id,
           set: {
             slug: row.slug,
             title: row.title,
@@ -167,7 +177,8 @@ async function seedMysql() {
           createdAt: row.createdAt ? new Date(row.createdAt) : null,
           updatedAt: row.updatedAt ? new Date(row.updatedAt) : null,
         })
-        .onDuplicateKeyUpdate({
+        .onConflictDoUpdate({
+          target: blogPosts.id,
           set: {
             slug: row.slug,
             title: row.title,
@@ -181,17 +192,16 @@ async function seedMysql() {
         });
     }
 
-    // Counts for confirmation
-    const [counts] = await pool.query(
-      `SELECT
-        (SELECT COUNT(*) FROM personas) AS personas,
-        (SELECT COUNT(*) FROM content_blocks) AS content_blocks,
-        (SELECT COUNT(*) FROM portfolio_projects) AS portfolio_projects,
-        (SELECT COUNT(*) FROM blog_posts) AS blog_posts,
-        (SELECT COUNT(*) FROM profile) AS profile`
-    );
-    console.log("MySQL row counts:", counts);
-    console.log("MySQL seed complete.");
+    const counts = await db.execute(sql`
+      SELECT
+        (SELECT COUNT(*)::int FROM personas) AS personas,
+        (SELECT COUNT(*)::int FROM content_blocks) AS content_blocks,
+        (SELECT COUNT(*)::int FROM portfolio_projects) AS portfolio_projects,
+        (SELECT COUNT(*)::int FROM blog_posts) AS blog_posts,
+        (SELECT COUNT(*)::int FROM profile) AS profile
+    `);
+    console.log("Postgres row counts:", counts.rows?.[0] ?? counts);
+    console.log("Postgres seed complete.");
   } finally {
     await pool.end();
   }
@@ -202,15 +212,15 @@ async function main() {
 
   if (!process.env.DATABASE_URL?.trim()) {
     console.log(
-      "Tip: set DATABASE_URL and run `pnpm db:push` then `pnpm db:seed` to load MySQL."
+      "Tip: set DATABASE_URL and run `pnpm db:push` then `pnpm db:seed` to load Postgres."
     );
     return;
   }
 
   try {
-    await seedMysql();
+    await seedPostgres();
   } catch (err) {
-    console.error("\nMySQL seed failed.");
+    console.error("\nPostgres seed failed.");
     console.error(err);
     console.error(
       "\nIf tables are missing, run: pnpm db:push\nThen: pnpm db:seed\n"

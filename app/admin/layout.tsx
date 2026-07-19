@@ -1,6 +1,44 @@
-import Link from "next/link";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { logoutAction } from "@/lib/admin-actions";
+import { isDatabaseConfigured } from "@/lib/db";
+import { AdminShell, type AdminNavItem } from "@/components/admin/shell";
+import { Toaster } from "sonner";
+
+/** Admin always reads fresh CMS data (no ISR). */
+export const dynamic = "force-dynamic";
+
+const NAV: AdminNavItem[] = [
+  {
+    href: "/admin",
+    label: "Overview",
+    description: "Counts, storage, maintenance",
+    exact: true,
+  },
+  {
+    href: "/admin/personas",
+    label: "Personas",
+    description: "Audience lenses and heroes",
+  },
+  {
+    href: "/admin/blocks",
+    label: "Blocks",
+    description: "Stats, text, timeline, links",
+  },
+  {
+    href: "/admin/projects",
+    label: "Projects",
+    description: "Portfolio and lens copy",
+  },
+  {
+    href: "/admin/blog",
+    label: "Blog",
+    description: "Drafts and published posts",
+  },
+  {
+    href: "/admin/profile",
+    label: "Profile",
+    description: "Name, contact, social links",
+  },
+];
 
 export default async function AdminLayout({
   children,
@@ -8,54 +46,29 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const authed = await isAdminAuthenticated();
+  const dbOn = isDatabaseConfigured();
+
+  // Login page: simple centered shell without sidebar
+  if (!authed) {
+    return (
+      <div className="min-h-dvh bg-background text-foreground">
+        <div
+          className="mx-auto max-w-md px-4 py-10 sm:px-6 sm:py-16"
+          style={{ paddingTop: "max(2.5rem, var(--safe-top))" }}
+        >
+          {children}
+        </div>
+        <Toaster richColors position="top-center" />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/admin"
-              className="font-mono text-sm font-medium hover:text-accent"
-            >
-              admin
-            </Link>
-            {authed ? (
-              <nav className="hidden items-center gap-3 text-sm text-muted-foreground sm:flex">
-                <Link href="/admin/personas" className="hover:text-accent">
-                  Personas
-                </Link>
-                <Link href="/admin/blocks" className="hover:text-accent">
-                  Blocks
-                </Link>
-                <Link href="/admin/projects" className="hover:text-accent">
-                  Projects
-                </Link>
-                <Link href="/admin/blog" className="hover:text-accent">
-                  Blog
-                </Link>
-                <Link href="/admin/profile" className="hover:text-accent">
-                  Profile
-                </Link>
-                <Link href="/" className="hover:text-accent">
-                  Site
-                </Link>
-              </nav>
-            ) : null}
-          </div>
-          {authed ? (
-            <form action={logoutAction}>
-              <button
-                type="submit"
-                className="rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground hover:border-accent hover:text-foreground"
-              >
-                Log out
-              </button>
-            </form>
-          ) : null}
-        </div>
-      </header>
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">{children}</div>
-    </div>
+    <>
+      <AdminShell nav={NAV} dbOn={dbOn}>
+        {children}
+      </AdminShell>
+      <Toaster richColors position="top-center" closeButton />
+    </>
   );
 }

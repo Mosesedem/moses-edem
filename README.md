@@ -14,72 +14,69 @@ Visitors pick an audience lens; the site reshapes content around that lens.
 
 ## Stack
 
-- Next.js (App Router) + TypeScript
-- Tailwind CSS + CSS variables (system / light / dark via `next-themes`)
-- Lucide icons (no emoji)
-- MySQL + Drizzle ORM (seed fallback when `DATABASE_URL` is unset)
+- **App:** Next.js (App Router) + TypeScript on **Vercel**
+- **Database:** **Neon** Postgres via Drizzle ORM
+- **Styling:** Tailwind CSS + CSS variables (`next-themes`)
+- **Icons:** Lucide (no emoji)
+- **Fallback:** built-in seed / `.data/cms.json` when `DATABASE_URL` is unset
 
 ## Develop
 
 ```bash
 pnpm install
-cp .env.example .env   # set ADMIN_PASSWORD, GROQ_API_KEY
-pnpm db:seed           # write .data/cms.json from seed
+cp .env.example .env
+# Set DATABASE_URL to your Neon pooled connection string
+# Set ADMIN_PASSWORD and GROQ_API_KEY
+pnpm db:reset   # create tables + seed Neon + file CMS
 pnpm dev
 ```
 
 Open [http://localhost:18](http://localhost:18).
 
+### Neon + Vercel
+
+1. Create a Neon project and copy the **pooled** `DATABASE_URL` (`…-pooler…?sslmode=require`).
+2. Locally and on Vercel, set:
+   - `DATABASE_URL`
+   - `ADMIN_PASSWORD`
+   - `GROQ_API_KEY` (optional, AI chat)
+3. Schema + seed against Neon:
+
+```bash
+pnpm db:reset
+# or step by step:
+pnpm db:push:ci   # non-interactive table ensure
+pnpm db:seed
+```
+
+4. Deploy the Next.js app to Vercel with the same env vars. No container runtime is required.
+
 ### Content storage
 
-1. **File CMS** — `.data/cms.json` (always written by seed/admin; works offline)
-2. **MySQL** — when `DATABASE_URL` is set, seed + admin sync into tables:
-   - `personas`, `content_blocks`, `profile`, `blog_posts`, `portfolio_projects`
+1. **PostgreSQL (Neon)** — primary when `DATABASE_URL` is set  
+   Tables: `personas`, `content_blocks`, `profile`, `blog_posts`, `portfolio_projects`
+2. **File CMS** — `.data/cms.json` (local/admin convenience; Vercel is read-only so production relies on Neon + in-memory/seed fallback)
 
-Public reads prefer MySQL when configured, then fall back to the file store.
-
-```bash
-# 1) Ensure DATABASE_URL points at a reachable MySQL host
-# 2) Create tables
-pnpm db:push
-
-# 3) Seed file + MySQL
-pnpm db:seed
-
-# Or both:
-pnpm db:reset
-```
-
-If `db:seed` prints `MySQL seed complete` and row counts, tables are filled.
-If it only prints `File CMS seed complete` / `DATABASE_URL not set`, MySQL was skipped.
-If it errors with `ENOTFOUND` or connection refused, fix the host/credentials first.
-
-Local Docker MySQL (matches `.env.example`):
-
-```bash
-pnpm db:up
-# DATABASE_URL=mysql://moses:moses@127.0.0.1:3306/mosesedem
-pnpm db:reset
-```
+Public reads prefer Neon, then fall back to seed/file if the DB is unreachable.
 
 ## Admin
 
 - URL: `/admin` (login at `/admin/login`)
-- Password: `ADMIN_PASSWORD` env (default for local: `moses-admin-change-me`)
+- Password: `ADMIN_PASSWORD`
 - Manage personas, content blocks, projects, blog posts, and profile
-- Saves write to `.data/cms.json` and mirror into MySQL when connected
+- Saves sync to Neon when `DATABASE_URL` is set
 
 ## AI chat
 
-Persona pages include **AI Moses** (Groq). Set `GROQ_API_KEY` in `.env`.
+Persona pages include **AI Moses** (Groq). Set `GROQ_API_KEY`.
 
 ## Routes
 
 - `/` — persona picker
-- `/employer` … `/visitor` — persona pages (lens switcher in header)
-- `/projects` — all projects; tap opens detail sheet (bottom mobile / side desktop)
+- `/employer` … `/visitor` — persona pages
+- `/projects` — portfolio browser
 - `/blog`, `/blog/[slug]` — public blog
-- `/admin` — CMS dashboard (includes Projects with per-lens copy)
+- `/admin` — CMS dashboard
 
 ## Design
 

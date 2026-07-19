@@ -2,6 +2,7 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { NavigationProgressHost } from "@/components/navigation-progress-host";
 import "./globals.css";
 
 const inter = Inter({
@@ -35,6 +36,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen font-sans">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NavigationProgressHost />
           {children}
         </ThemeProvider>
       </body>

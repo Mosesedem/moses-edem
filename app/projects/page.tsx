@@ -10,7 +10,7 @@ import {
 import { toProjectDTO } from "@/lib/project-dto";
 import { isPersonaKey, type PersonaKey } from "@/lib/schema";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 45;
 
 export const metadata = {
   title: "Projects — Moses Edem",

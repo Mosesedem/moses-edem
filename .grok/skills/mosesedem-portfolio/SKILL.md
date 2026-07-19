@@ -6,7 +6,7 @@ description: >
   audience lens (Employer/Recruiter, Investor/Partner, Romantic Interest,
   Academic/Research, Casual Visitor) and the site reshapes its content around
   that lens. Use this skill whenever working on this repo — new pages, persona
-  content, theming, icons, or the MySQL content layer. Triggers: /mosesedem-portfolio,
+  content, theming, icons, or the PostgreSQL content layer. Triggers: /mosesedem-portfolio,
   persona page, persona picker, content blocks, better-auth design, drizzle schema,
   theme toggle, lucide icons.
 ---
@@ -40,11 +40,10 @@ headers, not in seed data.** Every glyph is an SVG icon (icon pack below).
 - **Icons:** `lucide-react` (primary). Fall back to hand-authored inline SVG
   only for anything Lucide doesn't cover (e.g. a custom logomark). Never use
   a font-icon set that renders as colored emoji glyphs.
-- **Database:** MySQL (see §5 for schema)
-- **ORM:** Drizzle ORM (`drizzle-orm` + `mysql2`) — lightweight, SQL-shaped,
-  plays well with edge/serverless Next.js deploys. Prisma is an acceptable
-  substitute if the agent building this already has a Prisma setup, but
-  default to Drizzle if starting fresh.
+- **Database:** PostgreSQL (see §5 for schema)
+- **ORM:** Drizzle ORM (`drizzle-orm` + `pg`) — lightweight, SQL-shaped,
+  plays well with serverless Next.js deploys. File/seed CMS is the fallback
+  when `DATABASE_URL` is unset.
 - **Theme:** `next-themes` with `attribute="class"` and
   `defaultTheme="system"` — see §3.3
 - **Fonts:** a geometric sans for UI text + a monospace face for labels,
@@ -204,87 +203,39 @@ Render icons at 16–24px, `strokeWidth={1.5}` or `1.75`, colored via
 `currentColor` so they inherit `text-foreground` / `text-muted-foreground`
 automatically in both themes. Never hardcode a hex fill on an icon.
 
-## 5. Data layer — MySQL
+## 5. Data layer — PostgreSQL
 
 All persona-specific copy, projects, and profile facts live in the database,
 not hardcoded in components. Pages fetch by persona key via server
 components / server actions — no client-side waterfall fetching for
-first-paint content.
+first-paint content. When `DATABASE_URL` is unset, public pages fall back to
+the file/seed CMS (`.data/cms.json` / built-in seed).
 
 ### 5.1 Schema (Drizzle, `schema.ts`)
 
 ```ts
-import { mysqlTable, varchar, text, int, boolean, timestamp, json } from "drizzle-orm/mysql-core";
+import { pgTable, varchar, text, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
 
-export const personas = mysqlTable("personas", {
-  id: varchar("id", { length: 36 }).primaryKey(),      // uuid
-  key: varchar("key", { length: 32 }).notNull().unique(), // employer | investor | romantic | academic | visitor
+export const personas = pgTable("personas", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  key: varchar("key", { length: 32 }).notNull().unique(),
   label: varchar("label", { length: 64 }).notNull(),
-  tagline: varchar("tagline", { length: 160 }),
-  heroHeading: varchar("hero_heading", { length: 160 }),
-  heroBody: text("hero_body"),
-  ctaLabel: varchar("cta_label", { length: 64 }),
-  ctaHref: varchar("cta_href", { length: 255 }),
-  iconName: varchar("icon_name", { length: 32 }).notNull(), // lucide icon name, e.g. "Briefcase"
-  sortOrder: int("sort_order").default(0),
-  isActive: boolean("is_active").default(true),
-});
-
-export const contentBlocks = mysqlTable("content_blocks", {
-  id: varchar("id", { length: 36 }).primaryKey(),
-  personaKey: varchar("persona_key", { length: 32 }).notNull(),
-  type: varchar("type", { length: 32 }).notNull(), // "stat" | "project" | "text" | "link" | "timeline_item"
-  title: varchar("title", { length: 160 }),
-  body: text("body"),
-  iconName: varchar("icon_name", { length: 32 }),
-  href: varchar("href", { length: 255 }),
-  metadata: json("metadata"),  // free-form: tech stack array, dates, metrics
-  sortOrder: int("sort_order").default(0),
-  isActive: boolean("is_active").default(true),
-});
-
-export const profile = mysqlTable("profile", {
-  id: varchar("id", { length: 36 }).primaryKey(),
-  fullName: varchar("full_name", { length: 120 }).notNull(),
-  location: varchar("location", { length: 120 }),
-  email: varchar("email", { length: 160 }),
-  githubUrl: varchar("github_url", { length: 255 }),
-  linkedinUrl: varchar("linkedin_url", { length: 255 }),
-  resumeUrl: varchar("resume_url", { length: 255 }),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  // ... hero fields, iconName, sortOrder, isActive
 });
 ```
+
+Use `jsonb` for free-form fields (`metadata`, `tags`, `tech`, `lens`).
+Upserts use `.onConflictDoUpdate({ target: table.id, set: { ... } })`.
 
 ### 5.2 Fetch pattern (server component)
 
 ```ts
-// lib/queries.ts
-import { db } from "@/lib/db";
-import { personas, contentBlocks } from "@/lib/schema";
-import { eq, asc } from "drizzle-orm";
-
-export async function getPersona(key: string) {
-  const [persona] = await db.select().from(personas).where(eq(personas.key, key)).limit(1);
-  if (!persona) return null;
-  const blocks = await db
-    .select()
-    .from(contentBlocks)
-    .where(eq(contentBlocks.personaKey, key))
-    .orderBy(asc(contentBlocks.sortOrder));
-  return { persona, blocks };
-}
-```
-
-```ts
 // lib/db.ts
-import { drizzle } from "drizzle-orm/mysql2";
-import mysql from "mysql2/promise";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
-const poolConnection = mysql.createPool({
-  uri: process.env.DATABASE_URL, // mysql://user:pass@host:3306/dbname
-});
-
-export const db = drizzle(poolConnection);
+const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 1 });
+export const db = drizzle(pool, { schema });
 ```
 
 Never expose `DATABASE_URL` or raw query errors to the client. All DB access
@@ -349,8 +300,8 @@ When implementing or reviewing work on this site, enforce every item:
 - [ ] Every icon is a real SVG (Lucide or hand-authored), not a Unicode glyph.
 - [ ] Theme defaults to `system`, has manual Light/Dark/System toggle, no
       flash-of-wrong-theme on load.
-- [ ] All persona copy and content blocks are DB-driven (MySQL via
-      Drizzle), not hardcoded per-page JSX.
+- [ ] All persona copy and content blocks are DB-driven (PostgreSQL via
+      Drizzle, or seed fallback), not hardcoded per-page JSX.
 - [ ] Server-side data fetching for first paint; no loading spinners for
       content that could have been fetched server-side.
 - [ ] Visual language matches better-auth's pattern: neutral palette + one

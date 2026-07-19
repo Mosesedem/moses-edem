@@ -1,7 +1,16 @@
 import { notFound, redirect } from "next/navigation";
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import {
+  AdminBackLink,
+  AdminCheckbox,
+  AdminField,
+  AdminFlash,
+  AdminPageHeader,
+  AdminSubmit,
+  AdminTextArea,
+} from "@/components/admin/form-controls";
 import { saveProjectAction } from "@/lib/admin-actions";
-import { getAllProjectsAdmin } from "@/lib/queries";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { getAllProjectsAdmin, getCmsSnapshot } from "@/lib/queries";
 import {
   PERSONA_KEYS,
   type PersonaKey,
@@ -21,7 +30,11 @@ export default async function AdminProjectEditPage({
   const { id } = await params;
   const { saved } = await searchParams;
   const isNew = id === "new";
-  const projects = await getAllProjectsAdmin();
+  const [projects, { personas }] = await Promise.all([
+    getAllProjectsAdmin(),
+    getCmsSnapshot(),
+  ]);
+
   const project = isNew
     ? {
         id: "new",
@@ -44,158 +57,114 @@ export default async function AdminProjectEditPage({
     ? (project.tech as string[]).join(", ")
     : "";
 
+  const personaLabel = (key: string) =>
+    personas.find((p) => p.key === key)?.label ?? key;
+
   return (
     <div className="max-w-2xl">
-      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        {isNew ? "NEW PROJECT" : "EDIT PROJECT"}
-      </p>
-      <h1 className="mt-2 text-2xl font-medium">
-        {isNew ? "Add project" : project.title}
-      </h1>
-      {saved ? (
-        <p className="mt-2 font-mono text-xs text-accent">Saved</p>
-      ) : null}
+      <AdminBackLink href="/admin/projects" label="All projects" />
+      <AdminPageHeader
+        kicker={isNew ? "New project" : "Edit project"}
+        title={isNew ? "Add project" : project.title}
+        description="Lens copy is what visitors see when they open this project under each audience. Leave a lens blank to fall back to visitor / first available copy."
+      />
+      <AdminFlash saved={Boolean(saved)} />
 
       <form action={saveProjectAction} className="mt-8 space-y-6">
         <input type="hidden" name="id" value={project.id} />
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field name="title" label="Title" defaultValue={project.title} required />
-          <Field name="slug" label="Slug" defaultValue={project.slug} />
-          <Field
+          <AdminField
+            name="title"
+            label="Title"
+            defaultValue={project.title}
+            required
+          />
+          <AdminField
+            name="slug"
+            label="Slug"
+            defaultValue={project.slug}
+            hint="URL: /projects?project=slug"
+          />
+          <AdminField
             name="category"
             label="Category"
             defaultValue={project.category ?? ""}
           />
-          <Field
+          <AdminField
             name="iconName"
             label="Icon (Lucide)"
             defaultValue={project.iconName ?? "Code2"}
           />
-          <Field name="href" label="Live URL" defaultValue={project.href ?? ""} />
-          <Field
+          <AdminField
+            name="href"
+            label="Live URL"
+            defaultValue={project.href ?? ""}
+          />
+          <AdminField
             name="sortOrder"
             label="Sort order"
+            type="number"
             defaultValue={String(project.sortOrder ?? 0)}
           />
         </div>
-        <Field name="tech" label="Tech (comma-separated)" defaultValue={tech} />
+        <AdminField
+          name="tech"
+          label="Tech (comma-separated)"
+          defaultValue={tech}
+        />
+        <AdminCheckbox
+          name="featured"
+          label="Featured on persona pages"
+          defaultChecked={project.featured === true}
+        />
+        <AdminCheckbox
+          name="isActive"
+          label="Active on the public site"
+          defaultChecked={project.isActive !== false}
+        />
 
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            name="featured"
-            defaultChecked={project.featured === true}
-          />
-          Featured
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            name="isActive"
-            defaultChecked={project.isActive !== false}
-          />
-          Active
-        </label>
-
-        <div className="space-y-6 border-t border-border pt-6">
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            Lens copy
-          </p>
+        <div className="space-y-4 border-t border-border pt-6">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+              Lens copy
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              One section per audience. Data comes from the CMS, not hardcoded
+              components.
+            </p>
+          </div>
           {PERSONA_KEYS.map((key) => (
-            <LensFields
-              key={key}
-              personaKey={key}
-              summary={lens[key]?.summary ?? ""}
-              body={lens[key]?.body ?? ""}
-              metric={lens[key]?.metric ?? ""}
-            />
+            <div key={key} className="rounded-lg border border-border p-4">
+              <p className="mb-3 text-sm font-medium text-foreground">
+                {personaLabel(key)}
+                <span className="ml-2 font-mono text-[11px] text-muted-foreground">
+                  {key}
+                </span>
+              </p>
+              <div className="space-y-3">
+                <AdminField
+                  name={`lens_${key}_summary`}
+                  label="Summary (card)"
+                  defaultValue={lens[key as PersonaKey]?.summary ?? ""}
+                />
+                <AdminTextArea
+                  name={`lens_${key}_body`}
+                  label="Body (detail sheet)"
+                  rows={3}
+                  defaultValue={lens[key as PersonaKey]?.body ?? ""}
+                />
+                <AdminField
+                  name={`lens_${key}_metric`}
+                  label="Metric"
+                  defaultValue={lens[key as PersonaKey]?.metric ?? ""}
+                />
+              </div>
+            </div>
           ))}
         </div>
 
-        <button
-          type="submit"
-          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground"
-        >
-          Save project
-        </button>
+        <AdminSubmit>{isNew ? "Create project" : "Save project"}</AdminSubmit>
       </form>
-    </div>
-  );
-}
-
-function Field({
-  name,
-  label,
-  defaultValue,
-  required,
-}: {
-  name: string;
-  label: string;
-  defaultValue: string;
-  required?: boolean;
-}) {
-  return (
-    <div>
-      <label className="text-xs font-mono text-muted-foreground">{label}</label>
-      <input
-        name={name}
-        defaultValue={defaultValue}
-        required={required}
-        className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-accent"
-      />
-    </div>
-  );
-}
-
-function LensFields({
-  personaKey,
-  summary,
-  body,
-  metric,
-}: {
-  personaKey: PersonaKey;
-  summary: string;
-  body: string;
-  metric: string;
-}) {
-  return (
-    <div className="rounded-lg border border-border p-4">
-      <p className="mb-3 font-mono text-xs font-medium uppercase tracking-wider text-foreground">
-        {personaKey}
-      </p>
-      <div className="space-y-3">
-        <div>
-          <label className="text-xs font-mono text-muted-foreground">
-            Summary (brief)
-          </label>
-          <input
-            name={`lens_${personaKey}_summary`}
-            defaultValue={summary}
-            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-accent"
-          />
-        </div>
-        <div>
-          <label className="text-xs font-mono text-muted-foreground">
-            Body (sheet detail)
-          </label>
-          <textarea
-            name={`lens_${personaKey}_body`}
-            rows={3}
-            defaultValue={body}
-            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-accent"
-          />
-        </div>
-        <div>
-          <label className="text-xs font-mono text-muted-foreground">
-            Metric
-          </label>
-          <input
-            name={`lens_${personaKey}_metric`}
-            defaultValue={metric}
-            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-accent"
-          />
-        </div>
-      </div>
     </div>
   );
 }

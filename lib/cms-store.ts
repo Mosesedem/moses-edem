@@ -123,7 +123,7 @@ export async function readCmsStore(): Promise<CmsSnapshot> {
 /**
  * Persist snapshot. On serverless (read-only FS) keeps memory only and
  * does not throw so public pages still work. Callers that need durable
- * storage should also write MySQL via persistCms.
+ * storage should also write Postgres via persistCms.
  */
 export async function writeCmsStore(snapshot: CmsSnapshot): Promise<void> {
   memorySnapshot = revive(snapshot);

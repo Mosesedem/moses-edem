@@ -5,7 +5,8 @@ import { PersonaCard } from "@/components/persona-card";
 import { defaultSnapshot } from "@/lib/cms-store";
 import { getAllPersonas, getProfile, getPublishedPosts } from "@/lib/queries";
 
-export const dynamic = "force-dynamic";
+/** Public CMS data is also tagged `cms` and busted on admin save. */
+export const revalidate = 45;
 
 export default async function HomePage() {
   let personas;
