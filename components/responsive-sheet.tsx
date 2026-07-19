@@ -10,9 +10,6 @@ type ResponsiveSheetProps = {
   children: React.ReactNode;
 };
 
-/**
- * Mobile: bottom sheet. Desktop (md+): right side sheet.
- */
 export function ResponsiveSheet({
   open,
   onClose,
@@ -40,45 +37,43 @@ export function ResponsiveSheet({
       <button
         type="button"
         aria-label="Close"
-        className="absolute inset-0 bg-foreground/40 backdrop-blur-[2px] transition-opacity"
+        className="absolute inset-0 bg-foreground/45 backdrop-blur-[2px]"
         onClick={onClose}
       />
 
       {/* Mobile bottom sheet */}
-      <div className="sheet-bottom absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-2xl border border-border bg-background shadow-xl md:hidden">
-        <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3">
-          <div className="mx-auto absolute left-1/2 top-2 h-1 w-10 -translate-x-1/2 rounded-full bg-border md:hidden" />
-          <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground pt-2">
-            {title ?? "Details"}
-          </p>
+      <div className="sheet-bottom absolute inset-x-0 bottom-0 flex max-h-[min(90dvh,40rem)] flex-col rounded-t-2xl border border-border bg-background shadow-2xl md:hidden">
+        <div className="relative flex shrink-0 items-center justify-between border-b border-border px-4 pb-3 pt-5">
+          <div className="absolute left-1/2 top-2.5 h-1 w-10 -translate-x-1/2 rounded-full bg-border" />
+          <p className="section-label pt-1">{title ?? "Details"}</p>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border border-border p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="btn-icon !h-10 !w-10"
             aria-label="Close sheet"
           >
             <X size={16} strokeWidth={1.75} />
           </button>
         </div>
-        <div className="overflow-y-auto px-4 py-4">{children}</div>
+        <div className="overflow-y-auto overscroll-contain px-4 py-5">
+          {children}
+        </div>
       </div>
 
       {/* Desktop side sheet */}
-      <div className="sheet-side absolute inset-y-0 right-0 hidden w-full max-w-md flex-col border-l border-border bg-background shadow-xl md:flex">
+      <div className="sheet-side absolute inset-y-0 right-0 hidden w-full max-w-md flex-col border-l border-border bg-background shadow-2xl md:flex">
         <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-4">
-          <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-            {title ?? "Details"}
-          </p>
+          <p className="section-label">{title ?? "Details"}</p>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border border-border p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="btn-icon !h-10 !w-10"
             aria-label="Close sheet"
           >
             <X size={16} strokeWidth={1.75} />
           </button>
         </div>
-        <div className="overflow-y-auto px-5 py-5">{children}</div>
+        <div className="overflow-y-auto px-5 py-6">{children}</div>
       </div>
     </div>
   );

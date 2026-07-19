@@ -12,7 +12,7 @@
   --card-foreground: 0 0% 9%;
   --accent: 217 91% 60%;
   --accent-foreground: 0 0% 100%;
-  --radius: 0.5rem;
+  --radius: 0.625rem;
   --ring: 217 91% 60%;
   --input: 0 0% 90%;
   --primary: 217 91% 60%;
@@ -23,6 +23,28 @@
   --destructive-foreground: 0 0% 100%;
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 9%;
+
+  /* Layout rhythm */
+  --page-px: 1.25rem;
+  --page-max: 64rem;
+  --section-py: 2.75rem;
+  --header-h: 3.5rem;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --page-px: 1.5rem;
+    --section-py: 3.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-px: 2rem;
+    --section-py: 4.5rem;
+  }
 }
 
 .dark {
@@ -54,11 +76,15 @@
 
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
   }
 
   ::selection {
@@ -67,17 +93,122 @@
   }
 }
 
+@layer components {
+  .page-shell {
+    @apply flex min-h-dvh flex-col;
+  }
+
+  .page-main {
+    @apply flex flex-1 flex-col;
+  }
+
+  .page-container {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--page-px);
+  }
+
+  .section-block {
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .section-inner {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--page-px);
+    padding-block: var(--section-py);
+  }
+
+  .section-label {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground;
+  }
+
+  .section-title {
+    @apply text-[1.65rem] font-medium leading-[1.2] tracking-tight text-foreground sm:text-3xl md:text-4xl;
+  }
+
+  .section-lead {
+    @apply mt-3 max-w-xl text-[0.9375rem] leading-relaxed text-muted-foreground sm:text-base;
+  }
+
+  .hero-title {
+    @apply text-[1.85rem] font-medium leading-[1.15] tracking-tight text-foreground sm:text-4xl md:text-5xl;
+  }
+
+  .card-surface {
+    @apply rounded-[var(--radius)] border border-border bg-card transition-colors;
+  }
+
+  .card-surface-interactive {
+    @apply card-surface active:bg-muted/40 hover:border-accent;
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius)] bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90;
+  }
+
+  .btn-secondary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius)] border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-accent;
+  }
+
+  .btn-icon {
+    @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--radius)] border border-border text-muted-foreground transition-colors hover:border-accent hover:text-foreground;
+  }
+
+  .cta-row {
+    @apply flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center;
+  }
+
+  .cta-row > * {
+    @apply w-full sm:w-auto;
+  }
+
+  .stat-grid {
+    @apply grid grid-cols-3 gap-2 sm:gap-3;
+  }
+
+  .stat-cell {
+    @apply card-surface flex flex-col justify-between gap-2 p-3 sm:p-4;
+  }
+
+  .stat-value {
+    @apply text-sm font-medium leading-snug tracking-tight text-foreground sm:text-base;
+  }
+
+  .stat-label {
+    @apply text-[11px] leading-snug text-muted-foreground sm:text-xs;
+  }
+
+  .content-grid {
+    @apply grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3;
+  }
+
+  .meta-row {
+    @apply flex flex-col gap-2 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2;
+  }
+}
+
 @layer utilities {
   .font-mono {
     font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   }
+
+  .safe-pb {
+    padding-bottom: max(1rem, var(--safe-bottom));
+  }
+
+  .touch-target {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
 }
 
-/* Sheet enter animations (no dependency on animate plugin classes) */
 @keyframes sheet-up {
   from {
     transform: translateY(100%);
-    opacity: 0.6;
+    opacity: 0.55;
   }
   to {
     transform: translateY(0);
@@ -88,7 +219,7 @@
 @keyframes sheet-left {
   from {
     transform: translateX(100%);
-    opacity: 0.6;
+    opacity: 0.55;
   }
   to {
     transform: translateX(0);
@@ -97,9 +228,10 @@
 }
 
 .sheet-bottom {
-  animation: sheet-up 0.22s ease-out both;
+  animation: sheet-up 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+  padding-bottom: var(--safe-bottom);
 }
 
 .sheet-side {
-  animation: sheet-left 0.22s ease-out both;
+  animation: sheet-left 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

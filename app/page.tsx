@@ -13,51 +13,54 @@ export default async function HomePage() {
     getPublishedPosts(),
   ]);
 
+  const lenses = personas.map((p) => ({
+    key: p.key,
+    label: p.label,
+    iconName: p.iconName,
+  }));
+
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="page-shell">
       <SiteHeader />
-      <main className="flex flex-1 flex-col">
-        <section className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-4 py-16 sm:px-6 sm:py-24">
-          <div className="mb-12 max-w-2xl space-y-4">
-            <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-              # README
+      <main className="page-main">
+        <section className="page-container flex flex-1 flex-col justify-center py-10 sm:py-16 lg:py-20">
+          <header className="mb-8 max-w-xl sm:mb-12">
+            <p className="section-label"># README</p>
+            <h1 className="hero-title mt-3">Who are you here as?</h1>
+            <p className="section-lead">
+              One person, five audiences. Pick a lens — same Moses Edem,
+              different story.
             </p>
-            <h1 className="text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-              Who are you here as?
-            </h1>
-            <p className="text-base leading-relaxed text-muted-foreground">
-              One person, five audiences. Pick a lens and this profile reshapes
-              around it — same Moses Edem, different story. Switch anytime from
-              the header.
+            <p className="mt-4 font-mono text-[11px] leading-relaxed text-muted-foreground sm:text-xs">
+              {profile.fullName}
+              <span className="mx-1.5 text-border">·</span>
+              {profile.location}
             </p>
-            <p className="font-mono text-xs text-muted-foreground">
-              {profile.fullName} · {profile.location}
-            </p>
-            <div className="flex flex-wrap gap-3 pt-1 text-sm">
+            <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
               <Link
                 href="/projects"
                 className="text-muted-foreground underline-offset-4 transition-colors hover:text-accent hover:underline"
               >
-                All projects
+                Projects
               </Link>
               <Link
                 href="/blog"
                 className="text-muted-foreground underline-offset-4 transition-colors hover:text-accent hover:underline"
               >
-                Read the blog
+                Blog
               </Link>
               {posts[0] ? (
                 <Link
                   href={`/blog/${posts[0].slug}`}
-                  className="text-muted-foreground underline-offset-4 transition-colors hover:text-accent hover:underline"
+                  className="max-w-full truncate text-muted-foreground underline-offset-4 transition-colors hover:text-accent hover:underline"
                 >
                   Latest: {posts[0].title}
                 </Link>
               ) : null}
             </div>
-          </div>
+          </header>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
             {personas.map((persona, index) => (
               <PersonaCard
                 key={persona.id}
@@ -71,7 +74,7 @@ export default async function HomePage() {
           </div>
         </section>
       </main>
-      <SiteFooter profile={profile} />
+      <SiteFooter profile={profile} lenses={lenses} />
     </div>
   );
 }

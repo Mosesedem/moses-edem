@@ -43,30 +43,30 @@ export function CodePane({
   const displayLines = shown.split("\n");
 
   return (
-    <div className="group overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-accent/60">
-      <div className="flex items-center gap-2 border-b border-border bg-muted/40 px-4 py-2">
-        <span className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 transition-colors group-hover:bg-red-400/80" />
-        <span className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 transition-colors group-hover:bg-amber-400/80" />
-        <span className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 transition-colors group-hover:bg-emerald-400/80" />
-        <span className="ml-2 font-mono text-xs text-muted-foreground">
+    <div className="card-surface group overflow-hidden transition-colors hover:border-accent/50">
+      <div className="flex items-center gap-2 border-b border-border bg-muted/35 px-3 py-2.5 sm:px-4">
+        <span className="h-2 w-2 rounded-full bg-muted-foreground/35 sm:h-2.5 sm:w-2.5" />
+        <span className="h-2 w-2 rounded-full bg-muted-foreground/35 sm:h-2.5 sm:w-2.5" />
+        <span className="h-2 w-2 rounded-full bg-muted-foreground/35 sm:h-2.5 sm:w-2.5" />
+        <span className="ml-1.5 truncate font-mono text-[11px] text-muted-foreground sm:text-xs">
           {filename}
         </span>
-        <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+        <span className="ml-auto shrink-0 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
           {done ? "ready" : "typing"}
         </span>
       </div>
       <div className="relative overflow-x-auto">
-        <pre className="p-4 font-mono text-xs leading-relaxed sm:text-sm">
+        <pre className="p-3 font-mono text-[11px] leading-relaxed sm:p-4 sm:text-xs md:text-sm">
           <code>
             {displayLines.map((line, idx) => (
-              <div key={idx} className="flex min-h-[1.25rem] gap-4">
-                <span className="w-6 shrink-0 select-none text-right text-muted-foreground/50">
+              <div key={idx} className="flex min-h-[1.2rem] gap-3 sm:gap-4">
+                <span className="w-5 shrink-0 select-none text-right text-muted-foreground/45 sm:w-6">
                   {idx + 1}
                 </span>
                 <span className="text-foreground">
                   {highlightLine(line)}
                   {!done && idx === displayLines.length - 1 ? (
-                    <span className="ml-0.5 inline-block h-3.5 w-1.5 animate-pulse bg-accent align-middle" />
+                    <span className="ml-0.5 inline-block h-3 w-1.5 animate-pulse bg-accent align-middle" />
                   ) : null}
                 </span>
               </div>

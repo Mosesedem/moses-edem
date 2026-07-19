@@ -42,44 +42,42 @@ export default async function ProjectsPage({ searchParams }: Props) {
   const dtos = projects.map(toProjectDTO);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="page-shell">
       <SiteHeader lenses={lenses} currentKey={lens} />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-14 sm:px-6 sm:py-20">
-        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          PROJECTS
-        </p>
-        <h1 className="mt-3 text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-          Work that shipped
-        </h1>
-        <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          Tap a project for a short brief and lens-specific detail. Mobile opens
-          a bottom sheet; desktop opens a side panel. Switch the audience lens
-          to see how the same product is framed.
-        </p>
+      <main className="page-main">
+        <div className="page-container py-10 sm:py-14 lg:py-16">
+          <header className="max-w-xl">
+            <p className="section-label">PROJECTS</p>
+            <h1 className="section-title mt-3">Work that shipped</h1>
+            <p className="section-lead">
+              Tap a project for a brief and detail. Mobile: bottom sheet.
+              Desktop: side panel. Change lens from the header or footer.
+            </p>
+          </header>
 
-        <div className="mt-10">
-          <Suspense
-            fallback={
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-36 animate-pulse rounded-lg border border-border bg-muted/40"
-                  />
-                ))}
-              </div>
-            }
-          >
-            <ProjectsBrowser
-              projects={dtos}
-              lens={lens}
-              showLensFilter
-              initialSlug={sp.project ?? null}
-            />
-          </Suspense>
+          <div className="mt-8 sm:mt-10">
+            <Suspense
+              fallback={
+                <div className="content-grid">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-36 animate-pulse rounded-[var(--radius)] border border-border bg-muted/40"
+                    />
+                  ))}
+                </div>
+              }
+            >
+              <ProjectsBrowser
+                projects={dtos}
+                lens={lens}
+                initialSlug={sp.project ?? null}
+              />
+            </Suspense>
+          </div>
         </div>
       </main>
-      <SiteFooter profile={profile} />
+      <SiteFooter profile={profile} lenses={lenses} currentKey={lens} />
     </div>
   );
 }

@@ -23,64 +23,64 @@ export default async function BlogIndexPage() {
   }));
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="page-shell">
       <SiteHeader lenses={lenses} />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-14 sm:px-6 sm:py-20">
-        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          BLOG
-        </p>
-        <h1 className="mt-3 text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-          Writing
-        </h1>
-        <p className="mt-3 max-w-xl text-muted-foreground">
-          Notes on shipping backends, products, and building from Uyo.
-        </p>
+      <main className="page-main">
+        <div className="page-container py-10 sm:py-14 lg:py-16">
+          <header className="max-w-xl">
+            <p className="section-label">BLOG</p>
+            <h1 className="section-title mt-3">Writing</h1>
+            <p className="section-lead">
+              Notes on shipping backends, products, and building from Uyo.
+            </p>
+          </header>
 
-        <div className="mt-12 space-y-4">
-          {posts.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No posts yet.</p>
-          ) : (
-            posts.map((post, i) => (
-              <Link
-                key={post.id}
-                href={`/blog/${post.slug}`}
-                className="block rounded-lg border border-border bg-card p-5 transition-colors hover:border-accent"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <span className="font-mono text-xs text-muted-foreground">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h2 className="mt-1 text-lg font-medium text-foreground">
-                      {post.title}
-                    </h2>
-                    {post.excerpt ? (
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
-                        {post.excerpt}
-                      </p>
-                    ) : null}
-                    {Array.isArray(post.tags) && post.tags.length > 0 ? (
-                      <p className="mt-3 font-mono text-xs text-muted-foreground">
-                        {(post.tags as string[]).join(" · ")}
-                      </p>
+          <div className="mt-8 space-y-3 sm:mt-10 sm:space-y-4">
+            {posts.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No posts yet.</p>
+            ) : (
+              posts.map((post, i) => (
+                <Link
+                  key={post.id}
+                  href={`/blog/${post.slug}`}
+                  className="card-surface-interactive block p-4 sm:p-5"
+                >
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                    <div className="min-w-0">
+                      <span className="font-mono text-[11px] text-muted-foreground">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h2 className="mt-1 text-base font-medium leading-snug tracking-tight text-foreground sm:text-lg">
+                        {post.title}
+                      </h2>
+                      {post.excerpt ? (
+                        <p className="mt-2 text-[0.875rem] leading-relaxed text-muted-foreground line-clamp-2">
+                          {post.excerpt}
+                        </p>
+                      ) : null}
+                      {Array.isArray(post.tags) && post.tags.length > 0 ? (
+                        <p className="mt-3 font-mono text-[11px] text-muted-foreground">
+                          {(post.tags as string[]).join(" · ")}
+                        </p>
+                      ) : null}
+                    </div>
+                    {post.publishedAt ? (
+                      <time className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                        {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </time>
                     ) : null}
                   </div>
-                  {post.publishedAt ? (
-                    <time className="shrink-0 font-mono text-xs text-muted-foreground">
-                      {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </time>
-                  ) : null}
-                </div>
-              </Link>
-            ))
-          )}
+                </Link>
+              ))
+            )}
+          </div>
         </div>
       </main>
-      <SiteFooter profile={profile} />
+      <SiteFooter profile={profile} lenses={lenses} />
     </div>
   );
 }

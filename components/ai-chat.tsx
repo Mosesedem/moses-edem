@@ -90,15 +90,15 @@ export function AiChat({ persona }: AiChatProps) {
   }
 
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-card">
-      <div className="flex items-center justify-between border-b border-border px-4 py-3">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border">
-            <Bot size={16} strokeWidth={1.75} />
+    <div className="card-surface flex flex-col overflow-hidden">
+      <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3.5">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border">
+            <Bot size={18} strokeWidth={1.75} />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-sm font-medium text-foreground">AI Moses</p>
-            <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+            <p className="truncate font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
               lens · {persona}
             </p>
           </div>
@@ -109,7 +109,7 @@ export function AiChat({ persona }: AiChatProps) {
             setMessages([WELCOME]);
             setError(null);
           }}
-          className="rounded p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="btn-icon !h-10 !w-10"
           aria-label="Clear chat"
         >
           <Trash2 size={16} strokeWidth={1.75} />
@@ -118,14 +118,14 @@ export function AiChat({ persona }: AiChatProps) {
 
       <div
         ref={scrollRef}
-        className="flex h-[360px] flex-col gap-3 overflow-y-auto p-4 sm:h-[420px]"
+        className="flex h-[min(52vh,22rem)] flex-col gap-3.5 overflow-y-auto overscroll-contain p-4 sm:h-[26rem]"
       >
         {messages.map((m) => (
           <div
             key={m.id}
-            className={`flex gap-2 ${m.role === "user" ? "flex-row-reverse" : ""}`}
+            className={`flex gap-2.5 ${m.role === "user" ? "flex-row-reverse" : ""}`}
           >
-            <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border">
+            <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border">
               {m.role === "assistant" ? (
                 <Bot size={14} strokeWidth={1.75} />
               ) : (
@@ -133,10 +133,10 @@ export function AiChat({ persona }: AiChatProps) {
               )}
             </div>
             <div
-              className={`max-w-[85%] rounded-lg border px-3 py-2 text-sm leading-relaxed ${
+              className={`max-w-[min(85%,20rem)] rounded-xl border px-3.5 py-2.5 text-[0.875rem] leading-relaxed sm:max-w-[78%] ${
                 m.role === "user"
-                  ? "border-accent/40 bg-accent/10 text-foreground"
-                  : "border-border bg-muted/40 text-foreground"
+                  ? "border-accent/35 bg-accent/10 text-foreground"
+                  : "border-border bg-muted/35 text-foreground"
               }`}
             >
               <p className="whitespace-pre-wrap break-words">{m.content}</p>
@@ -156,7 +156,7 @@ export function AiChat({ persona }: AiChatProps) {
       </div>
 
       <form
-        className="flex gap-2 border-t border-border p-3"
+        className="flex items-stretch gap-2 border-t border-border p-3 safe-pb sm:safe-pb-0"
         onSubmit={(e) => {
           e.preventDefault();
           void send();
@@ -166,13 +166,14 @@ export function AiChat({ persona }: AiChatProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask Moses anything..."
-          className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm outline-none ring-accent placeholder:text-muted-foreground focus:ring-1"
+          className="min-h-11 flex-1 rounded-[var(--radius)] border border-border bg-background px-3.5 text-sm outline-none ring-accent placeholder:text-muted-foreground focus:ring-1"
           disabled={loading}
         />
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="inline-flex items-center gap-2 rounded-md bg-accent px-3 py-2 text-sm font-medium text-accent-foreground disabled:opacity-50"
+          className="btn-primary !min-h-11 shrink-0 px-3.5 disabled:opacity-50"
+          aria-label="Send"
         >
           <Send size={16} strokeWidth={1.75} />
           <span className="hidden sm:inline">Send</span>

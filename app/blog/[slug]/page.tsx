@@ -43,69 +43,70 @@ export default async function BlogPostPage({ params }: PageProps) {
   const paragraphs = post.body.split(/\n\n+/).filter(Boolean);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="page-shell">
       <SiteHeader lenses={lenses} />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-14 sm:px-6 sm:py-20">
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent"
-        >
-          <ArrowLeft size={14} strokeWidth={1.75} />
-          Blog
-        </Link>
-        <p className="mt-8 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          POST
-        </p>
-        <h1 className="mt-3 text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-          {post.title}
-        </h1>
-        {post.publishedAt ? (
-          <time className="mt-3 block font-mono text-xs text-muted-foreground">
-            {new Date(post.publishedAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </time>
-        ) : null}
+      <main className="page-main">
+        <article className="page-container max-w-3xl py-10 sm:py-14 lg:py-16">
+          <Link
+            href="/blog"
+            className="inline-flex min-h-10 items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent"
+          >
+            <ArrowLeft size={14} strokeWidth={1.75} />
+            Blog
+          </Link>
+          <p className="section-label mt-8">POST</p>
+          <h1 className="hero-title mt-3">{post.title}</h1>
+          {post.publishedAt ? (
+            <time className="mt-3 block font-mono text-[11px] text-muted-foreground sm:text-xs">
+              {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+          ) : null}
 
-        <article className="mt-10 space-y-5">
-          {paragraphs.map((para, i) => {
-            if (/^#{1,3}\s/.test(para.trim())) {
-              const text = para.replace(/^#{1,3}\s+/, "");
+          <div className="mt-8 space-y-5 sm:mt-10">
+            {paragraphs.map((para, i) => {
+              if (/^#{1,3}\s/.test(para.trim())) {
+                const text = para.replace(/^#{1,3}\s+/, "");
+                return (
+                  <h2
+                    key={i}
+                    className="pt-2 text-lg font-medium tracking-tight text-foreground"
+                  >
+                    {text}
+                  </h2>
+                );
+              }
+              if (/^\d+\.\s/.test(para.trim()) || para.includes("\n")) {
+                const lines = para.split("\n");
+                return (
+                  <div key={i} className="space-y-2">
+                    {lines.map((line, j) => (
+                      <p
+                        key={j}
+                        className="text-[0.9375rem] leading-relaxed text-muted-foreground sm:text-base"
+                      >
+                        {renderInline(line)}
+                      </p>
+                    ))}
+                  </div>
+                );
+              }
               return (
-                <h2
+                <p
                   key={i}
-                  className="pt-2 text-lg font-medium tracking-tight text-foreground"
+                  className="text-[0.9375rem] leading-relaxed text-muted-foreground sm:text-base"
                 >
-                  {text}
-                </h2>
+                  {renderInline(para)}
+                </p>
               );
-            }
-            if (/^\d+\.\s/.test(para.trim()) || para.includes("\n")) {
-              const lines = para.split("\n");
-              return (
-                <div key={i} className="space-y-2">
-                  {lines.map((line, j) => (
-                    <p
-                      key={j}
-                      className="text-base leading-relaxed text-muted-foreground"
-                    >
-                      {renderInline(line)}
-                    </p>
-                  ))}
-                </div>
-              );
-            }
-            return (
-              <p key={i} className="text-base leading-relaxed text-muted-foreground">
-                {renderInline(para)}
-              </p>
-            );
-          })}
+            })}
+          </div>
         </article>
       </main>
-      <SiteFooter profile={profile} />
+      <SiteFooter profile={profile} lenses={lenses} />
     </div>
   );
 }
