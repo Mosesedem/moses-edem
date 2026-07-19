@@ -4,10 +4,7 @@ import {
   buildWhatsAppUrl,
   type ContactIntent,
 } from "@/lib/contact";
-import {
-  deliverContactEmails,
-  notifyContactWebhook,
-} from "@/lib/email/resend";
+import { deliverContactEmails } from "@/lib/email/resend";
 import type { ContactSubmission } from "@/lib/email/contact-templates";
 import { getProfile } from "@/lib/queries";
 
@@ -85,9 +82,9 @@ function jsonError(
  *
  * Industry-standard contact intake:
  * 1. Validate + honeypot + rate limit
- * 2. Deliver HTML email via Resend (from moses@mosesedem.me)
- * 3. Auto-reply HTML confirmation to the visitor
- * 4. Optional CONTACT_WEBHOOK_URL side notification (Slack/Zapier/n8n)
+ * 2. Deliver HTML email via Resend to moses@mosesedem.me
+ *    with CC copies to configured inboxes
+ * 3. Auto-reply HTML confirmation to the visitor only
  *
  * Response:
  *   { ok: true, delivered: "resend", id, confirmationId, whatsapp }
@@ -211,18 +208,13 @@ export async function POST(request: Request) {
     );
   }
 
-  // Optional side channel — never fails the request
-  void notifyContactWebhook(submission, {
-    inboundId: delivery.inboundId,
-    confirmationId: delivery.confirmationId,
-  });
-
   console.info("[contact] delivered", {
     intent,
     name,
     email,
     inboundId: delivery.inboundId,
     confirmationId: delivery.confirmationId,
+    cc: delivery.cc,
   });
 
   return NextResponse.json({

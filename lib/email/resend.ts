@@ -10,14 +10,40 @@ export const CONTACT_FROM =
   process.env.CONTACT_FROM_EMAIL?.trim() ||
   "Moses Edem <moses@mosesedem.me>";
 
-/** Where new form submissions are delivered. */
+/** Primary inbox for new form submissions. */
 export const CONTACT_TO =
   process.env.CONTACT_TO_EMAIL?.trim() || "moses@mosesedem.me";
+
+/** Default CC copies when CONTACT_CC_EMAILS is unset. */
+const DEFAULT_CC = [
+  "moses@renboot.com",
+  "mosesedem81@gmail.com",
+  "moses@protonmedicare.com",
+];
+
+/**
+ * Extra inboxes that receive a copy of every contact submission.
+ * Comma-separated override via CONTACT_CC_EMAILS.
+ */
+export function getContactCc(): string[] {
+  const raw = process.env.CONTACT_CC_EMAILS?.trim();
+  const list = raw
+    ? raw
+        .split(",")
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean)
+    : DEFAULT_CC;
+
+  const primary = CONTACT_TO.toLowerCase();
+  // Dedupe and never CC the primary To address
+  return Array.from(new Set(list)).filter((e) => e !== primary);
+}
 
 export type ContactDeliveryResult = {
   ok: true;
   inboundId: string;
   confirmationId: string | null;
+  cc: string[];
 };
 
 export type ContactDeliveryError = {
@@ -35,8 +61,8 @@ function getClient(): Resend | null {
 
 /**
  * Sends:
- * 1. Inbound HTML email to Moses (Reply-To = submitter)
- * 2. Confirmation HTML auto-reply to the submitter
+ * 1. Inbound HTML email to Moses + CC copies (Reply-To = submitter)
+ * 2. Confirmation HTML auto-reply to the submitter only
  */
 export async function deliverContactEmails(
   submission: ContactSubmission
@@ -52,10 +78,12 @@ export async function deliverContactEmails(
 
   const inbound = buildInboundEmail(submission);
   const confirm = buildConfirmationEmail(submission);
+  const cc = getContactCc();
 
   const { data: inboundData, error: inboundError } = await resend.emails.send({
     from: CONTACT_FROM,
     to: [CONTACT_TO],
+    ...(cc.length > 0 ? { cc } : {}),
     replyTo: submission.email,
     subject: inbound.subject,
     html: inbound.html,
@@ -78,7 +106,7 @@ export async function deliverContactEmails(
     };
   }
 
-  // Auto-reply — non-fatal if it fails after inbound succeeded
+  // Auto-reply — only to the visitor (no CC of internal inboxes)
   let confirmationId: string | null = null;
   try {
     const { data: confirmData, error: confirmError } = await resend.emails.send(
@@ -108,64 +136,6 @@ export async function deliverContactEmails(
     ok: true,
     inboundId: inboundData.id,
     confirmationId,
+    cc,
   };
-}
-
-/**
- * Optional side-channel (Slack, Zapier, n8n, Make, custom CRM).
- * Fire-and-forget — never blocks or fails the user-facing request
- * after email has already succeeded.
- *
- * Payload is a structured JSON event of the form entry.
- */
-export async function notifyContactWebhook(
-  submission: ContactSubmission,
-  delivery: { inboundId: string; confirmationId: string | null }
-): Promise<void> {
-  const url = process.env.CONTACT_WEBHOOK_URL?.trim();
-  if (!url) return;
-
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 4_000);
-
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "User-Agent": "mosesedem.me-contact/1.0",
-      },
-      body: JSON.stringify({
-        event: "contact.submitted",
-        version: 1,
-        data: {
-          name: submission.name,
-          email: submission.email,
-          intent: submission.intent,
-          message: submission.message,
-          submittedAt: submission.submittedAt,
-          meta: submission.meta ?? null,
-          emailDelivery: {
-            provider: "resend",
-            inboundId: delivery.inboundId,
-            confirmationId: delivery.confirmationId,
-            to: CONTACT_TO,
-            from: CONTACT_FROM,
-          },
-        },
-      }),
-      signal: controller.signal,
-    });
-    if (!res.ok) {
-      console.error(
-        "[email] webhook non-OK:",
-        res.status,
-        await res.text().catch(() => "")
-      );
-    }
-  } catch (err) {
-    console.error("[email] webhook failed:", err);
-  } finally {
-    clearTimeout(timer);
-  }
 }

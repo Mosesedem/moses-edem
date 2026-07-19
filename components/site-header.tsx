@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { LensSwitcher, type LensOption } from "@/components/lens-switcher";
 import { resolveIcon } from "@/lib/icons";
 
@@ -98,16 +97,17 @@ export function SiteHeader({
             })}
           </nav>
 
-          <div className="hidden items-center gap-2 md:flex">
-            {lenses && lenses.length > 0 ? (
+          {lenses && lenses.length > 0 ? (
+            <div className="hidden items-center gap-2 md:flex">
               <LensSwitcher
                 lenses={lenses}
                 currentKey={currentKey}
                 variant="compact"
               />
-            ) : null}
-            <ThemeToggle />
-          </div>
+            </div>
+          ) : (
+            <div className="hidden md:block" aria-hidden />
+          )}
 
           <div className="flex items-center gap-2 md:hidden">
             {activeLens && ActiveLensIcon ? (
@@ -187,7 +187,7 @@ export function SiteHeader({
               {lenses && lenses.length > 0 ? (
                 <>
                   <p className="section-label mb-2">Audience lens</p>
-                  <div className="mb-6">
+                  <div className="mb-2">
                     <LensSwitcher
                       lenses={lenses}
                       currentKey={currentKey}
@@ -197,9 +197,6 @@ export function SiteHeader({
                   </div>
                 </>
               ) : null}
-
-              <p className="section-label mb-2">Theme</p>
-              <ThemeToggle variant="menu" />
             </div>
           </div>
         </div>

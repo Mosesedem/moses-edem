@@ -1,7 +1,40 @@
+import type { ComponentType } from "react";
 import Link from "next/link";
 import { Github, Linkedin, Mail } from "lucide-react";
 import type { Profile } from "@/lib/schema";
 import { LensSwitcher, type LensOption } from "@/components/lens-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
+
+const X_URL = "https://x.com/mosesedem_me";
+
+/** X / Twitter mark — Lucide has no official X glyph. */
+function XIcon({
+  size = 16,
+}: {
+  size?: number;
+  strokeWidth?: number;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
+    </svg>
+  );
+}
+
+type SocialIcon = ComponentType<{ size?: number; strokeWidth?: number }>;
+
+type SocialLink = {
+  href: string;
+  icon: SocialIcon;
+  label: string;
+  external: boolean;
+};
 
 type SiteFooterProps = {
   profile: Profile;
@@ -10,18 +43,38 @@ type SiteFooterProps = {
 };
 
 export function SiteFooter({ profile, lenses, currentKey }: SiteFooterProps) {
-  const links = [
-    { href: profile.githubUrl, icon: Github, label: "GitHub" },
-    { href: profile.linkedinUrl, icon: Linkedin, label: "LinkedIn" },
+  const links: SocialLink[] = [
+    profile.githubUrl
+      ? {
+          href: profile.githubUrl,
+          icon: Github,
+          label: "GitHub",
+          external: true,
+        }
+      : null,
+    profile.linkedinUrl
+      ? {
+          href: profile.linkedinUrl,
+          icon: Linkedin,
+          label: "LinkedIn",
+          external: true,
+        }
+      : null,
     {
-      href: profile.email ? `mailto:${profile.email}` : null,
-      icon: Mail,
-      label: "Email",
+      href: X_URL,
+      icon: XIcon,
+      label: "X",
+      external: true,
     },
-  ].filter(
-    (l): l is { href: string; icon: typeof Github; label: string } =>
-      Boolean(l.href)
-  );
+    profile.email
+      ? {
+          href: `mailto:${profile.email}`,
+          icon: Mail,
+          label: "Email",
+          external: false,
+        }
+      : null,
+  ].filter((l): l is SocialLink => l != null);
 
   return (
     <footer className="mt-auto border-t border-border">
@@ -68,23 +121,43 @@ export function SiteFooter({ profile, lenses, currentKey }: SiteFooterProps) {
         </div>
       ) : null}
 
-      <div className="page-container flex flex-col items-center justify-between gap-5 py-7 sm:flex-row sm:gap-4 sm:py-8">
-        <p className="order-2 text-center font-mono text-[11px] text-muted-foreground sm:order-1 sm:text-left sm:text-xs">
-          &copy; {new Date().getFullYear()} {profile.fullName}
-        </p>
-        <div className="order-1 flex items-center gap-2 sm:order-2">
-          {links.map(({ href, icon: Icon, label }) => (
-            <a
-              key={label}
-              href={href}
-              target={href.startsWith("http") ? "_blank" : undefined}
-              rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-              aria-label={label}
-              className="btn-icon"
-            >
-              <Icon size={16} strokeWidth={1.75} />
-            </a>
-          ))}
+      <div className="page-container flex flex-col gap-5 py-7 sm:py-8">
+        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-center">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+            {links.map(({ href, icon: Icon, label, external }) => (
+              <a
+                key={label}
+                href={href}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noopener noreferrer" : undefined}
+                aria-label={label}
+                className="btn-icon"
+              >
+                <Icon size={16} strokeWidth={1.75} />
+              </a>
+            ))}
+          </div>
+
+          <div className="flex flex-col items-center gap-2 sm:items-end">
+            <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+              Theme
+            </p>
+            <ThemeToggle />
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center justify-between gap-2 border-t border-border pt-5 sm:flex-row">
+          <p className="text-center font-mono text-[11px] text-muted-foreground sm:text-left sm:text-xs">
+            &copy; {new Date().getFullYear()} {profile.fullName}
+          </p>
+          <a
+            href={X_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[11px] text-muted-foreground transition-colors hover:text-accent sm:text-xs"
+          >
+            @mosesedem_me
+          </a>
         </div>
       </div>
     </footer>
