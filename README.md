@@ -23,28 +23,32 @@ Visitors pick an audience lens; the site reshapes content around that lens.
 
 ```bash
 pnpm install
+cp .env.example .env   # set ADMIN_PASSWORD, GROQ_API_KEY
+pnpm db:seed           # write .data/cms.json from seed
 pnpm dev
 ```
 
 Open [http://localhost:18](http://localhost:18).
 
-Without MySQL, the app serves seed data from `lib/seed-data.ts` so first paint still works.
+Content is stored in `.data/cms.json` (writable via admin). Seed regenerates it with `pnpm db:seed`.
 
-## Database (optional but recommended)
+## Admin
 
-```bash
-cp .env.example .env
-pnpm db:up          # MySQL via Docker
-pnpm db:push        # apply schema
-pnpm db:seed        # load personas, blocks, profile
-```
+- URL: `/admin` (login at `/admin/login`)
+- Password: `ADMIN_PASSWORD` env (default for local: `moses-admin-change-me`)
+- Manage personas, content blocks, blog posts, and profile
 
-`DATABASE_URL` must stay server-only (never `NEXT_PUBLIC_`).
+## AI chat
+
+Persona pages include **AI Moses** (Groq). Set `GROQ_API_KEY` in `.env`.
 
 ## Routes
 
 - `/` — persona picker
-- `/employer`, `/investor`, `/romantic`, `/academic`, `/visitor` — persona pages
+- `/employer` … `/visitor` — persona pages (lens switcher in header)
+- `/projects` — all projects; tap opens detail sheet (bottom mobile / side desktop)
+- `/blog`, `/blog/[slug]` — public blog
+- `/admin` — CMS dashboard (includes Projects with per-lens copy)
 
 ## Design
 

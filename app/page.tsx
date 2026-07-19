@@ -1,12 +1,16 @@
+import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { PersonaCard } from "@/components/persona-card";
-import { getAllPersonas, getProfile } from "@/lib/queries";
+import { getAllPersonas, getProfile, getPublishedPosts } from "@/lib/queries";
+
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [personas, profile] = await Promise.all([
+  const [personas, profile, posts] = await Promise.all([
     getAllPersonas(),
     getProfile(),
+    getPublishedPosts(),
   ]);
 
   return (
@@ -23,11 +27,34 @@ export default async function HomePage() {
             </h1>
             <p className="text-base leading-relaxed text-muted-foreground">
               One person, five audiences. Pick a lens and this profile reshapes
-              around it — same Moses Edem, different story.
+              around it — same Moses Edem, different story. Switch anytime from
+              the header.
             </p>
             <p className="font-mono text-xs text-muted-foreground">
               {profile.fullName} · {profile.location}
             </p>
+            <div className="flex flex-wrap gap-3 pt-1 text-sm">
+              <Link
+                href="/projects"
+                className="text-muted-foreground underline-offset-4 transition-colors hover:text-accent hover:underline"
+              >
+                All projects
+              </Link>
+              <Link
+                href="/blog"
+                className="text-muted-foreground underline-offset-4 transition-colors hover:text-accent hover:underline"
+              >
+                Read the blog
+              </Link>
+              {posts[0] ? (
+                <Link
+                  href={`/blog/${posts[0].slug}`}
+                  className="text-muted-foreground underline-offset-4 transition-colors hover:text-accent hover:underline"
+                >
+                  Latest: {posts[0].title}
+                </Link>
+              ) : null}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -1,75 +1,56 @@
 import { type NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
-import { chatbotSystemPrompts } from "@/lib/personaContent";
-import { PersonaMode } from "@/types/persona";
+import { buildChatSystemPrompt } from "@/lib/chat-prompts";
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY || "",
 });
 
-const BASE_PERSONA = `You are Moses Edem, a skilled Backend Developer and System Architect from Uyo, Akwa Ibom, Nigeria. You have 2+ years of professional experience building robust, scalable backend systems and APIs.
-
-Your expertise includes:
-- Languages: JavaScript/Node.js, PHP
-- Frameworks: Express.js, Hono, Laravel, Next.js
-- Databases: PostgreSQL, MySQL, Redis, Prisma
-- Specialties: API Development, Database Design, Microservices Architecture
-
-Your notable projects:
-- InstantOTP: High-performance OTP service handling thousands of SMS/email verifications daily (Node.js, Redis, PostgreSQL)
-- Etegram Platform: Fintech backend supporting 10,000+ daily users with payment processing (Express.js, Postgresql)
-- MonieCheap: Fintech platform with secure transaction processing and fraud detection
-- BrixVPN: VPN service backend with global server infrastructure management (Node.js, Postgresql)
-- TunnelDeck: Advanced tunneling service with custom protocol implementation
-- ProtonMedicare: Healthcare management system with secure data handling (Next, express and postgresql)
-- Renboot: this was hobby project that was created as an AWS alternative for Africans, it somehow served over 280k users in its first week of launch
-
-Contact info:
-- Email: mosesedem81@gmail.com
-- Phone: +234 903 046 5501
-- LinkedIn: linkedin.com/in/mosesedem
-- GitHub: github.com/mosesedem`;
-
-function getPersonaPrompt(persona: PersonaMode): string {
-  const systemPrompt = chatbotSystemPrompts[persona];
-  return `${systemPrompt}\n\n${BASE_PERSONA}`;
-}
-
 export async function POST(request: NextRequest) {
   try {
-    const { message, history, persona = "casual" } = await request.json();
-
-    if (!message) {
+    if (!process.env.GROQ_API_KEY) {
       return NextResponse.json(
-        { error: "Message is required" },
-        { status: 400 }
+        { error: "Chat is not configured (missing GROQ_API_KEY)." },
+        { status: 503 }
       );
     }
 
-    const systemPrompt = getPersonaPrompt(persona);
+    const body = await request.json();
+    const message = body?.message as string | undefined;
+    const history = Array.isArray(body?.history) ? body.history : [];
+    const persona = typeof body?.persona === "string" ? body.persona : "visitor";
 
-    // Build conversation history for context
+    if (!message?.trim()) {
+      return NextResponse.json({ error: "Message is required" }, { status: 400 });
+    }
+
+    const systemPrompt = buildChatSystemPrompt(persona);
+
     const messages = [
-      { role: "system", content: systemPrompt },
-      ...history.map((msg: any) => ({
-        role: msg.role,
-        content: msg.content,
-      })),
-      { role: "user", content: message },
+      { role: "system" as const, content: systemPrompt },
+      ...history
+        .filter(
+          (msg: { role?: string; content?: string }) =>
+            msg &&
+            (msg.role === "user" || msg.role === "assistant") &&
+            typeof msg.content === "string"
+        )
+        .map((msg: { role: "user" | "assistant"; content: string }) => ({
+          role: msg.role,
+          content: msg.content,
+        })),
+      { role: "user" as const, content: message },
     ];
 
     const chatCompletion = await groq.chat.completions.create({
-      messages: messages as any,
+      messages,
       model: "llama-3.1-8b-instant",
       temperature: 0.7,
-      max_tokens: 500,
+      max_tokens: 700,
     });
 
     const response = chatCompletion.choices[0]?.message?.content;
-
-    if (!response) {
-      throw new Error("No response from AI");
-    }
+    if (!response) throw new Error("No response from AI");
 
     return NextResponse.json({ response });
   } catch (error) {

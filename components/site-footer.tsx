@@ -5,8 +5,15 @@ export function SiteFooter({ profile }: { profile: Profile }) {
   const links = [
     { href: profile.githubUrl, icon: Github, label: "GitHub" },
     { href: profile.linkedinUrl, icon: Linkedin, label: "LinkedIn" },
-    { href: profile.email ? `mailto:${profile.email}` : null, icon: Mail, label: "Email" },
-  ].filter((l): l is { href: string; icon: typeof Github; label: string } => Boolean(l.href));
+    {
+      href: profile.email ? `mailto:${profile.email}` : null,
+      icon: Mail,
+      label: "Email",
+    },
+  ].filter(
+    (l): l is { href: string; icon: typeof Github; label: string } =>
+      Boolean(l.href)
+  );
 
   return (
     <footer className="border-t border-border">

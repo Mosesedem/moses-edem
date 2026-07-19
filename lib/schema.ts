@@ -43,12 +43,44 @@ export const profile = mysqlTable("profile", {
   githubUrl: varchar("github_url", { length: 255 }),
   linkedinUrl: varchar("linkedin_url", { length: 255 }),
   resumeUrl: varchar("resume_url", { length: 255 }),
+  phone: varchar("phone", { length: 40 }),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+export const blogPosts = mysqlTable("blog_posts", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  slug: varchar("slug", { length: 160 }).notNull().unique(),
+  title: varchar("title", { length: 200 }).notNull(),
+  excerpt: varchar("excerpt", { length: 400 }),
+  body: text("body").notNull(),
+  coverImage: varchar("cover_image", { length: 255 }),
+  tags: json("tags"),
+  published: boolean("published").default(false),
+  publishedAt: timestamp("published_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+export const portfolioProjects = mysqlTable("portfolio_projects", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  slug: varchar("slug", { length: 160 }).notNull().unique(),
+  title: varchar("title", { length: 160 }).notNull(),
+  category: varchar("category", { length: 80 }),
+  iconName: varchar("icon_name", { length: 32 }),
+  href: varchar("href", { length: 255 }),
+  tech: json("tech"),
+  featured: boolean("featured").default(false),
+  sortOrder: int("sort_order").default(0),
+  isActive: boolean("is_active").default(true),
+  /** Per-lens copy: { employer: { summary, body, metric }, ... } */
+  lens: json("lens").notNull(),
 });
 
 export type Persona = typeof personas.$inferSelect;
 export type ContentBlock = typeof contentBlocks.$inferSelect;
 export type Profile = typeof profile.$inferSelect;
+export type BlogPost = typeof blogPosts.$inferSelect;
+export type PortfolioProject = typeof portfolioProjects.$inferSelect;
 
 export const PERSONA_KEYS = [
   "employer",
@@ -60,6 +92,31 @@ export const PERSONA_KEYS = [
 
 export type PersonaKey = (typeof PERSONA_KEYS)[number];
 
+export type ProjectLensCopy = {
+  summary: string;
+  body: string;
+  metric?: string;
+};
+
+export type ProjectLensMap = Partial<Record<PersonaKey, ProjectLensCopy>>;
+
 export function isPersonaKey(value: string): value is PersonaKey {
   return (PERSONA_KEYS as readonly string[]).includes(value);
+}
+
+export function getProjectLensCopy(
+  project: PortfolioProject,
+  lens: PersonaKey
+): ProjectLensCopy {
+  const map = (project.lens ?? {}) as ProjectLensMap;
+  const copy =
+    map[lens] ??
+    map.visitor ??
+    (Object.values(map).find(Boolean) as ProjectLensCopy | undefined) ??
+    null;
+  if (copy) return copy;
+  return {
+    summary: project.title,
+    body: project.category ?? "",
+  };
 }

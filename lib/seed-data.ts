@@ -35,6 +35,21 @@ export type SeedProfile = {
   githubUrl: string;
   linkedinUrl: string;
   resumeUrl: string;
+  phone: string;
+};
+
+export type SeedBlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  coverImage: string | null;
+  tags: string[];
+  published: boolean;
+  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export const seedProfile: SeedProfile = {
@@ -45,6 +60,7 @@ export const seedProfile: SeedProfile = {
   githubUrl: "https://github.com/mosesedem",
   linkedinUrl: "https://linkedin.com/in/mosesedem",
   resumeUrl: "/cv/moses.pdf",
+  phone: "+2349030465501",
 };
 
 export const seedPersonas: SeedPersona[] = [
@@ -53,9 +69,9 @@ export const seedPersonas: SeedPersona[] = [
     key: "employer",
     label: "Employer / Recruiter",
     tagline: "Skills, experience, availability, resume, contact",
-    heroHeading: "Highly Competent Backend Architect",
+    heroHeading: "Backend Engineer Who Ships Reliable Systems",
     heroBody:
-      "I turn complex business logic into elegant, scalable reality. 7+ years building APIs, microservices, and systems that stay up at 3 AM.",
+      "2+ years building production APIs and backends in Node.js, PHP/Laravel, and modern TypeScript stacks. I care about clean architecture, uptime, and systems that stay calm under load.",
     ctaLabel: "Download CV",
     ctaHref: "/cv/moses.pdf",
     iconName: "Briefcase",
@@ -67,9 +83,9 @@ export const seedPersonas: SeedPersona[] = [
     key: "investor",
     label: "Investor / Partner",
     tagline: "Ventures, traction, thesis, deck, pitch contact",
-    heroHeading: "Building The Future Of Scalable Tech",
+    heroHeading: "Building Products People Actually Use",
     heroBody:
-      "Technical brilliance meets aggressive growth. Products people use, ventures that scale, and a founder who speaks both code and EBITDA.",
+      "Technical founder energy: fintech rails, consumer apps, healthcare, and developer infrastructure. Looking for partners who care about both product and unit economics.",
     ctaLabel: "View Ventures",
     ctaHref: "#blocks",
     iconName: "TrendingUp",
@@ -95,9 +111,9 @@ export const seedPersonas: SeedPersona[] = [
     key: "academic",
     label: "Academic / Research",
     tagline: "Papers, research interests, talks, citations",
-    heroHeading: "Researching The Intersection Of AI And Scale",
+    heroHeading: "Systems, Scale, and Applied AI",
     heroBody:
-      "Work at the edge of distributed systems and applied AI. Scholar-engineer energy: rigorous, precise, and always curious.",
+      "Scholar-engineer focus: distributed systems, API design, data, and practical ML. Open to rigorous collaboration and talks.",
     ctaLabel: "View Research",
     ctaHref: "#blocks",
     iconName: "GraduationCap",
@@ -108,7 +124,7 @@ export const seedPersonas: SeedPersona[] = [
     id: "persona-visitor",
     key: "visitor",
     label: "Casual Visitor",
-    tagline: "General intro, projects, and links",
+    tagline: "General intro, projects, blog, and links",
     heroHeading: "Moses Jacob Edem",
     heroBody:
       "Backend engineer, founder, and perpetual learner based in Uyo. Building things, learning stuff, and staying hydrated.",
@@ -145,102 +161,161 @@ function block(
 export const seedBlocks: SeedBlock[] = [
   // ── employer ──────────────────────────────────────────────
   block("emp-stat-1", "employer", "stat", {
-    title: "7+ years",
-    body: "Backend engineering experience",
+    title: "2+ years",
+    body: "Professional backend experience",
     iconName: "Server",
     sortOrder: 1,
   }),
   block("emp-stat-2", "employer", "stat", {
-    title: "50+ APIs",
-    body: "REST, GraphQL, WebSockets shipped",
+    title: "Node + PHP",
+    body: "Express, Hono, Laravel, Next.js",
     iconName: "Code2",
     sortOrder: 2,
   }),
   block("emp-stat-3", "employer", "stat", {
-    title: "30+ projects",
-    body: "Production systems delivered",
+    title: "Production",
+    body: "Fintech, OTP, VPN, healthcare shipped",
     iconName: "Database",
     sortOrder: 3,
   }),
   block("emp-text-1", "employer", "text", {
-    title: "The Professional Stats",
-    body: "I specialize in Node.js, Go, and turning monolithic disasters into clean microservices. I do not just write code; I architect solutions that do not wake you up at 3 AM.",
+    title: "How I Work",
+    body: "I specialize in Node.js and PHP backends with PostgreSQL, Redis, and Prisma. I design APIs and services that handle real traffic — payments, OTP delivery, multi-tenant platforms — and I care as much about ops and reliability as about code elegance.",
     iconName: "FileText",
     sortOrder: 10,
   }),
+  block("emp-job-1", "employer", "timeline_item", {
+    title: "Backend / Systems Engineer — Product companies",
+    body: "Built and maintained production backends for fintech, OTP/virtual numbers, VPN, and healthcare products. Stack: Node.js (Express/Hono), Laravel, PostgreSQL, Redis, Docker, JWT auth, payment APIs.",
+    iconName: "Briefcase",
+    metadata: { period: "2023 — Present", role: "Backend Engineer" },
+    sortOrder: 15,
+  }),
+  block("emp-job-2", "employer", "timeline_item", {
+    title: "Founder / Builder — Independent products",
+    body: "Shipped PaperDB (BaaS), Renboot (cloud/hardware rental for African users — strong early adoption), and multiple client platforms (events, hospitality, marketplaces).",
+    iconName: "Sparkles",
+    metadata: { period: "Ongoing", role: "Founder" },
+    sortOrder: 16,
+  }),
   block("emp-skill-1", "employer", "section", {
-    title: "Node.js / Express / Fastify",
+    title: "Node.js / Express / Hono",
     body: "Backend APIs and microservices",
     iconName: "Server",
-    metadata: { metric: "7+ yrs" },
+    metadata: { metric: "Core stack" },
     sortOrder: 20,
   }),
   block("emp-skill-2", "employer", "section", {
-    title: "Prisma / SQL",
-    body: "Type-safe database access at scale",
+    title: "PostgreSQL + Redis",
+    body: "Relational data, caching, queues",
     iconName: "Database",
-    metadata: { metric: "30+ projects" },
+    metadata: { metric: "Production" },
     sortOrder: 21,
   }),
   block("emp-skill-3", "employer", "section", {
-    title: "Next.js",
-    body: "Fullstack React applications",
+    title: "PHP / Laravel",
+    body: "Web applications and APIs",
     iconName: "Code2",
-    metadata: { metric: "Expert" },
+    metadata: { metric: "2+ yrs" },
     sortOrder: 22,
   }),
   block("emp-skill-4", "employer", "section", {
+    title: "Next.js",
+    body: "Fullstack React applications",
+    iconName: "Code2",
+    metadata: { metric: "Ship-ready" },
+    sortOrder: 23,
+  }),
+  block("emp-skill-5", "employer", "section", {
     title: "DevOps / CI-CD",
     body: "Docker, Vercel, GitHub Actions",
     iconName: "Zap",
     metadata: { metric: "Automated" },
-    sortOrder: 23,
-  }),
-  block("emp-skill-5", "employer", "section", {
-    title: "Go",
-    body: "High-performance services",
-    iconName: "Server",
-    metadata: { metric: "Growing" },
     sortOrder: 24,
   }),
   block("emp-skill-6", "employer", "section", {
     title: "API Design",
-    body: "REST, GraphQL, WebSockets",
+    body: "REST, auth, webhooks, payments",
     iconName: "Link2",
-    metadata: { metric: "50+ APIs" },
+    metadata: { metric: "Daily work" },
     sortOrder: 25,
   }),
   block("emp-proj-1", "employer", "project", {
     title: "InstantOTP",
-    body: "Virtual number platform serving 800k+ users across 500+ countries and 400+ services. Node.js, Redis, PostgreSQL.",
+    body: "Virtual number / OTP platform. High-throughput SMS and verification flows on Node.js, Redis, and PostgreSQL. Global country and service coverage for end-user verifications.",
     href: "https://www.instantotp.com/",
     iconName: "Zap",
-    metadata: { tech: ["Node.js", "Redis", "PostgreSQL"], metric: "800k+ users" },
+    metadata: {
+      tech: ["Node.js", "Express.js", "Redis", "PostgreSQL", "SMS APIs"],
+      metric: "Global OTP / virtual numbers",
+    },
     sortOrder: 40,
   }),
   block("emp-proj-2", "employer", "project", {
     title: "Etegram Platform",
-    body: "Business banking and payment collection trusted by 2,200+ businesses. Corporate accounts, QR payments, developer API.",
+    body: "Business banking and payment collection: corporate accounts, QR payments, checkout, payment links, and a developer API. Trusted by 2,200+ businesses with high daily transaction volume.",
     href: "https://www.etegram.com/",
     iconName: "TrendingUp",
-    metadata: { tech: ["Hono", "PostgreSQL", "Docker"], metric: "2.2K+ businesses" },
+    metadata: {
+      tech: ["Hono", "PostgreSQL", "Payment APIs", "JWT", "Docker"],
+      metric: "2.2K+ businesses",
+    },
     sortOrder: 41,
   }),
   block("emp-proj-3", "employer", "project", {
-    title: "PaperDB",
-    body: "Backend-as-a-Service with managed databases, real-time subscriptions, auth, and SDKs. Go + TypeScript.",
-    href: "https://paperdb.vercel.app/",
-    iconName: "Database",
-    metadata: { tech: ["Go", "TypeScript", "PostgreSQL", "Redis"], metric: "Full BaaS" },
+    title: "MonieCheap",
+    body: "Palm oil investment platform with daily interest accrual, portfolio tracking, and integrated bill payments. Built for reliability and financial accessibility.",
+    href: "https://moniecheap.com/",
+    iconName: "TrendingUp",
+    metadata: {
+      tech: ["Hono", "PostgreSQL", "Payment APIs", "JWT", "Docker"],
+      metric: "Investment + bills",
+    },
     sortOrder: 42,
   }),
   block("emp-proj-4", "employer", "project", {
     title: "TunnelDeck",
-    body: "Consumer VPN with multi-platform clients and encrypted global network. 10M+ downloads.",
+    body: "Consumer VPN and tunneling product: encrypted connectivity, multi-platform clients, and global server management backends.",
     href: "https://tunneldeck.com/",
     iconName: "Server",
-    metadata: { tech: ["Express.js", "PostgreSQL", "Redis"], metric: "10M+ downloads" },
+    metadata: {
+      tech: ["Express.js", "PostgreSQL", "JWT", "Docker", "Redis"],
+      metric: "VPN / privacy",
+    },
     sortOrder: 43,
+  }),
+  block("emp-proj-5", "employer", "project", {
+    title: "Proton Medicare",
+    body: "Healthcare management system with appointment scheduling, patient records, and secure data handling (Next.js + Express + PostgreSQL).",
+    href: "https://protonmedicare.com/",
+    iconName: "Heart",
+    metadata: {
+      tech: ["Next.js", "React", "PostgreSQL", "Express.js"],
+      metric: "HealthTech",
+    },
+    sortOrder: 44,
+  }),
+  block("emp-proj-6", "employer", "project", {
+    title: "Renboot",
+    body: "Cloud and hardware rental product aimed at African users. Early launch saw roughly 280k users in the first week — a strong signal for demand.",
+    href: "https://www.renboot.com/",
+    iconName: "Server",
+    metadata: {
+      tech: ["TypeScript", "Electron", "React", "Node.js", "Go"],
+      metric: "~280k week-one users",
+    },
+    sortOrder: 45,
+  }),
+  block("emp-proj-7", "employer", "project", {
+    title: "PaperDB",
+    body: "Backend-as-a-Service: managed databases, auth, real-time subscriptions, and SDKs. Firebase/Supabase-class ambition on Go + TypeScript.",
+    href: "https://paperdb.vercel.app/",
+    iconName: "Database",
+    metadata: {
+      tech: ["Go", "TypeScript", "PostgreSQL", "Redis", "WebSockets", "Hono"],
+      metric: "BaaS platform",
+    },
+    sortOrder: 46,
   }),
   block("emp-link-1", "employer", "link", {
     title: "Resume / CV",
@@ -252,48 +327,48 @@ export const seedBlocks: SeedBlock[] = [
 
   // ── investor ──────────────────────────────────────────────
   block("inv-stat-1", "investor", "stat", {
-    title: "4 ventures",
-    body: "Active products and platforms",
+    title: "Multi-product",
+    body: "Fintech, health, infra, consumer",
     iconName: "TrendingUp",
     sortOrder: 1,
   }),
   block("inv-stat-2", "investor", "stat", {
-    title: "1M+ users",
-    body: "Across consumer products",
-    iconName: "User",
+    title: "Renboot spike",
+    body: "~280k users in launch week",
+    iconName: "Zap",
     sortOrder: 2,
   }),
   block("inv-stat-3", "investor", "stat", {
-    title: "Revenue",
-    body: "Multiple products generating",
-    iconName: "Zap",
+    title: "Revenue rails",
+    body: "Payments and B2B platforms live",
+    iconName: "Database",
     sortOrder: 3,
   }),
   block("inv-text-1", "investor", "text", {
     title: "The Business Case",
-    body: "I build products people actually use. Background in syntax and in scaling ventures from zero. Looking for partners who care about both product and unit economics.",
+    body: "I build products people use: payment collection, OTP infrastructure, investment apps, VPN, healthcare, and developer platforms. Looking for partners who care about distribution in Africa and solid technical foundations.",
     iconName: "FileText",
     sortOrder: 10,
   }),
   block("inv-sec-1", "investor", "section", {
     title: "Fintech and Payments",
-    body: "Payment processing, fraud detection, transaction systems",
+    body: "Corporate accounts, payment links, QR, checkout APIs",
     iconName: "TrendingUp",
-    metadata: { metric: "NGN 50M+ processed" },
+    metadata: { metric: "Etegram live" },
     sortOrder: 20,
   }),
   block("inv-sec-2", "investor", "section", {
     title: "Healthcare Tech",
-    body: "Patient management and clinic systems",
+    body: "Clinic workflows and patient systems",
     iconName: "Heart",
-    metadata: { metric: "2 platforms" },
+    metadata: { metric: "Proton Medicare" },
     sortOrder: 21,
   }),
   block("inv-sec-3", "investor", "section", {
     title: "Developer Tools",
-    body: "SDKs, APIs, tunneling infrastructure",
+    body: "BaaS, SDKs, logging, tunneling",
     iconName: "Code2",
-    metadata: { metric: "Open source" },
+    metadata: { metric: "PaperDB / LogShip" },
     sortOrder: 22,
   }),
   block("inv-proj-1", "investor", "project", {
@@ -310,35 +385,48 @@ export const seedBlocks: SeedBlock[] = [
   }),
   block("inv-proj-2", "investor", "project", {
     title: "Renboot",
-    body: "Desktop app for renting hardware in realtime and hosting cloud applications.",
+    body: "Hardware rental and cloud hosting for African users. Early launch: ~280k users in week one.",
     href: "https://www.renboot.com/",
     iconName: "Server",
-    metadata: { tech: ["TypeScript", "Electron", "Go"], status: "active", sector: "Cloud" },
+    metadata: {
+      tech: ["TypeScript", "Electron", "Go"],
+      status: "active",
+      sector: "Cloud",
+      metric: "~280k week-one",
+    },
     sortOrder: 41,
   }),
   block("inv-proj-3", "investor", "project", {
-    title: "Proton Medicare",
-    body: "Tele-health and healthcare management. Multi-product, revenue-generating.",
-    href: "https://www.protonmedicare.com/",
-    iconName: "Heart",
-    metadata: { tech: ["Next.js", "PostgreSQL"], status: "launched", sector: "Healthcare" },
+    title: "Etegram",
+    body: "Business banking and payments for 2,200+ businesses. Multi-channel collection and developer API.",
+    href: "https://www.etegram.com/",
+    iconName: "TrendingUp",
+    metadata: { tech: ["Hono", "PostgreSQL"], status: "launched", sector: "Fintech" },
     sortOrder: 42,
   }),
   block("inv-proj-4", "investor", "project", {
-    title: "Servixing",
-    body: "Services marketplace connecting seekers with providers. Booking, payments, reviews.",
-    href: "https://servixing.com/",
-    iconName: "Link2",
-    metadata: { tech: ["Node.js", "Next.js"], status: "active", sector: "Marketplace" },
+    title: "MonieCheap",
+    body: "Commodity-backed investment (palm oil) with daily interest and bill payments.",
+    href: "https://moniecheap.com/",
+    iconName: "TrendingUp",
+    metadata: { tech: ["Hono", "PostgreSQL"], status: "launched", sector: "Fintech" },
     sortOrder: 43,
   }),
   block("inv-proj-5", "investor", "project", {
-    title: "MonieCheap",
-    body: "Palm oil investment platform with daily interest and bill payments. 1M+ customers.",
-    href: "https://moniecheap.com/",
-    iconName: "TrendingUp",
-    metadata: { tech: ["Hono", "PostgreSQL"], metric: "1M+ customers" },
+    title: "Proton Medicare",
+    body: "Tele-health and healthcare management. Multi-product health stack.",
+    href: "https://www.protonmedicare.com/",
+    iconName: "Heart",
+    metadata: { tech: ["Next.js", "PostgreSQL"], status: "launched", sector: "Healthcare" },
     sortOrder: 44,
+  }),
+  block("inv-proj-6", "investor", "project", {
+    title: "Servixing",
+    body: "Services marketplace connecting seekers with providers — booking, payments, reviews.",
+    href: "https://servixing.com/",
+    iconName: "Link2",
+    metadata: { tech: ["Node.js", "Next.js"], status: "active", sector: "Marketplace" },
+    sortOrder: 45,
   }),
 
   // ── romantic ──────────────────────────────────────────────
@@ -374,7 +462,7 @@ export const seedBlocks: SeedBlock[] = [
   }),
   block("rom-sec-2", "romantic", "section", {
     title: "Ambitious and Driven",
-    body: "Multiple companies, still grounded",
+    body: "Multiple products, still grounded",
     iconName: "TrendingUp",
     sortOrder: 21,
   }),
@@ -440,43 +528,43 @@ export const seedBlocks: SeedBlock[] = [
   }),
   block("aca-text-1", "academic", "text", {
     title: "Intellectual Pursuits",
-    body: "Work sits at the edge of machine learning optimization and human-computer interaction. Publish when there is something worth saying. Open to rigorous discourse.",
+    body: "Work sits at the edge of practical distributed systems and applied AI. Interested in multi-tenant isolation, real-time event streams, and NLP tooling that ships.",
     iconName: "GraduationCap",
     sortOrder: 10,
   }),
   block("aca-sec-1", "academic", "section", {
     title: "Distributed Systems",
-    body: "Consensus, CAP theorem, event-driven architectures",
+    body: "Event-driven architectures, multi-tenant isolation",
     iconName: "Server",
     sortOrder: 20,
   }),
   block("aca-sec-2", "academic", "section", {
     title: "Database Engineering",
-    body: "Query optimization, indexing, replication",
+    body: "Query optimization, indexing, replication patterns",
     iconName: "Database",
     sortOrder: 21,
   }),
   block("aca-sec-3", "academic", "section", {
     title: "API Design Patterns",
-    body: "REST semantics, GraphQL schemas, gRPC",
+    body: "REST semantics, auth flows, payment rails",
     iconName: "Link2",
     sortOrder: 22,
   }),
   block("aca-sec-4", "academic", "section", {
     title: "Security Engineering",
-    body: "OAuth, encryption, zero-trust patterns",
+    body: "OAuth-style flows, encryption, least privilege",
     iconName: "FileText",
     sortOrder: 23,
   }),
   block("aca-sec-5", "academic", "section", {
     title: "Performance Engineering",
-    body: "Load testing, profiling, caching strategies",
+    body: "Caching, Redis, load-aware design",
     iconName: "Zap",
     sortOrder: 24,
   }),
   block("aca-sec-6", "academic", "section", {
     title: "Applied Machine Learning",
-    body: "NLP pipelines, recommendations, preprocessing",
+    body: "NLP pipelines, content tools, preprocessing",
     iconName: "Sparkles",
     sortOrder: 25,
   }),
@@ -490,7 +578,7 @@ export const seedBlocks: SeedBlock[] = [
   }),
   block("aca-proj-2", "academic", "project", {
     title: "LogShip",
-    body: "Telemetry SDK and distributed log aggregation for real-time application monitoring.",
+    body: "Telemetry SDK and log aggregation for real-time application monitoring.",
     href: "https://www.npmjs.com/package/logship-js",
     iconName: "Code2",
     metadata: { tech: ["Go", "TypeScript", "Redis"], metric: "Telemetry SDK" },
@@ -498,7 +586,7 @@ export const seedBlocks: SeedBlock[] = [
   }),
   block("aca-proj-3", "academic", "project", {
     title: "AI SEO",
-    body: "NLP-driven SEO analysis applying transformer models to content optimization.",
+    body: "NLP-driven SEO analysis for content optimization and ranking suggestions.",
     href: "https://ai-seo-seven.vercel.app/",
     iconName: "Sparkles",
     metadata: { tech: ["Next.js", "React"], metric: "Applied NLP" },
@@ -526,7 +614,7 @@ export const seedBlocks: SeedBlock[] = [
   }),
   block("vis-text-1", "visitor", "text", {
     title: "The Quick Intro",
-    body: "Developer and founder who loves clean UIs, fast APIs, and occasionally seeing the sun. Take a look around.",
+    body: "Developer and founder who loves clean UIs, fast APIs, and occasionally seeing the sun. Take a look around — projects, blog, or chat with AI Moses.",
     iconName: "User",
     sortOrder: 10,
   }),
@@ -556,18 +644,18 @@ export const seedBlocks: SeedBlock[] = [
   }),
   block("vis-proj-1", "visitor", "project", {
     title: "InstantOTP",
-    body: "Virtual number service for SMS verifications. 800k+ users.",
+    body: "Virtual number service for SMS verifications. Global reach.",
     href: "https://www.instantotp.com/",
     iconName: "Zap",
-    metadata: { tech: ["Node.js", "Redis", "PostgreSQL"], metric: "800k+ users" },
+    metadata: { tech: ["Node.js", "Redis", "PostgreSQL"], metric: "OTP / virtual numbers" },
     sortOrder: 40,
   }),
   block("vis-proj-2", "visitor", "project", {
     title: "Etegram",
-    body: "Business banking and payments. 2K+ businesses.",
+    body: "Business banking and payments. 2.2K+ businesses.",
     href: "https://www.etegram.com/",
     iconName: "TrendingUp",
-    metadata: { tech: ["Hono", "PostgreSQL"], metric: "2K+ businesses" },
+    metadata: { tech: ["Hono", "PostgreSQL"], metric: "2.2K+ businesses" },
     sortOrder: 41,
   }),
   block("vis-proj-3", "visitor", "project", {
@@ -580,10 +668,10 @@ export const seedBlocks: SeedBlock[] = [
   }),
   block("vis-proj-4", "visitor", "project", {
     title: "TunnelDeck",
-    body: "VPN for private browsing on every device. 10M+ downloads.",
+    body: "VPN for private browsing on every device.",
     href: "https://tunneldeck.com/",
     iconName: "Server",
-    metadata: { tech: ["Express.js", "PostgreSQL"], metric: "10M+ downloads" },
+    metadata: { tech: ["Express.js", "PostgreSQL"], metric: "VPN / privacy" },
     sortOrder: 43,
   }),
   block("vis-link-1", "visitor", "link", {
@@ -594,10 +682,58 @@ export const seedBlocks: SeedBlock[] = [
     sortOrder: 60,
   }),
   block("vis-link-2", "visitor", "link", {
-    title: "LinkedIn",
-    body: "Professional profile",
-    href: "https://linkedin.com/in/mosesedem",
-    iconName: "Linkedin",
+    title: "Blog",
+    body: "Notes on building and shipping",
+    href: "/blog",
+    iconName: "BookOpen",
     sortOrder: 61,
   }),
+];
+
+const now = "2026-07-01T00:00:00.000Z";
+
+export const seedBlogPosts: SeedBlogPost[] = [
+  {
+    id: "blog-1",
+    slug: "shipping-backends-that-stay-up",
+    title: "Shipping backends that stay up",
+    excerpt:
+      "Notes on designing APIs and data stores so 3 AM pages stay rare — caching, idempotency, and honest monitoring.",
+    body: `Most outages are not exotic. They are missing timeouts, unbounded queues, or a database that became the chat room for every feature.
+
+When I ship backends — payments, OTP, multi-tenant apps — I start with boring reliability:
+
+1. **Idempotent writes** for payments and webhooks.
+2. **Redis** for hot paths and rate limits, not as a second source of truth.
+3. **Clear ownership** of failures: structured logs, not silent retries forever.
+4. **Schema discipline** so multi-tenant data cannot leak across customers.
+
+Fancy architecture is optional. Clear failure modes are not.
+
+If you are hiring for backend work, ask candidates how they design for the day traffic is 10x — not how they name folders.`,
+    coverImage: null,
+    tags: ["backend", "reliability", "engineering"],
+    published: true,
+    publishedAt: now,
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: "blog-2",
+    slug: "building-from-uyo",
+    title: "Building products from Uyo",
+    excerpt:
+      "Why shipping from Akwa Ibom is not a disadvantage — constraints, internet reality, and global users.",
+    body: `I build from Uyo, Akwa Ibom. That means designing for real latency, mobile-first users, and payment rails that have to work when the network is imperfect.
+
+Products like InstantOTP, Etegram, and Renboot taught me the same lesson: users do not care where your laptop is. They care whether SMS arrives, whether settlement is correct, and whether the app feels fast.
+
+African distribution is not a niche — it is a test of product quality under constraint. Pass that test and the rest of the world is easier.`,
+    coverImage: null,
+    tags: ["founders", "africa", "product"],
+    published: true,
+    publishedAt: now,
+    createdAt: now,
+    updatedAt: now,
+  },
 ];

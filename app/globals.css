@@ -72,3 +72,34 @@
     font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   }
 }
+
+/* Sheet enter animations (no dependency on animate plugin classes) */
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-left {
+  from {
+    transform: translateX(100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.sheet-bottom {
+  animation: sheet-up 0.22s ease-out both;
+}
+
+.sheet-side {
+  animation: sheet-left 0.22s ease-out both;
+}
