@@ -53,7 +53,7 @@ export type DatingFaq = {
 const age = new Date().getFullYear() - 1999;
 
 export const datingProfile = {
-  intent: "Looking for a wife",
+  intent: "Looking for love",
   intentBody:
     "Not casual. Not situationships. I am looking for a serious partner to build a life and family with — marriage-minded, intentional, and ready for the real thing.",
   fullName: "Moses Jacob Edem",
@@ -447,7 +447,7 @@ export const datingProfile = {
     "Wants children",
     "Faith-driven",
     "Ambitious builder",
-    "Looking for a wife",
+    "Looking for love",
   ],
   whatsappNumber: "2349030465501",
   whatsappDefaultText:

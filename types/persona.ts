@@ -19,7 +19,7 @@ export const PERSONA_LABELS: Record<PersonaMode, string> = {
 export const PERSONA_DESCRIPTIONS: Record<PersonaMode, string> = {
   employer: 'Professional experience, skills, and achievements',
   investor: 'Business acumen, growth potential, and vision',
-  romantic: 'Dating profile — looking for a wife, values, personality, compatibility',
+  romantic: 'Dating profile — Looking for love, values, personality, compatibility',
   academic: 'Credentials, research, and intellectual pursuits',
   casual: 'General overview of who I am',
 };
