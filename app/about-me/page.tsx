@@ -14,7 +14,7 @@ const facts = [
   {
     icon: "🎵",
     key: "Soundtrack",
-    val: "Blues & Afrobeats — depends on the mood",
+    val: "Blues and Afrobeats, depending on the mood",
   },
   {
     icon: "📚",
@@ -24,7 +24,7 @@ const facts = [
   {
     icon: "🙏",
     key: "Faith",
-    val: "Very important — it's a foundation, not a footnote",
+    val: "Very important. A foundation, not a footnote",
   },
 ];
 
@@ -32,27 +32,27 @@ const interests = [
   {
     icon: "🎵",
     title: "Music",
-    desc: "Blues and Afrobeats are my reset buttons. Music is how I recharge, think, and feel. It's not a hobby — it's a lifestyle.",
+    desc: "Blues and Afrobeats are my reset buttons. Music is how I recharge, think, and feel. Not a hobby. A lifestyle.",
   },
   {
     icon: "🍳",
     title: "Cooking",
-    desc: "I genuinely love to cook. It's creative, grounding, and one of the best ways I know to show someone I care.",
+    desc: "I genuinely love to cook. It is creative, grounding, and one of the best ways I know to show someone I care.",
   },
   {
     icon: "✈️",
     title: "Travel",
-    desc: "My dream? Visit all the STAN countries — Kazakhstan, Uzbekistan, Kyrgyzstan... the kind of trip most people never take.",
+    desc: "My dream? Visit all the STAN countries. Kazakhstan, Uzbekistan, Kyrgyzstan. The kind of trip most people never take.",
   },
   {
     icon: "📖",
     title: "Reading",
-    desc: "Self-improvement and business books. I invest in my mind like I invest in my projects — intentionally.",
+    desc: "Self-improvement and business books. I invest in my mind the same way I invest in my projects. Intentionally.",
   },
   {
     icon: "🌍",
     title: "Global Politics",
-    desc: "International politics fascinates me. Geopolitics, diplomacy, the power of nations — I'm watching it all carefully.",
+    desc: "International politics fascinates me. Geopolitics, diplomacy, the power of nations. I am watching it all carefully.",
   },
   {
     icon: "🥊",
@@ -115,9 +115,9 @@ const relationshipCards = [
 ];
 
 const greenFlags = [
-  "Loyal, respectful, and committed — not in theory, in action",
-  "Intellectually curious — someone I can have real conversations with",
-  "Faith matters to you too — it grounds us both",
+  "Loyal, respectful, and committed in action, not theory",
+  "Intellectually curious. Someone I can have real conversations with",
+  "Faith matters to you too. It grounds us both",
   "Family is everything to you, as it is to me",
   "You want children and a real future, not just the present",
   "You appreciate ambition and support the build, not just the results",
@@ -145,42 +145,42 @@ const visionSteps = [
   {
     date: "2019",
     title: "University of Uyo",
-    desc: "Studying Soil Science and Land Resource Management while simultaneously teaching myself the architecture of the digital world. The transition from physical soil to digital systems.",
+    desc: "Studying Soil Science and Land Resource Management while simultaneously teaching myself software development. The transition from physical soil to digital systems.",
   },
   {
     date: "2020",
-    title: "Covid Happened",
-    desc: "Broke into tech, starting by learning HTML, CSS ans Js.",
+    title: "Covid happened",
+    desc: "Broke into tech, starting by learning HTML, CSS, and JavaScript.",
   },
   {
     date: "2021",
-    title: "The Tech Journey begins",
-    desc: "Started Rainbowtellers, Joined the Koboconnect team",
+    title: "The tech journey begins",
+    desc: "Started Rainbowtellers and joined the Koboconnect team.",
   },
   {
     date: "2022",
     title: "Proton Medicare",
-    desc: "Launched Proton Medicare, built it from the ground up and got our first 200 customers.",
+    desc: "Launched Proton Medicare, built it from the ground up, and got our first 200 customers.",
   },
   {
     date: "2024",
-    title: "The Expansion",
-    desc: "Scaling Proton Medicare and realized I had other passions.",
+    title: "The expansion",
+    desc: "Scaling Proton Medicare and realising I had other passions to pursue.",
   },
   {
     date: "Now",
     title: "Renboot",
-    desc: " Recently started building Renboot. A decentralised hardware infrastructure for the next generation of builders.",
+    desc: "Recently started building Renboot. A decentralised hardware infrastructure for the next generation of builders.",
   },
   {
     date: "5 Years",
     title: "A family man",
-    desc: "I should have a thriving family.",
+    desc: "A thriving family, built with intention.",
   },
   {
     date: "Long-term",
     title: "Legacy",
-    desc: "Passing on wealth to the next generation — not just money, but values, opportunities, and a name that means something.",
+    desc: "Passing on wealth to the next generation. Not just money, but values, opportunities, and a name that means something.",
   },
 ];
 
@@ -278,7 +278,7 @@ function Hero() {
           </p>
 
           <p className="font-serif text-xl italic text-forest leading-relaxed border-l-2 border-gold pl-6 mb-12 max-w-md">
-            "A builder at heart — of software, of wealth, of something real with
+            "A builder at heart. Software, wealth, and something real with
             someone worth it."
           </p>
 
@@ -369,18 +369,18 @@ function About() {
             </h2>
             <div className="text-lg text-text-secondary leading-relaxed space-y-6 max-w-2xl font-light">
               <p>
-                I'm a software developer from Uyo who codes things into
-                existence — not just apps, but futures. My weekends mostly look
+                I am a software developer from Uyo who codes things into
+                existence. Not just apps, but futures. My weekends mostly look
                 like writing code that{" "}
                 <em className="text-forest font-normal">actually works</em>,
                 listening to blues or Afrobeats, and cooking something I
                 invented on the spot.
               </p>
               <p>
-                I'm an ambivert with a big heart, a dark sense of humour, and
-                the kind of loyalty that people write songs about. I'm chill
-                until I'm not — and when I'm passionate about something, you'll
-                know it immediately.
+                I am an ambivert with a big heart, a dark sense of humour, and
+                the kind of loyalty that people write songs about. I am chill
+                until I am not, and when I am passionate about something, you
+                will know it immediately.
               </p>
               <p>
                 Fun fact nobody asked for:{" "}
@@ -425,13 +425,13 @@ function Building() {
     {
       type: "Healthcare · Insurtech",
       name: "Proton Medicare",
-      desc: "Affordable health insurance plans for Nigerians — transparent, modern, and actually accessible. Top-tier coverage without breaking the bank.",
+      desc: "Affordable health insurance plans for Nigerians. Transparent, modern, and actually accessible. Top-tier coverage without breaking the bank.",
       link: "https://protonmedicare.com",
     },
     {
       type: "Infrastructure · Renttech",
       name: "Renboot",
-      desc: "Rent your idle hardware to others for hosting their projects. Turning dormant machines into passive income — decentralised cloud infrastructure.",
+      desc: "Rent your idle hardware to others for hosting their projects. Turning dormant machines into passive income. Decentralised cloud infrastructure.",
       link: "https://www.renboot.com",
     },
   ];
@@ -635,7 +635,7 @@ function WinMyHeart() {
                   Perfect First Date
                 </div>
                 <p className="text-cream/60 leading-relaxed font-light text-lg italic">
-                  "A quiet dinner — somewhere we can actually hear each other.
+                  "A quiet dinner somewhere we can actually hear each other.
                   No noise, no distractions. Just presence, eye contact, and
                   real conversation. Atmosphere matters. Chemistry matters
                   more."
@@ -663,11 +663,11 @@ function QuoteBand() {
           </svg>
           <blockquote className="font-serif text-3xl md:text-5xl text-forest leading-tight mb-10">
             Success is being able to independently rely on yourself for the
-            means of a quality life — while having the ones you truly care about
+            means of a quality life, while having the ones you truly care about
             right beside you.
           </blockquote>
           <cite className="text-[11px] font-bold tracking-[0.3em] uppercase text-gold not-italic">
-            — Moses Jacob Edem
+            Moses Jacob Edem
           </cite>
         </div>
       </FadeUp>

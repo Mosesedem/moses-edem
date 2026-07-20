@@ -39,27 +39,27 @@ function resultCopy(percent: number): {
   if (percent >= 80) {
     return {
       title: "Strong match energy",
-      body: "On paper, we might actually work. Values, intent, and humour line up. The only way to know for real is a conversation — preferably not over a printer emergency.",
+      body: "On paper, we might actually work. Values, intent, and humour line up. The only way to know for real is a conversation, preferably not over a printer emergency.",
       tone: "high",
     };
   }
   if (percent >= 55) {
     return {
-      title: "Promising — with room to explore",
-      body: "There's overlap worth talking through. Compatibility isn't a quiz score; it's how we show up when it's not convenient. Curious enough to say hello?",
+      title: "Promising, with room to explore",
+      body: "There is overlap worth talking through. Compatibility is not a quiz score. It is how we show up when it is not convenient. Curious enough to say hello?",
       tone: "mid",
     };
   }
   if (percent >= 30) {
     return {
       title: "Honest stretch",
-      body: "We might want different things right now. That isn't a failure — clarity is a gift. If something still resonated, you're welcome to say so.",
+      body: "We might want different things right now. That is not a failure. Clarity is a gift. If something still resonated, you are welcome to say so.",
       tone: "low",
     };
   }
   return {
-    title: "Probably not the fit",
-    body: "And that's okay. I'd rather we both find the right person than force a mismatch. No hard feelings — go build something beautiful elsewhere.",
+    title: "Probably not the right fit",
+    body: "And that is okay. I would rather we both find the right person than force a mismatch. No hard feelings. Go build something beautiful elsewhere.",
     tone: "low",
   };
 }
@@ -99,7 +99,7 @@ export function CompatibilityQuiz() {
   }
 
   const waText = result
-    ? `Hi Moses — I took your compatibility quiz and scored ${result.percent}%. ${result.title}. I'd like to introduce myself.`
+    ? `Hi Moses, I took your compatibility quiz and scored ${result.percent}%. ${result.title}. I would like to introduce myself.`
     : datingProfile.whatsappDefaultText;
 
   return (

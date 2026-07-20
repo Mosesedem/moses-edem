@@ -218,7 +218,7 @@ export const moses = {
           <p className="section-label mb-3">What I&apos;m building</p>
           <h2 className="section-title mb-2">Work that says who I am</h2>
           <p className="section-lead mb-6">
-            Ambition is part of the package — not a substitute for presence.
+            Ambition is part of the package, not a substitute for presence.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {d.ventures.map((v, i) => (
@@ -250,7 +250,7 @@ export const moses = {
               &ldquo;{d.quote}&rdquo;
             </p>
             <cite className="mt-5 block font-mono text-[11px] not-italic uppercase tracking-[0.14em] text-muted-foreground">
-              — {d.fullName}
+              {d.fullName}
             </cite>
           </blockquote>
         </div>
