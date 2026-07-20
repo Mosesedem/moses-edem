@@ -50,6 +50,7 @@ export type DatingFaq = {
   question: string;
   answer: string;
 };
+const age = new Date().getFullYear() - 1999;
 
 export const datingProfile = {
   intent: "Looking for a wife",
@@ -57,23 +58,24 @@ export const datingProfile = {
     "Not casual. Not situationships. I am looking for a serious partner to build a life and family with — marriage-minded, intentional, and ready for the real thing.",
   fullName: "Moses Jacob Edem",
   shortName: "Moses",
-  age: 27,
+  age: age,
   height: "6'1\"",
   location: "Uyo, Akwa Ibom, Nigeria",
   role: "Software Developer & Founder",
   tagline:
     "A builder at heart — of software, of wealth, of something real with someone worth it.",
   chips: [
-    "Marriage-minded",
+    // "Marriage-minded",
     "Serious only",
     "Ambivert",
     "Dark humour",
     "Secure",
     "Faith-driven",
-    "Wants children",
+    // "Wants children",
   ],
+
   stats: [
-    { title: "27", body: "Years old" },
+    { title: {age}, body: "Years old" },
     { title: "6'1\"", body: "Height" },
     { title: "Wife", body: "What I'm looking for" },
   ],

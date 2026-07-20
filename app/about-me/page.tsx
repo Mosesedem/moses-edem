@@ -204,7 +204,7 @@ function FloatingParticles() {
     </div>
   );
 }
-
+const age = new Date().getFullYear() - 1999;
 function FadeUp({
   children,
   className = "",
@@ -274,7 +274,7 @@ function Hero() {
           </h1>
 
           <p className="text-sm text-text-secondary tracking-widest uppercase mb-10">
-            27 years old &nbsp;·&nbsp; Software Developer &nbsp;·&nbsp; 6'1"
+            {age} years old &nbsp;·&nbsp; Software Developer &nbsp;·&nbsp; 6'1"
           </p>
 
           <p className="font-serif text-xl italic text-forest leading-relaxed border-l-2 border-gold pl-6 mb-12 max-w-md">
@@ -325,7 +325,7 @@ fill
           <div className="absolute -bottom-6 -right-12 space-y-4">
             {[
               { num: "2", label: "Ventures" },
-              { num: "27", label: "Years" },
+              { num: age, label: "Years" },
               { num: "∞", label: "Ambition" },
             ].map((s, i) => (
               <div
