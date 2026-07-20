@@ -118,7 +118,7 @@ export default async function PersonaPage({ params }: PageProps) {
           .join("\n")}\n] as const;`
       : `// mosesedem.me\nconst focus = [\n  "backend",\n  "apis",\n  "systems",\n] as const;`;
 
-  const experienceSnippet = `// experience.ts\nexport const moses = {\n  role: "Backend Engineer",\n  years: "2+",\n  location: "Uyo, NG",\n  available: true,\n} as const;`;
+  const experienceSnippet = `// experience.ts\nexport const moses = {\n  role: "Backend Engineer",\n  years: "6+",\n  location: "Uyo, NG",\n  available: true,\n} as const;`;
 
   return (
     <div className="page-shell">
