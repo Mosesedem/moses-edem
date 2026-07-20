@@ -1,6 +1,5 @@
-import { eq, notInArray } from "drizzle-orm";
-import { updateCmsStore, type CmsSnapshot } from "@/lib/cms-store";
-import { getDb, isDatabaseConfigured } from "@/lib/db";
+import { eq } from "drizzle-orm";
+import { getDb } from "@/lib/db";
 import {
   blogPosts,
   contentBlocks,
@@ -11,235 +10,145 @@ import {
   type ContentBlock,
   type Persona,
   type PortfolioProject,
+  type Profile,
 } from "@/lib/schema";
 
-/**
- * Mutate the file CMS and, when DATABASE_URL is set, fully mirror the
- * snapshot into Postgres (upsert + remove orphans) so admin CRUD stays
- * consistent for both storage backends.
- */
-export async function persistCms(
-  mutator: (snap: CmsSnapshot) => CmsSnapshot | Promise<CmsSnapshot>
-): Promise<CmsSnapshot> {
-  const next = await updateCmsStore(mutator);
+// ─── Individual upserts (used by admin actions) ───────────────────────────────
 
-  if (!isDatabaseConfigured()) {
-    return next;
-  }
-
-  try {
-    await syncSnapshotToPostgres(next);
-  } catch (err) {
-    console.error(
-      "[persist] Postgres sync failed (file store still updated):",
-      err
-    );
-  }
-
-  return next;
-}
-
-/** Force a full file → Postgres sync of the current CMS snapshot. */
-export async function syncCmsToDatabase(): Promise<{
-  ok: boolean;
-  error?: string;
-}> {
-  if (!isDatabaseConfigured()) {
-    return { ok: false, error: "DATABASE_URL is not configured" };
-  }
-  try {
-    const { readCmsStore } = await import("@/lib/cms-store");
-    const snap = await readCmsStore();
-    await syncSnapshotToPostgres(snap);
-    return { ok: true };
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error("[persist] syncCmsToDatabase failed:", message);
-    return { ok: false, error: message };
-  }
-}
-
-async function syncSnapshotToPostgres(snap: CmsSnapshot) {
+export async function upsertProfile(data: Profile): Promise<void> {
   const db = getDb();
-
-  await db.transaction(async (tx) => {
-    // Profile (single canonical row)
-    await tx
-      .insert(profile)
-      .values({
-        id: snap.profile.id,
-        fullName: snap.profile.fullName,
-        location: snap.profile.location,
-        email: snap.profile.email,
-        githubUrl: snap.profile.githubUrl,
-        linkedinUrl: snap.profile.linkedinUrl,
-        resumeUrl: snap.profile.resumeUrl,
-        phone: snap.profile.phone ?? null,
-        updatedAt: snap.profile.updatedAt ?? new Date(),
-      })
-      .onConflictDoUpdate({
-        target: profile.id,
-        set: {
-          fullName: snap.profile.fullName,
-          location: snap.profile.location,
-          email: snap.profile.email,
-          githubUrl: snap.profile.githubUrl,
-          linkedinUrl: snap.profile.linkedinUrl,
-          resumeUrl: snap.profile.resumeUrl,
-          phone: snap.profile.phone ?? null,
-          updatedAt: snap.profile.updatedAt ?? new Date(),
-        },
-      });
-
-    // Drop any other profile rows so only the CMS profile remains
-    await tx.delete(profile).where(notInArray(profile.id, [snap.profile.id]));
-
-    const personaIds = snap.personas.map((r) => r.id);
-    for (const row of snap.personas) {
-      await tx
-        .insert(personas)
-        .values(row as Persona)
-        .onConflictDoUpdate({
-          target: personas.id,
-          set: {
-            key: row.key,
-            label: row.label,
-            tagline: row.tagline,
-            heroHeading: row.heroHeading,
-            heroBody: row.heroBody,
-            ctaLabel: row.ctaLabel,
-            ctaHref: row.ctaHref,
-            iconName: row.iconName,
-            sortOrder: row.sortOrder,
-            isActive: row.isActive,
-          },
-        });
-    }
-    if (personaIds.length > 0) {
-      await tx.delete(personas).where(notInArray(personas.id, personaIds));
-    } else {
-      await tx.delete(personas);
-    }
-
-    const blockIds = snap.blocks.map((r) => r.id);
-    for (const row of snap.blocks) {
-      await tx
-        .insert(contentBlocks)
-        .values(row as ContentBlock)
-        .onConflictDoUpdate({
-          target: contentBlocks.id,
-          set: {
-            personaKey: row.personaKey,
-            type: row.type,
-            title: row.title,
-            body: row.body,
-            iconName: row.iconName,
-            href: row.href,
-            metadata: row.metadata,
-            sortOrder: row.sortOrder,
-            isActive: row.isActive,
-          },
-        });
-    }
-    if (blockIds.length > 0) {
-      await tx
-        .delete(contentBlocks)
-        .where(notInArray(contentBlocks.id, blockIds));
-    } else {
-      await tx.delete(contentBlocks);
-    }
-
-    const projectIds = (snap.projects ?? []).map((r) => r.id);
-    for (const row of snap.projects ?? []) {
-      await tx
-        .insert(portfolioProjects)
-        .values(row as PortfolioProject)
-        .onConflictDoUpdate({
-          target: portfolioProjects.id,
-          set: {
-            slug: row.slug,
-            title: row.title,
-            category: row.category,
-            iconName: row.iconName,
-            href: row.href,
-            tech: row.tech,
-            featured: row.featured,
-            sortOrder: row.sortOrder,
-            isActive: row.isActive,
-            lens: row.lens,
-          },
-        });
-    }
-    if (projectIds.length > 0) {
-      await tx
-        .delete(portfolioProjects)
-        .where(notInArray(portfolioProjects.id, projectIds));
-    } else {
-      await tx.delete(portfolioProjects);
-    }
-
-    const postIds = snap.blogPosts.map((r) => r.id);
-    for (const row of snap.blogPosts) {
-      await tx
-        .insert(blogPosts)
-        .values(row as BlogPost)
-        .onConflictDoUpdate({
-          target: blogPosts.id,
-          set: {
-            slug: row.slug,
-            title: row.title,
-            excerpt: row.excerpt,
-            body: row.body,
-            coverImage: row.coverImage,
-            tags: row.tags,
-            published: row.published,
-            publishedAt: row.publishedAt,
-            updatedAt: row.updatedAt ?? new Date(),
-          },
-        });
-    }
-    if (postIds.length > 0) {
-      await tx.delete(blogPosts).where(notInArray(blogPosts.id, postIds));
-    } else {
-      await tx.delete(blogPosts);
-    }
-  });
+  await db
+    .insert(profile)
+    .values({
+      id: data.id,
+      fullName: data.fullName,
+      location: data.location,
+      email: data.email,
+      githubUrl: data.githubUrl,
+      linkedinUrl: data.linkedinUrl,
+      resumeUrl: data.resumeUrl,
+      phone: data.phone ?? null,
+      updatedAt: data.updatedAt ?? new Date(),
+    })
+    .onConflictDoUpdate({
+      target: profile.id,
+      set: {
+        fullName: data.fullName,
+        location: data.location,
+        email: data.email,
+        githubUrl: data.githubUrl,
+        linkedinUrl: data.linkedinUrl,
+        resumeUrl: data.resumeUrl,
+        phone: data.phone ?? null,
+        updatedAt: data.updatedAt ?? new Date(),
+      },
+    });
 }
 
-export async function deleteBlockDb(id: string) {
-  if (!isDatabaseConfigured()) return;
-  try {
-    await getDb().delete(contentBlocks).where(eq(contentBlocks.id, id));
-  } catch (err) {
-    console.error("[persist] delete block failed:", err);
-  }
+export async function upsertPersona(data: Persona): Promise<void> {
+  const db = getDb();
+  await db
+    .insert(personas)
+    .values(data as Persona)
+    .onConflictDoUpdate({
+      target: personas.id,
+      set: {
+        key: data.key,
+        label: data.label,
+        tagline: data.tagline,
+        heroHeading: data.heroHeading,
+        heroBody: data.heroBody,
+        ctaLabel: data.ctaLabel,
+        ctaHref: data.ctaHref,
+        iconName: data.iconName,
+        sortOrder: data.sortOrder,
+        isActive: data.isActive,
+      },
+    });
 }
 
-export async function deleteProjectDb(id: string) {
-  if (!isDatabaseConfigured()) return;
-  try {
-    await getDb()
-      .delete(portfolioProjects)
-      .where(eq(portfolioProjects.id, id));
-  } catch (err) {
-    console.error("[persist] delete project failed:", err);
-  }
+export async function upsertBlock(data: ContentBlock): Promise<void> {
+  const db = getDb();
+  await db
+    .insert(contentBlocks)
+    .values(data as ContentBlock)
+    .onConflictDoUpdate({
+      target: contentBlocks.id,
+      set: {
+        personaKey: data.personaKey,
+        type: data.type,
+        title: data.title,
+        body: data.body,
+        iconName: data.iconName,
+        href: data.href,
+        metadata: data.metadata,
+        sortOrder: data.sortOrder,
+        isActive: data.isActive,
+      },
+    });
 }
 
-export async function deleteBlogDb(id: string) {
-  if (!isDatabaseConfigured()) return;
-  try {
-    await getDb().delete(blogPosts).where(eq(blogPosts.id, id));
-  } catch (err) {
-    console.error("[persist] delete blog failed:", err);
-  }
+export async function upsertProject(data: PortfolioProject): Promise<void> {
+  const db = getDb();
+  await db
+    .insert(portfolioProjects)
+    .values(data as PortfolioProject)
+    .onConflictDoUpdate({
+      target: portfolioProjects.id,
+      set: {
+        slug: data.slug,
+        title: data.title,
+        category: data.category,
+        iconName: data.iconName,
+        href: data.href,
+        tech: data.tech,
+        featured: data.featured,
+        sortOrder: data.sortOrder,
+        isActive: data.isActive,
+        lens: data.lens,
+      },
+    });
 }
 
-export async function deletePersonaDb(id: string) {
-  if (!isDatabaseConfigured()) return;
-  try {
-    await getDb().delete(personas).where(eq(personas.id, id));
-  } catch (err) {
-    console.error("[persist] delete persona failed:", err);
-  }
+export async function upsertBlogPost(data: BlogPost): Promise<void> {
+  const db = getDb();
+  await db
+    .insert(blogPosts)
+    .values(data as BlogPost)
+    .onConflictDoUpdate({
+      target: blogPosts.id,
+      set: {
+        slug: data.slug,
+        title: data.title,
+        excerpt: data.excerpt,
+        body: data.body,
+        coverImage: data.coverImage,
+        tags: data.tags,
+        published: data.published,
+        publishedAt: data.publishedAt,
+        updatedAt: data.updatedAt ?? new Date(),
+      },
+    });
+}
+
+// ─── Deletes ──────────────────────────────────────────────────────────────────
+
+export async function deleteBlockDb(id: string): Promise<void> {
+  await getDb().delete(contentBlocks).where(eq(contentBlocks.id, id));
+}
+
+export async function deleteProjectDb(id: string): Promise<void> {
+  await getDb().delete(portfolioProjects).where(eq(portfolioProjects.id, id));
+}
+
+export async function deleteBlogDb(id: string): Promise<void> {
+  await getDb().delete(blogPosts).where(eq(blogPosts.id, id));
+}
+
+export async function deletePersonaDb(id: string): Promise<void> {
+  await getDb().delete(personas).where(eq(personas.id, id));
+}
+
+export async function deleteBlocksByPersonaKey(key: string): Promise<void> {
+  await getDb().delete(contentBlocks).where(eq(contentBlocks.personaKey, key));
 }

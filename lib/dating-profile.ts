@@ -75,7 +75,7 @@ export const datingProfile = {
   ],
 
   stats: [
-    { title: {age}, body: "Years old" },
+    { title: String(age), body: "Years old" },
     { title: "6'1\"", body: "Height" },
     { title: "Wife", body: "What I'm looking for" },
   ],

@@ -2,29 +2,30 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { PersonaCard } from "@/components/persona-card";
-import { defaultSnapshot } from "@/lib/cms-store";
 import { getAllPersonas, getProfile, getPublishedPosts } from "@/lib/queries";
+import type { Profile } from "@/lib/schema";
 
-/** Public CMS data is also tagged `cms` and busted on admin save. */
+/** Public CMS data is tagged `cms` and busted on every admin save. */
 export const revalidate = 45;
 
+const FALLBACK_PROFILE: Profile = {
+  id: "default",
+  fullName: "Moses Jacob Edem",
+  location: null,
+  email: null,
+  githubUrl: null,
+  linkedinUrl: null,
+  resumeUrl: null,
+  phone: null,
+  updatedAt: null,
+};
+
 export default async function HomePage() {
-  let personas;
-  let profile;
-  let posts;
-  try {
-    [personas, profile, posts] = await Promise.all([
-      getAllPersonas(),
-      getProfile(),
-      getPublishedPosts(),
-    ]);
-  } catch (err) {
-    console.error("[home] data load failed, using seed:", err);
-    const snap = defaultSnapshot();
-    personas = snap.personas.filter((p) => p.isActive !== false);
-    profile = snap.profile;
-    posts = snap.blogPosts.filter((p) => p.published);
-  }
+  const [personas, profile, posts] = await Promise.all([
+    getAllPersonas().catch(() => []),
+    getProfile().catch(() => FALLBACK_PROFILE),
+    getPublishedPosts().catch(() => []),
+  ]);
 
   const lenses = personas.map((p) => ({
     key: p.key,

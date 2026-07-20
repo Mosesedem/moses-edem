@@ -3,31 +3,31 @@ import { ArrowLeft, Compass, Home } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getAllPersonas, getProfile } from "@/lib/queries";
-import { defaultSnapshot } from "@/lib/cms-store";
+import type { Profile } from "@/lib/schema";
+
+const FALLBACK_PROFILE: Profile = {
+  id: "default",
+  fullName: "Moses Jacob Edem",
+  location: null,
+  email: null,
+  githubUrl: null,
+  linkedinUrl: null,
+  resumeUrl: null,
+  phone: null,
+  updatedAt: null,
+};
 
 export default async function NotFound() {
-  let lenses: { key: string; label: string; iconName: string }[] = [];
-  let profile = defaultSnapshot().profile;
+  const [personas, profile] = await Promise.all([
+    getAllPersonas().catch(() => []),
+    getProfile().catch(() => FALLBACK_PROFILE),
+  ]);
 
-  try {
-    const [personas, p] = await Promise.all([getAllPersonas(), getProfile()]);
-    lenses = personas.map((persona) => ({
-      key: persona.key,
-      label: persona.label,
-      iconName: persona.iconName,
-    }));
-    profile = p;
-  } catch {
-    const snap = defaultSnapshot();
-    lenses = snap.personas
-      .filter((persona) => persona.isActive !== false)
-      .map((persona) => ({
-        key: persona.key,
-        label: persona.label,
-        iconName: persona.iconName,
-      }));
-    profile = snap.profile;
-  }
+  const lenses = personas.map((persona) => ({
+    key: persona.key,
+    label: persona.label,
+    iconName: persona.iconName,
+  }));
 
   return (
     <div className="page-shell">
